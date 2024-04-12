@@ -79,5 +79,5 @@ const get_top_models = createSlice({
 
 export const { resetTopModels } = get_top_models.actions;
 export const reducer = get_top_models.reducer;
-export const selectTopModels = (state: any) => state?.get_top_models?.data[0]?.data?.models
+export const selectTopModels = (state: any) => state?.get_top_models?.data[0]
 export default get_top_models;

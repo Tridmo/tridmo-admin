@@ -2,12 +2,12 @@
 
 import React, { CSSProperties, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, useMediaQuery, SxProps, List, ListItem, ListItemText, ListItemAvatar, Divider, Skeleton, Input, TextField, FormControl, MenuItem } from '@mui/material'
+import { Grid, Box, useMediaQuery, SxProps, List, ListItem, ListItemText, ListItemAvatar, Divider, Skeleton, Input, TextField, FormControl, MenuItem, styled, Menu } from '@mui/material'
 import SimpleCard from '../../simple_card'
 import SimpleTypography from '../../typography'
 import Pagination from '../../pagination/pagination'
 import Categories from '../../views/categories/model_categories'
-import { selectAllModels } from '../../../data/get_all_models';
+import { getAllModels, selectAllModels } from '../../../data/get_all_models';
 import Style from '../../views/styles/model_styles'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { searchModels, setSearchVal } from '../../../data/search_model'
@@ -26,6 +26,10 @@ import SearchInput from '../../inputs/search'
 import SimpleSelect from '../../inputs/simple_select'
 import { selectCategories } from '../../../data/categories'
 import { selectAllBrands } from '../../../data/get_all_brands'
+import { ThemeProps } from '../../../types/theme'
+import instance from '../../../utils/axios'
+import { toast } from 'react-toastify'
+import { getTopModels, selectTopModels } from '../../../data/get_top_models'
 
 const fakeBrands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -118,43 +122,70 @@ const itemAsLink = {
     height: '66px',
 }
 
-const typeButtons = [
-    {
-        text: 'Все',
-        value: 0,
-        active: true,
-        count: 0,
-    },
-    {
-        text: 'Топ',
-        value: 1,
-        active: false,
-        count: 0,
-    }
-]
+const DropDown = styled(Menu)(
+    ({ theme }: ThemeProps) => `
+
+  .MuiList-root{
+    width:162px;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 4px 0;
+  }
+
+  .MuiPaper-root{
+    border-radius:4px !important;
+    box-shadow: 0px 8px 18px 0px #00000029;
+  }
+  `
+);
 
 export default function ModelsPage() {
+
+    const typeButtons = [
+        {
+            text: 'Все',
+            value: 0,
+            active: true,
+            count: 0,
+            on_click: handleAllClick,
+        },
+        {
+            text: 'Топ',
+            value: 1,
+            active: false,
+            count: 0,
+            on_click: handleTopClick,
+        }
+    ]
+
+
     const router = useRouter();
     const dispatch = useDispatch<any>();
-    const searchParams = useSearchParams();
+    // const searchParams = useSearchParams();
     const IsFilterOpen = useSelector((state: any) => state?.modal_checker?.isFilterModal)
     const searchedModels = useSelector((state: any) => state?.search_models?.data)
     const all__models_status = useSelector((state: any) => state?.get_all_models?.status)
+    const top__models_status = useSelector((state: any) => state?.get_top_models?.status)
     const matches = useMediaQuery('(max-width:600px)');
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
 
     const all__models = useSelector(selectAllModels)
+    const top__models = useSelector(selectTopModels)
     const all__categories = useSelector(selectCategories)
     const all__brands = useSelector(selectAllBrands)
 
-    const keyword = searchParams.get('keyword') as string
+    // const keyword = searchParams.get('keyword') as string
     const [categories, setCategories] = useState<any[]>([])
     const [topButtons, setTopButtons] = useState<any[]>(typeButtons)
     const [category, setCategoryId] = useState<number>(-1)
     const [brand, setBrandId] = useState<string>('all')
+    const [selectedModel, setSelectedModel] = useState<any>(null)
+    const [topSelected, setTopSelected] = useState<boolean>(false)
 
     useEffect(() => {
         typeButtons[0].count = all__models?.data?.pagination?.data_count
-        typeButtons[1].count = 0
+        typeButtons[1].count = top__models?.data?.pagination?.data_count
 
         setTopButtons(typeButtons)
     }, [all__models])
@@ -172,16 +203,145 @@ export default function ModelsPage() {
         router.push(link)
     }
 
+    function handleAllClick(event: any, index: number) {
+        if (all__models_status == 'idle') {
+            dispatch(getAllModels({}))
+        }
+        typeButtons[index].active = true
+        typeButtons.forEach((e, i) => {
+            if (index != i) typeButtons[i].active = false
+        })
+        setTopButtons(typeButtons)
+        setTopSelected(false);
+    };
+
+    function handleTopClick(event: any, index: number) {
+        if (top__models_status == 'idle') {
+            dispatch(getTopModels())
+        }
+        typeButtons[index].active = true
+        typeButtons.forEach((e, i) => {
+            if (index != i) typeButtons[i].active = false
+        })
+        setTopButtons(typeButtons)
+        setTopSelected(true);
+    };
+
+    function handleClick(event: any, model: any) {
+        setSelectedModel(model);
+        setAnchorEl(event.currentTarget);
+    };
+
+    function handleClose() {
+        setSelectedModel(null);
+        setAnchorEl(null);
+    };
+
+    function handleChangeTop() {
+        instance.put(`models/${selectedModel?.id}`, {
+            top: !selectedModel?.top
+        }).then(res => {
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+                dispatch(getAllModels({}))
+            }
+            else {
+                toast.success(res?.data?.message)
+            }
+        }).catch(err => {
+            toast.error(err?.response?.data?.message)
+        }).finally(() => {
+            handleClose();
+        })
+    };
+
+    function handleDeleteModel() {
+        instance.delete(`models/${selectedModel?.id}`).then(res => {
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+                dispatch(getAllModels({}))
+            }
+            else {
+                toast.success(res?.data?.message)
+            }
+        }).catch(err => {
+            toast.error(err?.response?.data?.message)
+        }).finally(() => {
+            handleClose();
+        })
+
+    };
+
     return (
         <Box sx={{ width: '1268px', minHeight: 760, display: "block", margin: "0 auto" }}>
+
+            <DropDown
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+
+                <MenuItem
+                    onClick={handleClose}
+                    sx={{ padding: "6px 12px" }}
+                >
+                    <Link
+                        href={`/editmodel/${selectedModel?.slug}`}
+                        style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
+                    >
+
+                        <Image
+                            src="/icons/edit-pen.svg"
+                            alt="icon"
+                            width={17}
+                            height={17}
+                        />
+                        <SimpleTypography className='drow-down__text' text='Редактировать' />
+
+                    </Link>
+                </MenuItem>
+
+                <MenuItem
+                    onClick={handleChangeTop}
+                    sx={{ padding: "6px 12px" }}
+                >
+                    <Image
+                        src="/icons/star-line.svg"
+                        alt="icon"
+                        width={17}
+                        height={17}
+                    />
+                    <SimpleTypography className='drow-down__text' text='Поднять в ТОП' />
+                </MenuItem>
+
+                <MenuItem
+                    onClick={handleDeleteModel}
+                    sx={{ padding: "6px 12px" }}
+                >
+                    <Image
+                        src="/icons/trash.svg"
+                        alt="icon"
+                        width={17}
+                        height={17}
+                    />
+                    <SimpleTypography className='drow-down__text' text='Удалить' />
+
+                </MenuItem>
+
+            </DropDown>
 
             <Grid spacing={2} container sx={{ width: '100%', marginTop: "32px", marginLeft: 0 }} >
 
                 {
-                    all__models_status == 'succeeded' ?
+                    (topSelected ? top__models_status : all__models_status) == 'succeeded' ?
                         <>
                             {
-                                all__models?.data?.models && all__models?.data?.models?.length != 0
+                                (topSelected ? top__models : all__models)?.data?.models &&
+                                    (topSelected ? top__models : all__models)?.data?.models?.length != 0
                                     ?
                                     <List
                                         sx={listSx}
@@ -195,11 +355,11 @@ export default function ModelsPage() {
                                             }}
                                         >
                                             {
-                                                typeButtons?.map((b, i) => (
+                                                topButtons?.map((b, i) => (
                                                     <Buttons
                                                         key={i}
                                                         name={b.text}
-                                                        onClick={(e) => console.log(b.value)}
+                                                        onClick={(e) => b.on_click(e, i)}
                                                         type='button'
                                                         sx={{
                                                             color: b.active ? '#7210BE' : '#646464',
@@ -367,8 +527,10 @@ export default function ModelsPage() {
                                             />
                                         </ListItem>
                                         {
-                                            all__models?.data?.models && all__models?.data?.models?.length != 0
-                                                ? all__models?.data?.models?.map((model, index: any) =>
+                                            (topSelected ? top__models : all__models)?.data?.models &&
+                                                (topSelected ? top__models : all__models)?.data?.models?.length != 0
+
+                                                ? (topSelected ? top__models : all__models)?.data?.models?.map((model, index: any) =>
 
                                                     <ListItem key={index} alignItems="center"
                                                         sx={liSx}
@@ -524,6 +686,7 @@ export default function ModelsPage() {
                                                             }
                                                             <Buttons
                                                                 name=""
+                                                                onClick={(e) => handleClick(e, model)}
                                                                 childrenFirst={true}
                                                                 type='button'
                                                                 className="options_menu__btn"
@@ -547,25 +710,11 @@ export default function ModelsPage() {
 
                                     : <EmptyData sx={{ marginTop: '8px' }} />
                             }
-                            <Grid spacing={2} container sx={{ width: '100%', margin: "0 auto", padding: "17px 0 32px 0" }}>
-                                <Grid
-                                    sx={{ padding: "0 0 0 0  !important", display: "flex", alignItems: "baseline" }}
-                                    item
-                                    xs={6}
-                                >
-                                    <SimpleTypography
-                                        text={`Показаны ${all__models?.data?.pagination?.current + 1}–${all__models?.data?.pagination?.limit} из`}
-                                        className='pagenation__desc'
-                                    />
-
-                                    <SimpleTypography
-                                        text={`${all__models?.data?.pagination?.data_count} товаров`}
-                                        className='pagenation__desc--bold' />
-                                </Grid>
+                            <Grid container sx={{ width: '100%', margin: "0 auto", padding: "17px 0 32px 0" }}>
                                 <Grid
                                     item
-                                    xs={6}
-                                    sx={{ padding: "0 !important", display: "flex", justifyContent: "flex-end" }}
+                                    xs={12}
+                                    sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
                                 >
                                     <Pagination
                                         count={all__models?.data?.pagination?.pages}

@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { CSSProperties } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
-import { InputAdornment } from '@mui/material';
+import { Box, FormLabel, InputAdornment } from '@mui/material';
 import { SxProps, styled } from '@mui/system';
+import { Label } from '@mui/icons-material';
+import SimpleTypography from '../typography';
 interface InputAdornmentsProps {
     error?: boolean;
     name?: string;
@@ -13,6 +15,7 @@ interface InputAdornmentsProps {
     value?: any;
     disabled?: boolean,
     label?: string,
+    labelFixed?: boolean,
     type?: string,
     autoComplete?: string,
     placeholder?: string;
@@ -20,72 +23,122 @@ interface InputAdornmentsProps {
     helperText?: any;
     startAdornment?: any;
     endAdornment?: any;
-    placeholderText: string,
+    className?: string;
+    placeholderText?: string,
     variant?: 'filled' | 'outlined' | 'standard',
     sx?: SxProps,
+    inputSx?: {
+        width?: CSSProperties['width'];
+        height?: CSSProperties['height'];
+        minWidth?: CSSProperties['minWidth'];
+        minHeight?: CSSProperties['minHeight'];
+        maxWidth?: CSSProperties['maxWidth'];
+        maxHeight?: CSSProperties['maxHeight'];
+    },
     paddingX?: number,
     paddingY?: number,
+    endIconWithBg?: string,
 }
 
+const SimpleInputControl = styled(FormControl)(
+    // text-transform: capitalize;
+    ({ theme }: ThemeProps) => `
+margin: 0 !important;
 
-export default function SimpleInp(props: InputAdornmentsProps) {
+.MuiInput-underline{
+    background:#fafafa !important;
+    padding-top: 5px ;
+    padding-bottom: 5px ;
+}
 
-    const SimpleInputControl = styled(FormControl)(
-        // text-transform: capitalize;
-        ({ theme }: ThemeProps) => `
-    margin: 0 !important;
+.MuiOutlinedInput-root {
+            border-radius: 4px;
+            & input {
+                padding: 0 0;
+            }
+        }
 
-    .MuiInput-underline{
-        background:#fafafa !important;
-        padding-top: 5px ;
-        padding-bottom: 5px ;
+.Mui-focused::after{
+    border-color:#7210BE;
+}
+
+.MuiInputLabel-root{
+    font-size: 15px;
+    line-height: 14px;
+    letter-spacing: 0.02em;
+    color: #424242;
+    margin-bottom:6px;
+}
+
+.Mui-focused::after{
+    border-color: #848484;
+}
+
+.MuiOutlinedInput-root {
+    border-radius: 4px;
+    
+    & input {
+        padding: 0 0;
+    }
+}
+
+.MuiInputBase-root {
+    display: flex;
+    align-items: flex-start;
+}
+
+.MuiInput-root::before {
+    border-bottom: 1px solid #848484;
+}
+
+.MuiInput-root:hover:not(.Mui-disabled, .Mui-error):before {
+    border-bottom: 1px solid #848484;
+}
+
+.MuiInput-root::after {
+    border-bottom: 2px solid #7210BE
+}
+
+.MuiInput-input:focus{
+    background-color: transparent !important;
+}
+`
+);
+
+export default function SimpleInp({ inputSx, ...props }: InputAdornmentsProps) {
+
+    const muiOutlineInputRoot: SxProps = {}
+    const muiFormControlRoot: SxProps = {}
+
+    if (props?.paddingX) {
+        muiOutlineInputRoot['paddingLeft'] = muiOutlineInputRoot['paddingRight'] = `${props?.paddingX}px`
+    }
+    if (props?.paddingY) {
+        muiOutlineInputRoot['paddingTop'] = muiOutlineInputRoot['paddingBottom'] = `${props?.paddingY}px`
     }
 
-    .Mui-focused::after{
-        border-color:#7210BE;
-    }
-
-    .MuiInputLabel-root{
-        font-size: 15px;
-        line-height: 14px;
-        letter-spacing: 0.02em;
-        color: #424242;
-        margin-bottom:6px;
-    }
-
-    .Mui-focused::after{
-        border-color: #848484;
-    }
-
-    .MuiOutlinedInput-root {
-        border-radius: 4px;
-        ${props?.paddingX ? 'padding-left:' + props?.paddingX + 'px; ' + 'padding-right:' + props?.paddingX + 'px;' : ''}
-        
-        & input {
-            ${props?.paddingY ? 'padding:' + props?.paddingY + 'px ' + props?.paddingY + 'px;' : ''}
+    if (inputSx) {
+        for (const [key, value] of Object.entries(inputSx)) {
+            muiOutlineInputRoot[key] = value
+            muiFormControlRoot[key] = value
         }
     }
 
-    .MuiInput-root::before {
-        border-bottom: 1px solid #848484;
+    const SX = {
+        '.MuiOutlinedInput-root': muiOutlineInputRoot,
+        '.MuiFormControl-root': muiFormControlRoot,
     }
-    
-    .MuiInput-root:hover:not(.Mui-disabled, .Mui-error):before {
-        border-bottom: 1px solid #848484;
-    }
-
-    .MuiInput-root::after {
-        border-bottom: 2px solid #7210BE
-    }
-
-    .MuiInput-input:focus{
-        background-color: transparent !important;
-    }
-  `
-    );
 
     return (
-        <SimpleInputControl sx={{ m: 1, width: '100%' }} variant="filled">
+        <SimpleInputControl className={props?.className || ''} sx={{ m: 1, width: '100%', ...SX }} variant="filled">
+
+            {
+                props?.labelFixed ?
+                    <FormLabel
+                        sx={{ mb: '6px', fontWeight: 400, fontSize: '14px', color: '#292929', lineHeight: '20px' }}
+                    >{props?.label}</FormLabel>
+                    : null
+            }
 
             <TextField
                 id={props?.label}
@@ -94,7 +147,7 @@ export default function SimpleInp(props: InputAdornmentsProps) {
                 helperText={props?.helperText}
                 onBlur={props?.onBlur}
                 onChange={props?.onChange}
-                label={props?.label}
+                label={!props?.labelFixed ? props?.label : null}
                 name={props?.name}
                 value={props?.value}
                 disabled={props?.disabled}
@@ -107,7 +160,26 @@ export default function SimpleInp(props: InputAdornmentsProps) {
                         </InputAdornment>
                     ),
                     endAdornment: props?.endAdornment || (
-                        <InputAdornment position="start">
+                        <InputAdornment position='end'>
+                            {
+                                props?.endIconWithBg ?
+                                    <Box
+                                        sx={{
+                                            position: "absolute",
+                                            backgroundColor: '#f5f5f5',
+                                            width: '44px',
+                                            top: 0,
+                                            bottom: 0,
+                                            right: 0,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <SimpleTypography sx={{ textAlign: 'center', fontWeight: 400, fontSize: '16px', lineHeight: '20px' }} text={props?.endIconWithBg} />
+                                    </Box>
+                                    : null
+                            }
                         </InputAdornment>
                     ),
                 }}

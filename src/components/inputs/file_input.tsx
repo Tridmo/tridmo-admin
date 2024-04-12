@@ -9,6 +9,7 @@ import Image from 'next/image';
 import SimpleTypography from '../typography';
 import { ToastContainer, toast } from 'react-toastify';
 import { LazyLoadImage } from "react-lazy-load-image-component";
+const fileIcon = '/icons/compressed-file.svg'
 
 export interface FileValidations {
     allowedTypes?: string[];
@@ -38,6 +39,7 @@ interface InputAdornmentsProps {
     helperText?: any;
     placeholderText: string,
     icon?: string,
+    iconBgColor?: string;
     multiple?,
     limit?: number,
     accept?: string,
@@ -49,6 +51,7 @@ interface CustomFile {
     height: number;
     size: number;
     type: string;
+    name: string;
 }
 
 const SimpleInputControl = styled(FormControl)(
@@ -137,14 +140,15 @@ export function readFile(file): Promise<CustomFile> {
             const img = new window.Image();
             img.onload = function () {
                 resolve({
-                    src: img.src,
-                    width: img.width,
-                    height: img.height,
-                    size: file.size,
+                    src: file.type.includes('image') ? img.src : fileIcon,
+                    width: file.type.includes('image') ? img.width : 0,
+                    height: file.type.includes('image') ? img.height : 0,
+                    size: Math.round(file.size / 1024),
                     type: file.type,
+                    name: file.name,
                 });
             };
-            img.src = event.target!.result as string
+            img.src = file.type.includes('image') ? event.target!.result as string : fileIcon
         };
         reader.readAsDataURL(file)
     });
@@ -177,8 +181,9 @@ const resetUploadsCount = () => {
 export default function FileInput(props: InputAdornmentsProps) {
 
     const hiddenFileInput = React.useRef<HTMLInputElement>(null);
-
     const [placeHolderDisplay, setplaceHolderDisplay] = React.useState('block')
+    const [placeHolderTxt, setplaceHolderTxt] = React.useState(props?.placeholderText || 'Перетащите или щелкните файл для загрузки')
+    const [inputIcon, setInputIcon] = React.useState(props?.icon || '/icons/upload-cloud.svg')
     const [uploadBtnWidth, setUploadBtnWidth] = React.useState<string | null>(null)
     const [uploadBtnDisplay, setUploadBtnDisplay] = React.useState<string | null>(null)
     const [previews, setPreviews] = React.useState<string[]>([])
@@ -245,18 +250,27 @@ export default function FileInput(props: InputAdornmentsProps) {
     }
 
     const performFileActions = async (file: File): Promise<boolean> => {
+        console.log('working 4');
 
-        if (!props?.multiple && uploadedFiles.length >= 1) {
-            showError('Images limit reached');
-            return false;
-        }
+        // if (!props?.multiple && uploadedFiles.length >= 1) {
+        //     showError('Images limit reached');
+        //     return false;
+        // }
+        console.log('working 5');
+
 
         if (props?.limit && getUploadsCount() >= props?.limit) {
             if (getUploadsCount() > props?.limit) showError('Images limit reached');
             return false;
         }
 
+        console.log('working 6');
+
         const customFile = await readFile(file);
+        console.log(customFile);
+
+        const isImage = customFile.type.includes('image')
+
         if (props?.validations && Object.keys(props?.validations).length) {
             const { error: e } = validateFile(customFile, props?.validations);
             if (e) {
@@ -264,18 +278,26 @@ export default function FileInput(props: InputAdornmentsProps) {
             }
             else {
                 if (props?.multiple) increaseUploadsCount();
-                await updateBtnStatus(!props.multiple ? switchToHiddenBtn : undefined)
-
-                await setPreviews(prev => [...prev, customFile.src]);
                 await setUploadedFiles(prev => props?.multiple ? [...prev, file] : [file]);
+                if (!isImage) {
+                    setInputIcon(fileIcon)
+                    setplaceHolderTxt(`${customFile.name}\n (${customFile.size} kb)`)
+                } else {
+                    await updateBtnStatus(!props.multiple ? switchToHiddenBtn : undefined)
+                    await setPreviews(prev => [...prev, customFile.src]);
+                }
             }
 
         } else {
             if (props?.multiple) increaseUploadsCount();
-            await updateBtnStatus(!props.multiple ? switchToHiddenBtn : undefined)
-
-            await setPreviews(prev => [...prev, customFile.src]);
             await setUploadedFiles(prev => props?.multiple ? [...prev, file] : [file]);
+            if (!isImage) {
+                setInputIcon(fileIcon)
+                setplaceHolderTxt(`${customFile.name}\n (${customFile.size} kb)`)
+            } else {
+                await updateBtnStatus(!props.multiple ? switchToHiddenBtn : undefined)
+                await setPreviews(prev => [...prev, customFile.src]);
+            }
         }
 
         return true;
@@ -294,13 +316,22 @@ export default function FileInput(props: InputAdornmentsProps) {
             return;
         }
 
+        console.log('working 1');
+
+
         const arr = Array.from(filesUploaded)
 
         if (arr.length > 1 && props?.multiple) {
+            console.log('working 2');
+
             for (const f of arr) {
+                console.log('working loop');
+
                 await performFileActions(f)
             }
         } else {
+            console.log('working 3');
+
             await performFileActions(arr[0])
         }
     };
@@ -316,6 +347,9 @@ export default function FileInput(props: InputAdornmentsProps) {
             arr.splice(index, 1)
             return arr;
         });
+
+        setInputIcon('/icons/upload-cloud.svg')
+        setplaceHolderTxt(props?.placeholderText || 'Перетащите или щелкните файл для загрузки')
 
         if (getUploadsCount() != 0 && props?.multiple) decreaseUploadsCount();
         await updateBtnStatus(!props?.multiple ? switchToFullBtn : undefined)
@@ -376,9 +410,9 @@ export default function FileInput(props: InputAdornmentsProps) {
                 props?.labelElement ?
                     <label {...props?.labelElement?.props}>
                         {...props?.labelElement?.props?.children}
-                        {props?.multiple && props?.limit ? ` (${previews?.length}/${props?.limit})` :
-                            props?.multiple && !props?.limit ? ` (${previews?.length})` :
-                                !props?.multiple ? ` (${previews?.length}/1)` : ''
+                        {props?.multiple && props?.limit ? ` (${uploadedFiles?.length}/${props?.limit})` :
+                            props?.multiple && !props?.limit ? ` (${uploadedFiles?.length})` :
+                                !props?.multiple ? ` (${uploadedFiles?.length}/1)` : ''
                         }
                     </label>
                     : null
@@ -498,7 +532,7 @@ export default function FileInput(props: InputAdornmentsProps) {
                             width: '54px',
                             height: '54px',
                             borderRadius: '50%',
-                            backgroundColor: '#E1E9FE',
+                            backgroundColor: props?.iconBgColor || '#E1E9FE',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -507,7 +541,7 @@ export default function FileInput(props: InputAdornmentsProps) {
                     >
                         <Image
                             alt='upload icon'
-                            src={props?.icon || '/icons/upload-cloud.svg'}
+                            src={inputIcon || props?.icon || '/icons/upload-cloud.svg'}
                             width={30}
                             height={30}
                         />
@@ -515,7 +549,7 @@ export default function FileInput(props: InputAdornmentsProps) {
                     <Box
                         sx={placeholderTextSx}>
                         <SimpleTypography
-                            text={props?.placeholderText}
+                            text={placeHolderTxt}
                             sx={{
                                 fontWeight: 400,
                                 fontSize: '14px',

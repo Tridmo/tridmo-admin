@@ -11,6 +11,7 @@ import { getAllDesigners } from '../data/get_all_designers';
 import { getAllBrands } from '../data/get_all_brands';
 import ModelsPage from '../components/screens/models';
 import { getCategories } from '../data/categories';
+import Models from './models/page';
 
 declare global {
   interface Window {
@@ -24,21 +25,9 @@ export default function Home() {
 
   // ---- intial staters ---- //
 
-  const getCategoriesStatus = useSelector((state: any) => state?.categories?.status);
-  const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
-
-
-  React.useEffect(() => {
-    dispatch(getAllModels({}))
-  }, [])
-  React.useEffect(() => {
-    if (getCategoriesStatus == 'idle') dispatch(getCategories())
-    if (getBrandsStatus == 'idle') dispatch(getAllBrands({}))
-  }, [getCategoriesStatus, getBrandsStatus])
-
   return (
     <>
-      <ModelsPage />
+      <Models />
     </>
   )
 }

@@ -2,8 +2,9 @@ import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
-import { InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormLabel, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { SxProps, styled } from '@mui/system';
+import { Label } from '@mui/icons-material';
 
 interface SimpleSelectProps {
     sx?: SxProps;
@@ -25,7 +26,9 @@ interface SimpleSelectProps {
     startAdornment?: any;
     endAdornment?: any;
     placeholderText?: string,
-    children: React.ReactNode
+    children: React.ReactNode;
+    labelFixed?: boolean;
+    className?: string;
 }
 
 
@@ -78,7 +81,6 @@ export default function SimpleSelect(props: SimpleSelectProps) {
             min-height: 25px;
             display: flex;
             align-items: center;
-            color: ${current == props?.placeholderText ? '#A0A0A0;' : '#434343;'}
         }
     }
 
@@ -113,18 +115,24 @@ export default function SimpleSelect(props: SimpleSelectProps) {
     );
 
     return (
-        <SimpleSelectControl sx={{ m: 1, width: '100%' }} variant="filled">
+        <SimpleSelectControl className={props?.className || ''} sx={{ m: 1, width: '100%' }} variant="filled">
+
+            {
+                props?.labelFixed ?
+                    <FormLabel
+                        sx={{ mb: '6px', fontWeight: 400, fontSize: '14px', color: '#292929', lineHeight: '20px' }}
+                    >{props?.label}</FormLabel>
+                    : null
+            }
+
             <TextField
                 sx={{ ...props?.sx }}
                 id={props?.label}
                 autoComplete={props?.autoComplete}
                 error={props?.error}
                 onBlur={props?.onBlur}
-                onChange={(e) => {
-                    setCurrent(props?.value || props?.placeholderText)
-                    props?.onChange(e)
-                }}
-                label={props?.label}
+                onChange={props?.onChange}
+                label={!props?.labelFixed ? props?.label : null}
                 name={props?.name}
                 value={props?.value}
                 disabled={props?.disabled}

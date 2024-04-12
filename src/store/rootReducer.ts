@@ -25,6 +25,9 @@ import { reducer as search_interior } from '../data/search_interior';
 import { reducer as get_brand_models } from '../data/get_brand_models';
 import { reducer as get_top_models } from '../data/get_top_models';
 import { reducer as get_comments } from '../data/get_comments';
+import { reducer as get_model_platforms } from '../data/get_model_platforms';
+import { reducer as get_render_platforms } from '../data/get_render_platforms';
+import { reducer as get_all_materials } from '../data/get_all_materials';
 
 
 
@@ -55,6 +58,9 @@ const rootReducer = combineReducers({
     get_brand_models: get_brand_models,
     get_top_models: get_top_models,
     get_comments: get_comments,
+    get_model_platforms: get_model_platforms,
+    get_render_platforms: get_render_platforms,
+    get_all_materials: get_all_materials,
 });
 
 export default rootReducer;

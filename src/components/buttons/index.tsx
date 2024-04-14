@@ -111,6 +111,27 @@ const ButtonWrapper = styled(Button)(
         } 
       }
 
+      &.MuiButton-cancel__btn{
+        color:#292929;
+        background-color: #f5f5f5;
+        padding:10px 24px;
+        border-radius: 4px;
+
+        &:hover{
+          background: #f2f2f2;
+        } 
+      }
+      &.MuiButton-confirm__btn{
+        color:#fff;
+        background-color: #DA1515;
+        padding:10px 24px;
+        border-radius: 4px;
+
+        &:hover{
+          background: #ea2e2e;
+        } 
+      }
+
       &.MuiButton-login__btn {
         height:40px;
         border: 1.7px solid ${theme.colors.gray[900]};

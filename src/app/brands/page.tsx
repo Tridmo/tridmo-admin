@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InteriorsPage from '../../components/screens/interiors';
 import { getAllBrands } from '../../data/get_all_brands';
 import BrandsPage from '../../components/screens/brands';
+import { getAllStyles } from '../../data/get_all_styles';
 
 declare global {
   interface Window {
@@ -18,18 +19,20 @@ export default function Brands() {
   const router = useRouter();
 
   const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
+  const getStylesStatus = useSelector((state: any) => state?.get_all_styles?.status);
 
   React.useEffect(() => {
     if (getBrandsStatus === "idle") {
       dispatch(getAllBrands({}))
     }
-  }, [dispatch, router, getBrandsStatus])
+    if (getStylesStatus === "idle") {
+      dispatch(getAllStyles())
+    }
+  }, [dispatch, router, getBrandsStatus, getStylesStatus])
 
   return (
     <>
-      <>
-        <BrandsPage />
-      </>
+      <BrandsPage />
     </>
   )
 }

@@ -50,6 +50,12 @@ input:-webkit-autofill:active {
   border: 1px solid #B8B8B8;
 }
 
+.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  z-index: 9000;
+  background: #11111126;
+  backdrop-filter: blur(2px);
+}
+
 input:focus-visible {
   outline: none;
 }

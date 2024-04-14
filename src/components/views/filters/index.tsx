@@ -186,7 +186,7 @@ function Filters() {
       page: getModelPageFilter,
     }))
 
-    dispatch(setCategoryFilter({ knex: arr }))
+    dispatch(setCategoryFilter(arr))
   }
 
   // const ColorFilter = (item: any) => {
@@ -264,7 +264,7 @@ function Filters() {
     dispatch(setStyleFilter({ snex: [] }))
     dispatch(setStyleFilter({ snex: [] }))
     dispatch(setColorFilter({ cnex: [] }))
-    dispatch(setCategoryFilter({ knex: [] }))
+    dispatch(setCategoryFilter([]))
 
   }
 

@@ -8,39 +8,62 @@ const initialState = {
   progress: 0,
 };
 export const getAllModels = createAsyncThunk('/models',
-  async (wrapper?: any) => {
-    let send__route = `/models`
+  async (wrapper?: {
+    name?: string;
+    brand?: string;
+    top?: boolean;
+    categories?: any[];
+    colors?: any[];
+    styles?: any[];
+    limit?: number;
+    orderBy?: string;
+    page?: number;
+  }) => {
+    try {
+      let send__route = `/models`
 
-    if (wrapper?.brand_id) {
-      send__route += `/?brand_id=${wrapper?.category_id}&brand_id=${wrapper?.brand_id}`
+      console.log("WWP", wrapper);
+
+
+      if (wrapper?.brand) {
+        send__route += send__route.includes("/?") ? `&brand_id=${wrapper?.brand}` : `/?brand_id=${wrapper?.brand}`
+      }
+      if (wrapper?.name) {
+        send__route += send__route.includes("/?") ? `&name=${wrapper?.name}` : `/?name=${wrapper?.name}`
+      }
+      if (wrapper?.top != undefined) {
+        send__route += send__route.includes("/?") ? `&top=${wrapper?.top}` : `/?top=${wrapper?.top}`
+      }
+
+      if (wrapper?.categories?.length) wrapper?.categories?.forEach(category_id => {
+        send__route += send__route.includes("/?") ? `&categories=${category_id}` : `/?categories=${category_id}`;
+      });
+
+      if (wrapper?.colors?.length) wrapper?.colors?.forEach(color_id => {
+        send__route += send__route.includes("/?") ? `&colors=${color_id}` : `/?colors=${color_id}`;
+      });
+
+      if (wrapper?.styles?.length) wrapper?.styles?.forEach(style_id => {
+        send__route += send__route.includes("/?") ? `&styles=${style_id}` : `/?styles=${style_id}`;
+      });
+
+      send__route +=
+        wrapper?.limit
+          ? (send__route?.includes("/?") ? `&limit=${wrapper?.limit}` : `/?limit=${wrapper?.limit}`)
+          : "";
+
+      send__route +=
+        wrapper?.orderBy
+          ? (send__route?.includes("/?") ? `&orderBy=${wrapper?.orderBy}` : `/?orderBy=${wrapper?.orderBy}`)
+          : "";
+
+      send__route += !send__route.includes("/?") && wrapper?.page ? `/?page=${wrapper.page}` : wrapper?.page ? `&page=${wrapper.page}` : "";
+
+      const response = await api.get(send__route)
+      return response.data
+    } catch (error) {
+      console.log(error);
     }
-
-    wrapper?.categories?.forEach(category_id => {
-      send__route += send__route.includes("/?") ? `&categories=${category_id}` : `/?categories=${category_id}`;
-    });
-
-    wrapper?.colors?.forEach(color_id => {
-      send__route += send__route.includes("/?") ? `&colors=${color_id}` : `/?colors=${color_id}`;
-    });
-
-    wrapper?.styles?.forEach(style_id => {
-      send__route += send__route.includes("/?") ? `&styles=${style_id}` : `/?styles=${style_id}`;
-    });
-
-    send__route +=
-      wrapper?.limit
-        ? (send__route?.includes("/?") ? `&limit=${wrapper?.limit}` : `/?limit=${wrapper?.limit}`)
-        : "";
-
-    send__route +=
-      wrapper?.orderBy
-        ? (send__route?.includes("/?") ? `&orderBy=${wrapper?.orderBy}` : `/?orderBy=${wrapper?.orderBy}`)
-        : "";
-
-    send__route += !send__route.includes("/?") && wrapper?.page ? `/?page=${wrapper.page}` : wrapper?.page ? `&page=${wrapper.page}` : "";
-
-    const response = await api.get(send__route)
-    return response.data
   })
 
 const get_all_models = createSlice({

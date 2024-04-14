@@ -20,7 +20,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SimpleTypography from '../../typography';
 import { ThemeProps } from '@/types/theme';
 import Link from 'next/link';
-import BasicModal from '@/components/modals/login_modal';
+import BasicModal from '@/components/modals/modal';
 import { switch_on } from '../../../data/toggle_cart';
 import { setAuthState } from '../../../data/login';
 import Cookies from 'js-cookie'
@@ -61,7 +61,7 @@ function navItemsData(pathname: string) {
             id: 1,
             text: "Статистика",
             link: "/stats",
-            active: pathname == '/stats',
+            active: pathname.startsWith('/stats'),
             icon_src: '/icons/stat-bars.svg',
             icon: (
                 <svg width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@ function navItemsData(pathname: string) {
             id: 2,
             text: "Модели",
             link: "/",
-            active: pathname == '/',
+            active: pathname == '/' || pathname.startsWith('/models'),
             icon_src: '/icons/layers.svg',
             icon: (
                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +85,7 @@ function navItemsData(pathname: string) {
             id: 3,
             text: "Пользователи",
             link: "/users",
-            active: pathname == '/users',
+            active: pathname.startsWith('/users'),
             icon_src: '/icons/users.svg',
             icon: (
                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +97,7 @@ function navItemsData(pathname: string) {
             id: 4,
             text: "Бренды",
             link: "/brands",
-            active: pathname == '/brands',
+            active: pathname.startsWith('/brands'),
             icon_src: '/icons/list.svg',
             icon: (
                 <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,7 +109,7 @@ function navItemsData(pathname: string) {
             id: 5,
             text: "Категории",
             link: "/categories",
-            active: pathname == '/categories',
+            active: pathname.startsWith('/categories'),
             icon_src: '/icons/list-settings.svg',
             icon: (
                 <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,7 @@ export default function Navbar() {
                 <Box
                     sx={{
                         position: 'fixed',
-                        zIndex: 9000,
+                        zIndex: 1300,
                         display: 'flex',
                         flexDirection: 'column',
                         width: '76px',

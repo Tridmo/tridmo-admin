@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import TopLoading from '../components/top_loading';
 import AlertWrapper from '../components/alert';
 import { Box } from '@mui/system';
+import BasicModal from '../components/modals/modal';
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -30,11 +31,10 @@ export default function RootLayout({
             {/* <TopLoading /> */}
             <AlertWrapper />
           </Box>
-
           <Navbar />
 
           <section className='body_wrapper_section'>
-
+            <BasicModal />
             {children}
 
           </section>

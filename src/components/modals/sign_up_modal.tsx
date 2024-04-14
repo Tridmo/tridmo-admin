@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal } from '@mui/material';
 import Image from 'next/image'
 import { Grid } from '@mui/material';
-import { style } from './modal'
+import { style } from './basic_modal'
 
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);

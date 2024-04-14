@@ -43,6 +43,7 @@ interface InputAdornmentsProps {
     multiple?,
     limit?: number,
     accept?: string,
+    className?: string,
 }
 
 interface CustomFile {
@@ -404,7 +405,7 @@ export default function FileInput(props: InputAdornmentsProps) {
     }, [uploadedFiles])
 
     return (
-        <SimpleInputControl sx={{ m: 1, width: '100%', position: 'relative' }} variant="filled">
+        <SimpleInputControl className={props?.className || ''} sx={{ m: 1, width: '100%', position: 'relative' }} variant="filled">
 
             {
                 props?.labelElement ?

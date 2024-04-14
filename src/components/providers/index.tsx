@@ -7,6 +7,7 @@ import store from "@/store";
 import ThemeProviderWrapper from '@/theme/ThemeProvider';
 import React, { Suspense } from 'react';
 import { NavigationEvents } from './navigation_events';
+import { PersistGate } from 'redux-persist/integration/react'
 
 export default function Providers({
   children,

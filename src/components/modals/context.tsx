@@ -4,9 +4,9 @@ import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { getMyProfile, resetMyProfile, selectMyProfile } from '../../data/me';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState } from '../../data/modal_checker';
+import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, ConfirmContextProps, setConfirmData, setConfirmState, resetConfirmProps, resetConfirmData, ConfirmData } from '../../data/modal_checker';
 import { setAuthState } from "../../data/login";
-import { Box, Typography, Grid, Button, TextField, InputAdornment, IconButton, SxProps } from '@mui/material';
+import { Box, Typography, Grid, Button, TextField, InputAdornment, IconButton, SxProps, Checkbox, FormControl, FormControlLabel, Tooltip, tooltipClasses, styled, TooltipProps } from '@mui/material';
 import Image from 'next/image';
 import SimpleTypography from '../typography'
 import Buttons from '../buttons';
@@ -21,6 +21,7 @@ import { passwordRegex, usernameRegex } from '@/types/regex';
 import Link from 'next/link';
 import UsernameInputAdornments from '../inputs/username';
 import instance from '../../utils/axios';
+import { Help, HelpOutlineRounded } from '@mui/icons-material';
 //Login context
 interface LoginContextProps {
   // setAlertMessage: any
@@ -30,6 +31,16 @@ interface LoginContextProps {
   userEmail?: any,
   setProgress?: any,
 }
+
+const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 200,
+    fontSize: '16px',
+    pointerEvents: 'none',
+  },
+});
 
 export const LoginContext = (props: LoginContextProps) => {
   const authState = useSelector((state: any) => state?.auth_slicer?.authState);
@@ -211,6 +222,131 @@ export const LoginContext = (props: LoginContextProps) => {
           </form>)}
       </Formik>
     </>
+  );
+}
+export const ConfirmContext = () => {
+  const dispatch = useDispatch()
+  const authState = useSelector((state: any) => state?.auth_slicer?.authState);
+  const confirm_props: ConfirmContextProps = useSelector((state: any) => state?.modal_checker?.confirm_props);
+  const confirmation_data: ConfirmData = useSelector((state: any) => state?.modal_checker?.confirmation_data);
+
+  const [checked, setChecked] = React.useState<boolean>(false)
+
+  React.useEffect(() => {
+    dispatch(resetConfirmData())
+  }, [])
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+    dispatch(setConfirmData({ checkbox_checked: event.target.checked }));
+  };
+
+  return (
+    <Grid
+      container
+      width={'100%'}
+      display={'flex'}
+      flexDirection={'column'}
+      alignItems={'center'}
+      justifyContent={'center'}
+    >
+      <Grid
+        item
+        width={'100%'}
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        mb={'32px'}
+      >
+        <SimpleTypography
+          text={confirm_props?.message || 'Вы уверены, что предпримете это действие?'}
+          sx={{
+            fontWeight: 400,
+            fontSize: '22px',
+            lineHeight: '28px',
+            textAlign: 'center'
+          }}
+        />
+        {
+          confirm_props?.info ?
+            <SimpleTypography
+              text={confirm_props?.info}
+              sx={{
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '22px',
+                textAlign: 'center',
+
+              }}
+            />
+            : null
+        }
+        {
+          confirm_props?.checkbox && confirm_props?.checkbox?.checkbox_label ?
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                marginTop: '16px'
+              }}
+            >
+              {
+                confirm_props?.checkbox?.checkbox_info ?
+                  <CustomTooltip title={confirm_props?.checkbox?.checkbox_info} placement='left'>
+                    <FormControlLabel
+                      label={confirm_props?.checkbox?.checkbox_label}
+                      control={
+                        <Checkbox checked={checked} onChange={handleChange} />
+                      }
+                    />
+                  </CustomTooltip>
+                  : <FormControlLabel
+                    label={confirm_props?.checkbox?.checkbox_label}
+                    control={
+                      <Checkbox checked={checked} onChange={handleChange} />
+                    }
+                  />
+
+              }
+            </Box>
+            : null
+        }
+      </Grid>
+
+      <Grid
+        item
+        width={'100%'}
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+      >
+        <Buttons
+          name='Отмена'
+          className='cancel__btn'
+          onClick={() => {
+            dispatch(setConfirmState(false))
+            dispatch(setOpenModal(false))
+            dispatch(resetConfirmProps())
+            dispatch(resetConfirmData())
+          }}
+        ></Buttons>
+
+        <Buttons
+          name='Да'
+          className='confirm__btn'
+          onClick={() => {
+            confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
+            dispatch(setConfirmState(false))
+            dispatch(setOpenModal(false))
+            dispatch(resetConfirmProps())
+            dispatch(resetConfirmData())
+          }}
+        ></Buttons>
+      </Grid>
+    </Grid >
   );
 }
 

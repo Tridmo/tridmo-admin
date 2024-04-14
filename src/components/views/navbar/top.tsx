@@ -20,7 +20,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SimpleTypography from '../../typography';
 import { ThemeProps } from '@/types/theme';
 import Link from 'next/link';
-import BasicModal from '@/components/modals/login_modal';
+import BasicModal from '@/components/modals/modal';
 import { switch_on } from '../../../data/toggle_cart';
 import { setAuthState } from '../../../data/login';
 import Cookies from 'js-cookie'
@@ -125,7 +125,7 @@ export default function NavbarTop() {
                 <Box
                     sx={{
                         position: 'fixed',
-                        zIndex: 8999,
+                        zIndex: 1299,
                         display: 'flex',
                         width: '100%',
                         height: '76px',

@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 const initialState = {
   author: '',
+  model_brand: '',
+  model_name: '',
+  model_top: false,
   categories: [],
   interior_categories: [],
   selected_child: [],
@@ -29,9 +32,17 @@ const handle_filters = createSlice({
       const { ...params } = action.payload;
       state.author = params.author;
     },
-    setCategoryFilter: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.categories = params.knex;
+    setCategoryFilter: (state: any, action: PayloadAction<any[]>) => {
+      state.categories = action.payload;
+    },
+    setModelBrandFilter: (state: any, action: PayloadAction<string>) => {
+      state.model_brand = action.payload;
+    },
+    setModelTopFilter: (state: any, action: PayloadAction<boolean>) => {
+      state.model_top = action.payload;
+    },
+    setModelNameFilter: (state: any, action: PayloadAction<string>) => {
+      state.model_name = action.payload;
     },
     setInteriorCategoryFilter: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
@@ -137,6 +148,9 @@ const handle_filters = createSlice({
 export const {
   setAuthor,
   setCategoryFilter,
+  setModelBrandFilter,
+  setModelTopFilter,
+  setModelNameFilter,
   setInteriorCategoryFilter,
   setCategorySelectedChild,
   setCategoryId,

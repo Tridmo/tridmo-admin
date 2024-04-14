@@ -34,6 +34,7 @@ export default function Models() {
   // ---- filters selector ----- //
 
   const getModelCategoryFilter = useSelector((state: any) => state?.handle_filters?.categories)
+  const getModelBrandFilter = useSelector((state: any) => state?.handle_filters?.model_brand)
   const getModelColorFilter = useSelector((state: any) => state?.handle_filters?.colors)
   const getModelStyleFilter = useSelector((state: any) => state?.handle_filters?.styles)
   const getModelPageFilter = useSelector((state: any) => state?.handle_filters?.page)
@@ -52,31 +53,22 @@ export default function Models() {
   React.useEffect(() => {
     if (getModelStatus === "idle") {
       dispatch(getAllModels({
-        category_id: getModelCategoryFilter,
-        color_id: getModelColorFilter,
-        style_id: getModelStyleFilter,
+        categories: getModelCategoryFilter,
+        colors: getModelColorFilter,
+        styles: getModelStyleFilter,
+        brand: getModelBrandFilter,
         page: getModelPageFilter,
       }))
     }
-    if (getTOpModelStatus === "idle") {
-      dispatch(getTopModels({
-        category_id: getModelCategoryFilter,
-        color_id: getModelColorFilter,
-        style_id: getModelStyleFilter,
-        page: getModelPageFilter,
-      }))
-    }
-    if (searched__models__status === "idle") {
-      dispatch(searchModels({
-        category_id: getModelCategoryFilter,
-        color_id: getModelColorFilter,
-        style_id: getModelStyleFilter,
-        page: getModelPageFilter,
-        keyword: keywords
-      }))
-    }
-
-  }, [getModelStatus, dispatch, StyleStatus, router, getModelCategoryFilter, getTOpModelStatus, getModelColorFilter, getModelPageFilter, getModelStyleFilter])
+  }, [
+    dispatch,
+    getModelStatus,
+    getTOpModelStatus,
+    getModelCategoryFilter,
+    getModelColorFilter,
+    getModelPageFilter,
+    getModelStyleFilter,
+  ])
 
 
 

@@ -1,3 +1,4 @@
+"use client"
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
@@ -5,6 +6,7 @@ import Image from 'next/image'
 import { Box, SxProps } from '@mui/system';
 import Buttons from '../buttons';
 import { Icon } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 
 type InputProps = {
     placeHolder: string,
@@ -12,14 +14,30 @@ type InputProps = {
     className?: string,
     startIcon?: boolean,
     clic?: any,
+    value?: string;
     sx?: SxProps,
     onChange?: any,
-    search?: any,
-    withButton?: boolean
+    search?: (searchValue: string) => void | any,
+    searchDelay?: number,
+    withButton?: boolean,
 };
 
 
 export default function SearchInput(props: InputProps) {
+
+  const [searchTerm, setSearchTerm] = useState('')
+
+  if (props?.search) {
+    useEffect(() => {
+      const delayDebounceFn = setTimeout(() => {
+        console.log(searchTerm);
+        
+        props?.search ? props?.search(searchTerm) : null
+      }, props?.searchDelay || 1000)
+  
+      return () => clearTimeout(delayDebounceFn)
+    }, [searchTerm])
+  }
 
     return (
         <Box
@@ -55,6 +73,7 @@ export default function SearchInput(props: InputProps) {
             <InputBase
                 sx={{ flex: 1, padding: 0, fontSize: '16px' }}
                 placeholder={props?.placeHolder}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 inputProps={{
                     'style': { padding: '0', fontSize: '16px' }
                 }}

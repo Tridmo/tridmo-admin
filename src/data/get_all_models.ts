@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../utils/axios'
+import { modelOrderBy, order } from '../types/filters';
 
 const initialState = {
   data: [],
@@ -16,14 +17,12 @@ export const getAllModels = createAsyncThunk('/models',
     colors?: any[];
     styles?: any[];
     limit?: number;
-    orderBy?: string;
+    orderBy?: modelOrderBy;
+    order?: order;
     page?: number;
   }) => {
     try {
       let send__route = `/models`
-
-      console.log("WWP", wrapper);
-
 
       if (wrapper?.brand) {
         send__route += send__route.includes("/?") ? `&brand_id=${wrapper?.brand}` : `/?brand_id=${wrapper?.brand}`
@@ -55,6 +54,11 @@ export const getAllModels = createAsyncThunk('/models',
       send__route +=
         wrapper?.orderBy
           ? (send__route?.includes("/?") ? `&orderBy=${wrapper?.orderBy}` : `/?orderBy=${wrapper?.orderBy}`)
+          : "";
+
+      send__route +=
+        wrapper?.order
+          ? (send__route?.includes("/?") ? `&order=${wrapper?.order}` : `/?order=${wrapper?.order}`)
           : "";
 
       send__route += !send__route.includes("/?") && wrapper?.page ? `/?page=${wrapper.page}` : wrapper?.page ? `&page=${wrapper.page}` : "";

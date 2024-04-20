@@ -107,6 +107,7 @@ interface SimpleSelectProps {
     placeholderText?: string,
     children?: React.ReactNode,
     labelFixed?: boolean;
+    initialSelected?: any[];
 }
 
 const ITEM_HEIGHT = 48;
@@ -140,13 +141,6 @@ export default function MultipleSelect(props: SimpleSelectProps) {
     const [current, setCurrent] = React.useState<string | undefined>(props?.placeholderText)
 
     const [selectedElems, setSelectedElems] = React.useState<any[]>([]);
-    const [selectedElemsNames, setSelectedElemsNames] = React.useState<string[]>([]);
-
-    // function handleChange(e, elem) {
-    //     const arr: any[] = [];
-    //     arr.push(elem)
-    //     setSelectedElems(prev => [...prev, ...arr])
-    // }
 
     const handleChange = (event: SelectChangeEvent<typeof selectedElems>) => {
         const { target: { value } } = event;
@@ -155,6 +149,12 @@ export default function MultipleSelect(props: SimpleSelectProps) {
     };
 
     React.useEffect(() => {
+      if(props?.initialSelected && props?.initialSelected.length && !selectedElems.length){
+        setSelectedElems(props?.initialSelected)
+      }
+    }, [props?.initialSelected])
+
+    React.useMemo(() => {
         props.onChange(selectedElems.map(e => `${e.split('/')[0]}`))
     }, [selectedElems])
 
@@ -184,7 +184,6 @@ export default function MultipleSelect(props: SimpleSelectProps) {
                 variant={props?.variant || "standard"}
                 input={<OutlinedInput />}
                 renderValue={(selected) => {
-
                     return (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                             {

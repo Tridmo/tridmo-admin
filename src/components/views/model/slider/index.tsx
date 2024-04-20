@@ -71,57 +71,38 @@ const SimpleSlider = ({ name }: any) => {
     const [sliderBtnHover, setSliderBtnHover] = useState(0)
     const dispatch = useDispatch<any>()
 
-    const simpleModel = useSelector(selectOneModel);
+    const model = useSelector(selectOneModel);
     const currentUser = useSelector(selectMyProfile);
     const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
     const simple_model_status = useSelector((state: any) => state?.get_one_model?.status);
 
     const matches = useMediaQuery('(max-width:600px)');
     const [sliderCount, setSliderCount] = React.useState(0)
+    const [simpleModel, setSimpleModel] = React.useState<any>(model)
     const [sliderTransition, setSliderTransition] = React.useState(0.4)
-    const [isSaved, setIsSaved] = useState<any>(false)
+    const [isTop, setIsTop] = useState<any>(false)
+    const [topBtnLoading, setBtnTopLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        if (simpleModel && isAuthenticated && currentUser) {
-            setIsSaved(simpleModel?.is_saved)
+        if (simpleModel) {
+            setIsTop(simpleModel?.top)
         }
-    }, [isAuthenticated, currentUser, simpleModel])
+    }, [simpleModel])
 
-    const handleSave = () => {
-
-        if (!isAuthenticated) {
-            dispatch(setLoginState(true))
-            dispatch(setOpenModal(true))
-            return;
-        }
-
-        if (!isSaved) {
-            setIsSaved(true)
-            instance.post(
-                '/saved/models',
-                { model_id: simpleModel?.id }
-            ).then(res => {
-                setIsSaved(res?.data?.success)
-                // toast.success(res?.data?.message)
-            }).catch(err => {
-                setIsSaved(false)
-                // toast.error(err?.response?.data?.message)
-            })
-        }
-        else if (isSaved) {
-            setIsSaved(false)
-            instance.delete(
-                '/saved/models/' + simpleModel?.id
-            ).then(res => {
-                setIsSaved(!res?.data?.success)
-                // toast.success(res?.data?.message)
-            }).catch(err => {
-                setIsSaved(true)
-                // toast.error(err?.response?.data?.message)
-            })
-        }
-    };
-
+    function handleChangeTop() {
+      setBtnTopLoading(true)
+      instance.put(`models/${simpleModel?.id}`, {
+          top: !simpleModel?.top
+      }).then(res => {
+          if (res?.data?.success) {
+              toast.success(res?.data?.message)
+              setSimpleModel({...model, ...res?.data?.data?.model})
+          }
+          else  toast.success(res?.data?.message)
+      }).catch(err => {
+          toast.error(err?.response?.data?.message)
+      }).finally(() => setBtnTopLoading(false))
+  };
 
     function SliderRightHandler() {
         if (sliderCount < simpleModel?.images?.length - 1) {
@@ -261,6 +242,33 @@ const SimpleSlider = ({ name }: any) => {
                                 />
                             </Buttons>
                         </Box>
+                        {
+                          name == 'slider' ?
+                            <>
+                              <Buttons
+                                name={simpleModel?.top ? 'Удалить из ТОПа' : 'Поднять в ТОП'}
+                                className='purple_outlined__btn'
+                                childrenFirst={true}
+                                startIcon={topBtnLoading}
+                                onClick={handleChangeTop}
+                                sx={{
+                                    width: '200px',
+                                    position: 'absolute',
+                                    top: 10,
+                                    right: 10,
+                                    zIndex: 1,
+                                }}
+                            >
+                                <Image
+                                    alt='star'
+                                    width={25}
+                                    height={25}
+                                    src={simpleModel?.top ? '/icons/star-purple.svg' : '/icons/star-line-purple.svg'}
+                                />
+                              </Buttons>
+                            </>
+                              : null
+                        }
                         <List sx={{
                             transform: `translateX(-${sliderCount * wdth}px)`,
                             padding: "0 !important",
@@ -294,31 +302,6 @@ const SimpleSlider = ({ name }: any) => {
 
                         </List>
                     </Grid>
-
-                    {
-                        name === "slider" ?
-
-                            <Buttons
-                                name={isSaved ? 'Сохранено' : 'Сохранить'}
-                                className='bookmark__btn'
-                                childrenFirst={true}
-                                onClick={handleSave}
-                                sx={{
-                                    marginLeft: '90px',
-                                    // position: 'absolute'
-                                }}
-                            >
-                                <Image
-                                    alt='bookmark'
-                                    width={18}
-                                    height={18}
-                                    src={isSaved ? '/icons/bookmark-full.svg' : '/icons/bookmark-line.svg'}
-                                />
-                            </Buttons>
-
-                            : null
-                    }
-
                 </Grid>
             </>
         )

@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
-import { Box, FormLabel, InputAdornment } from '@mui/material';
+import { Box, FormLabel, InputAdornment, TextareaAutosize } from '@mui/material';
 import { SxProps, styled } from '@mui/system';
 import { Label } from '@mui/icons-material';
 import SimpleTypography from '../typography';
@@ -38,6 +38,8 @@ interface InputAdornmentsProps {
     paddingX?: number,
     paddingY?: number,
     endIconWithBg?: string,
+    textarea?: boolean,
+    resize?: CSSProperties['resize'],
 }
 
 const SimpleInputControl = styled(FormControl)(
@@ -53,9 +55,6 @@ margin: 0 !important;
 
 .MuiOutlinedInput-root {
             border-radius: 4px;
-            & input {
-                padding: 0 0;
-            }
         }
 
 .Mui-focused::after{
@@ -141,6 +140,12 @@ export default function SimpleInp({ inputSx, ...props }: InputAdornmentsProps) {
             }
 
             <TextField
+                sx={{
+                  '& input, & textarea': {
+                      resize: props?.resize,
+                      padding: '0 0',
+                  }
+                }}
                 id={props?.label}
                 autoComplete={props?.autoComplete}
                 error={props?.error}
@@ -155,6 +160,10 @@ export default function SimpleInp({ inputSx, ...props }: InputAdornmentsProps) {
                 type={props?.type}
                 // autoComplete="current-password"
                 InputProps={{
+                    ...(
+                        props?.textarea ? {
+                          inputComponent: TextareaAutosize,
+                        } : {}),
                     startAdornment: props?.startAdornment || (
                         <InputAdornment position="start">
                         </InputAdornment>

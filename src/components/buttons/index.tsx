@@ -29,6 +29,24 @@ const ButtonWrapper = styled(Button)(
       cursor: pointer;
       border-radius: 4px;
 
+      img{
+        margin-right: 8px;
+      }
+
+      .MuiButton-startIcon {
+        margin-left: 0 !important;
+        min-width: 20px !important;
+        min-height: 20px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      
       &.MuiButton-bordered__btn {
         width:100px;
         height:40px;
@@ -126,6 +144,11 @@ const ButtonWrapper = styled(Button)(
         background-color: #DA1515;
         padding:10px 24px;
         border-radius: 4px;
+
+        .MuiButton-startIcon {
+          margin-right: 0;
+          margin-left: 0;
+        }
 
         &:hover{
           background: #ea2e2e;
@@ -358,7 +381,21 @@ const ButtonWrapper = styled(Button)(
         
       }
 
-      &.MuiButton-bookmark__btn{
+      &.MuiButton-purple_outlined__btn{
+        padding: 8px 18px;
+        color: #7210BE;
+        background-color: #fff;
+        border: 2px solid #7210BE;
+        border-radius: 4px;
+        &:hover{
+          border-color: #5F0D9E;
+        } 
+        img{
+          margin-right: 8px;
+        }
+      }
+
+      &.MuiButton-bookmar__btn{
         padding:9px 12px;
         color: #303030;
         background-color: #fff;
@@ -662,7 +699,12 @@ export default function Buttons({ childrenFirst, ...props }: ButtonsProps) {
       type={props?.type}
     >
       {childrenFirst && !props?.startIcon ? props?.children : null}
-      {props?.name}
+      {
+        props?.startIcon &&
+        props?.className == 'confirm__btn'
+        ? props?.startIcon
+        : props?.name 
+      }
       {!childrenFirst && !props?.startIcon ? props?.children : null}
     </ButtonWrapper >
   );

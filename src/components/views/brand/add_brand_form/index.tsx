@@ -11,19 +11,14 @@ import axios from "axios";
 import { Formik } from "formik";
 import Cookies from 'js-cookie'
 import Image from "next/image";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import { selectCategories } from '../../../../data/categories';
-import { useRouter } from 'next/navigation';
-import { selectAllColors } from '../../../../data/get_all_colors';
-import { selectAllMaterials } from '../../../../data/get_all_materials';
-import { selectAllBrands } from '../../../../data/get_all_brands';
-import { selectModelPlatforms } from '../../../../data/get_model_platforms';
-import { selectRenderPlatforms } from '../../../../data/get_render_platforms';
-import ColorsSelect from '../../../inputs/color_select';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import MultipleSelect from '../../../inputs/multiple_select';
+import { getOneBrand, selectOneBrand } from "../../../../data/get_one_brand";
+import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 
 const availabilityData = [
     {
@@ -65,9 +60,9 @@ const labelStyle: CSSProperties = {
     margin: '0 0 6px 0',
 }
 
-export function AddBrandForm() {
+export function AddBrandForm({editing, ...props}: {editing?: boolean}) {
     const stylesData = useSelector(selectAllStyles)
-    const categoriesData = useSelector(selectCategories);
+    const brand = useSelector(selectOneBrand)
 
     const dispatch = useDispatch<any>()
     const router = useRouter()
@@ -86,12 +81,12 @@ export function AddBrandForm() {
         submit: any
     }
     const initialData: DataInterface = {
-        name: '',
-        site_link: '',
-        description: '',
-        address: '',
-        phone: '',
-        email: '',
+        name: editing && brand?.name ? brand?.name : '',
+        site_link: editing && brand?.site_link ? brand?.site_link : '',
+        description: editing && brand?.description ? brand?.description : '',
+        address: editing && brand?.address ? brand?.address : '',
+        phone: editing && brand?.phone ? brand?.phone : '',
+        email: editing && brand?.email ? brand?.email : '',
         styles: [],
         image: '',
         username: '',
@@ -108,26 +103,25 @@ export function AddBrandForm() {
                 padding: '28px'
             }}
         >
-            <Box sx={{ marginBottom: '40px' }}>
-                <SimpleTypography
-                    text="Новый бренд"
-                    sx={{
-                        fontSize: '30px',
-                        fontWeight: '500',
-                        lineHeight: '36px',
-                        letterSpacing: '-0.02em',
-                        textAlign: 'left',
-                    }}
-                />
-            </Box>
-
             <Box sx={{ width: '100%' }}>
                 <Formik
 
                     initialValues={initialData}
 
                     validationSchema={
-                        Yup.object().shape({
+                        Yup.object().shape(
+                          editing ? {
+                            name: Yup.string().max(255).optional(),
+                            site_link: Yup.string().url('Введите ссылку').optional(),
+                            address: Yup.string().optional(),
+                            phone: Yup.number().optional(),
+                            email: Yup.string().max(255).optional(),
+                            description: Yup.string().max(255).optional(),
+                            username: Yup.string().max(32).optional(),
+                            password: Yup.string().min(6).optional(),
+                            styles: Yup.array().of(Yup.number()).min(1, 'Выберите хотя бы один стиль').max(3).optional(),
+                            image: Yup.mixed().optional(),
+                        } : {
                             name: Yup.string().max(255).required('Название не указано'),
                             site_link: Yup.string().url('Введите ссылку').required('Ссылка на сайт не указано'),
                             address: Yup.string().required('Адрес не указано'),
@@ -138,28 +132,58 @@ export function AddBrandForm() {
                             password: Yup.string().min(6).required('Пароль не указано'),
                             styles: Yup.array().of(Yup.number()).min(1, 'Выберите хотя бы один стиль').max(3).required('Стили не указано'),
                             image: Yup.mixed().required('Загрузите изображение'),
-                        })
+                        }
+                        )
                     }
                     onSubmit={async (
                         _values, { resetForm, setErrors, setStatus, setSubmitting }
                     ) => {
-                        console.log(_values, 'jddjdjd');
                         try {
 
                             const formData = new FormData()
 
-                            formData.append('name', _values.name)
-                            formData.append('site_link', _values.site_link)
-                            formData.append('description', _values.description)
-                            formData.append('address', _values.address)
-                            formData.append('phone', _values.phone)
-                            formData.append('email', _values.email)
-                            formData.append('username', _values.username)
-                            formData.append('password', _values.password)
-                            formData.append('image', _values.image)
-                            _values.styles.forEach(i => formData.append('styles', i))
+                            if(editing) {
+                              if (_values.name) formData.append('name', _values.name)
+                              if (_values.site_link) formData.append('site_link', _values.site_link)
+                              if (_values.description) formData.append('description', _values.description)
+                              if (_values.address) formData.append('address', _values.address)
+                              if (_values.phone) formData.append('phone', _values.phone)
+                              if (_values.email) formData.append('email', _values.email)
+                              if (_values.username) formData.append('username', _values.username)
+                              if (_values.password) formData.append('password', _values.password)
+                              if (_values.image) formData.append('image', _values.image)
+                              if (_values.styles && _values.styles?.length) {
+                                if (_values.styles?.length > 1)
+                                  _values.styles.forEach(i => formData.append('styles', i));
+                                else if (_values.styles?.length != 0)
+                                  formData.append('styles', JSON.stringify(_values.styles));
+                              }
+                            }
+                            else {
+                              formData.append('name', _values.name)
+                              formData.append('site_link', _values.site_link)
+                              formData.append('description', _values.description)
+                              formData.append('address', _values.address)
+                              formData.append('phone', _values.phone)
+                              formData.append('email', _values.email)
+                              formData.append('username', _values.username)
+                              formData.append('password', _values.password)
+                              formData.append('image', _values.image)
+                              if (_values.styles && _values.styles?.length) {
+                                if (_values.styles?.length > 1)
+                                  _values.styles.forEach(i => formData.append('styles', i));
+                                else if (_values.styles?.length != 0)
+                                  formData.append('styles', JSON.stringify(_values.styles));
+                              }
+                            }
 
-                            const res = await instance.post(
+                            const res = 
+                            editing 
+                              ? await instance.put(
+                                `/brands/${brand?.id}`,
+                                formData
+                            )
+                              : await instance.post(
                                 `/brands`,
                                 formData
                             );
@@ -236,6 +260,8 @@ export function AddBrandForm() {
                                                 placeholderText="Введите название"
                                             />
                                             <SimpleInp
+                                                textarea
+                                                resize='none'
                                                 className='input_width'
                                                 variant='outlined'
                                                 paddingX={12}
@@ -257,6 +283,7 @@ export function AddBrandForm() {
                                                 }}
                                             />
                                             <FileInput
+                                                initialPreviews={editing && brand ? [`${IMAGES_BASE_URL}/${brand?.image_src}`] : []}
                                                 className='input_width'
                                                 labelElement={<label data-shrink='true' style={labelStyle}> Логотип </label>}
                                                 error={Boolean(touched.image && errors.image)}
@@ -365,6 +392,11 @@ export function AddBrandForm() {
                                                 onChange={(styles => {
                                                     setFieldValue('styles', styles)
                                                 })}
+                                                initialSelected={
+                                                  editing && brand?.styles ? 
+                                                  [...brand?.styles?.map(c => `${c.id}/${c.name}`)] 
+                                                  : []
+                                                }
                                                 label="Стили"
                                                 labelFixed
                                                 value={values.styles}

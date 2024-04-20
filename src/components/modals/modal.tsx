@@ -22,7 +22,6 @@ export default function BasicModal(props: { styles?: SxProps }) {
   const isVerifyOpen = useSelector((state: any) => state?.modal_checker?.isVerify);
   const isProfileEditOpen = useSelector((state: any) => state?.modal_checker?.isProfileEdit);
   const isModalOpen = useSelector((state: any) => state?.modal_checker?.isModalOpen);
-  const isModal = useSelector((state: any) => state)
 
   const style: SxProps = {
     zIndex: 9001,

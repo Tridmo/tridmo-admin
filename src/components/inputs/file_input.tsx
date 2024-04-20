@@ -44,6 +44,7 @@ interface InputAdornmentsProps {
     limit?: number,
     accept?: string,
     className?: string,
+    initialPreviews?: string[],
 }
 
 interface CustomFile {
@@ -155,27 +156,27 @@ export function readFile(file): Promise<CustomFile> {
     });
 };
 
-const getUploadsCount = (): number => {
+function getUploadsCount(): number {
     const x = window.sessionStorage.getItem('upc')
     if (!x) window.sessionStorage.setItem('upc', '0')
     return Number(x)
 }
-const singleUploadCount = (): boolean => {
+function singleUploadCount(): boolean {
     const x = window.sessionStorage.getItem('suc')
     if (!x) window.sessionStorage.setItem('suc', 'false')
     return Boolean(x)
 }
-const setSingleLimitReached = (status: boolean): void => {
+function setSingleLimitReached (status: boolean): void {
     window.sessionStorage.setItem('slr', String(status))
 }
 
-const increaseUploadsCount = () => {
+function increaseUploadsCount() {
     window.sessionStorage.setItem('upc', (getUploadsCount() + 1).toString())
 }
-const decreaseUploadsCount = () => {
+function decreaseUploadsCount() {
     window.sessionStorage.setItem('upc', (getUploadsCount() - 1).toString())
 }
-const resetUploadsCount = () => {
+function resetUploadsCount() {
     window.sessionStorage.setItem('upc', '0')
 }
 
@@ -203,9 +204,16 @@ export default function FileInput(props: InputAdornmentsProps) {
         if (uploadedFiles.length == 0) {
             resetUploadsCount()
         }
+        if  (
+            props?.initialPreviews && 
+            props?.initialPreviews?.length
+        ){
+            setPreviews(props?.initialPreviews);
+            props?.multiple ? switchToEmptyBtn() : switchToHiddenBtn();
+        }
     }, [])
 
-    const handleClick = (event) => {
+    function handleClick(){
         const fileInput = hiddenFileInput.current?.querySelector('input[type="file"]');
         if (fileInput) {
             setError(null);
@@ -213,29 +221,29 @@ export default function FileInput(props: InputAdornmentsProps) {
         }
     };
 
-    const switchToEmptyBtn = () => {
+    function switchToEmptyBtn(){
         setplaceHolderDisplay('none')
         setUploadBtnDisplay('flex')
         setUploadBtnWidth('96px')
     }
-    const switchToFullBtn = () => {
+    function switchToFullBtn(){
         setplaceHolderDisplay('block')
         setUploadBtnDisplay('flex')
         setUploadBtnWidth('100%')
     }
-    const switchToHiddenBtn = () => {
+    function switchToHiddenBtn(){
         setplaceHolderDisplay('none')
         setUploadBtnDisplay('none')
     }
 
-    const showError = (err) => {
+    function showError(err: string){
         setError(err)
         setTimeout(() => {
             setError(null)
         }, 2000)
     }
 
-    const updateBtnStatus = async (statusUpdater?: Function) => {
+    async function updateBtnStatus (statusUpdater?: Function){
         if (statusUpdater) {
             statusUpdater()
         }
@@ -250,26 +258,18 @@ export default function FileInput(props: InputAdornmentsProps) {
         }
     }
 
-    const performFileActions = async (file: File): Promise<boolean> => {
-        console.log('working 4');
-
+    async function performFileActions (file: File): Promise<boolean> {
         // if (!props?.multiple && uploadedFiles.length >= 1) {
         //     showError('Images limit reached');
         //     return false;
         // }
-        console.log('working 5');
-
 
         if (props?.limit && getUploadsCount() >= props?.limit) {
             if (getUploadsCount() > props?.limit) showError('Images limit reached');
             return false;
         }
 
-        console.log('working 6');
-
         const customFile = await readFile(file);
-        console.log(customFile);
-
         const isImage = customFile.type.includes('image')
 
         if (props?.validations && Object.keys(props?.validations).length) {
@@ -304,7 +304,7 @@ export default function FileInput(props: InputAdornmentsProps) {
         return true;
     }
 
-    const handleChange = async (event) => {
+    async function handleChange (event) {
         setError(null)
 
         const filesUploaded: File[] = event.target.files;
@@ -317,27 +317,18 @@ export default function FileInput(props: InputAdornmentsProps) {
             return;
         }
 
-        console.log('working 1');
-
-
         const arr = Array.from(filesUploaded)
 
         if (arr.length > 1 && props?.multiple) {
-            console.log('working 2');
-
             for (const f of arr) {
-                console.log('working loop');
-
                 await performFileActions(f)
             }
         } else {
-            console.log('working 3');
-
             await performFileActions(arr[0])
         }
     };
 
-    const handleRemove = async (index) => {
+    async function handleRemove (index) {
         setUploadedFiles(prev => {
             const arr = [...prev]
             arr.splice(index, 1)
@@ -356,7 +347,7 @@ export default function FileInput(props: InputAdornmentsProps) {
         await updateBtnStatus(!props?.multiple ? switchToFullBtn : undefined)
     };
 
-    const handleDragOver = (e) => {
+    function handleDragOver (e) {
         e.preventDefault();
         e.stopPropagation();
         if (!isDragging) {
@@ -389,7 +380,7 @@ export default function FileInput(props: InputAdornmentsProps) {
         }
     };
 
-    React.useEffect(() => {
+    React.useMemo(() => {
 
         if (props?.limit && uploadedFiles.length > props?.limit) {
             uploadedFiles.length = props?.limit;

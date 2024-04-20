@@ -10,6 +10,7 @@ export default function ModelModal() {
     const show = useSelector((state: any) => state?.loader?.show_models_modal)
 
     const style = {
+        zIndex: 9100, 
         position: 'absolute' as 'absolute',
         top: '50%',
         left: '50%',

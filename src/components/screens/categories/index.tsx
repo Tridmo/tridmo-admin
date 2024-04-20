@@ -30,7 +30,7 @@ import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
 import { toast } from 'react-toastify'
 import { getTopModels, selectTopModels } from '../../../data/get_top_models'
-import { ConfirmContextProps, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from '../../../data/modal_checker'
+import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from '../../../data/modal_checker'
 
 const fakeBrands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -267,12 +267,17 @@ export default function CategoriesPage() {
             actions: {
                 on_click: {
                     args: [selectedMenuCategory?.id],
-                    func: (checked: boolean, id: number) => {
+                    func: async (checked: boolean, id: number) => {
+                        dispatch(setConfirmProps({is_loading: true}))
                         instance.delete(`categories/${id}/?cascade=${!checked}`)
                             .then(res => {
                                 if (res?.data?.success) {
                                     toast.success(res?.data?.message)
                                     dispatch(getCategories())
+                                    dispatch(setConfirmState(false))
+                                    dispatch(setOpenModal(false))
+                                    dispatch(resetConfirmProps())
+                                    dispatch(resetConfirmData())
                                 }
                                 else {
                                     toast.success(res?.data?.message)
@@ -280,6 +285,7 @@ export default function CategoriesPage() {
                             }).catch(err => {
                                 toast.error(err?.response?.data?.message)
                             }).finally(() => {
+                                dispatch(setConfirmProps({is_loading: false}))
                                 handleClose();
                             })
                     }

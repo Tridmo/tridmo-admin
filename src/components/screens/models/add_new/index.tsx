@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Box, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { sampleUser } from '@/data/samples';
@@ -35,7 +35,9 @@ export default function AddModel() {
                 m={'32px 0'}
             >
                 <Grid item width={'100%'}>
+                  <Suspense>
                     <AddModelForm />
+                  </Suspense>
                 </Grid>
             </Grid>
         </Box>

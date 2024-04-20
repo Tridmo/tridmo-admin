@@ -4,10 +4,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface ConfirmContextProps {
   message?: string;
   info?: string;
+  is_loading?: boolean; 
   actions?: {
     on_click: {
       args: any[];
-      func: Function;
+      func: (checkbox_checked: boolean, ...args) => Promise<any | void>;
     }
   };
   checkbox?: {
@@ -50,10 +51,11 @@ const initialState: ContextState = {
   confirm_props: {
     message: '',
     info: '',
+    is_loading: false,
     actions: {
       on_click: {
         args: [],
-        func: () => { }
+        func: async () => Promise<void>
       }
     },
     checkbox: {
@@ -105,6 +107,7 @@ const modalChecker = createSlice({
     setConfirmProps(state, action: PayloadAction<ConfirmContextProps>) {
       if (action.payload.message) state.confirm_props.message = action.payload.message;
       if (action.payload.info) state.confirm_props.info = action.payload.info;
+      if (action.payload.is_loading) state.confirm_props.is_loading = action.payload.is_loading;
       if (action.payload.actions) state.confirm_props.actions = action.payload.actions;
       if (action.payload.checkbox) state.confirm_props.checkbox = action.payload.checkbox;
     },

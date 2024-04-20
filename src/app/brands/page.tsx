@@ -7,6 +7,7 @@ import InteriorsPage from '../../components/screens/interiors';
 import { getAllBrands } from '../../data/get_all_brands';
 import BrandsPage from '../../components/screens/brands';
 import { getAllStyles } from '../../data/get_all_styles';
+import { setBrandOrderBy } from '../../data/handle_filters';
 
 declare global {
   interface Window {
@@ -19,16 +20,34 @@ export default function Brands() {
   const router = useRouter();
 
   const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
-  const getStylesStatus = useSelector((state: any) => state?.get_all_styles?.status);
+  const getBrandNameFilter = useSelector((state: any) => state?.handle_filters?.brand_name)
+  const getBrandOrderBy = useSelector((state: any) => state?.handle_filters?.brand_orderby)
+  const getBrandOrder = useSelector((state: any) => state?.handle_filters?.brand_order)
+  // const getStylesStatus = useSelector((state: any) => state?.get_all_styles?.status);
+  dispatch(setBrandOrderBy('models_count'))
 
   React.useEffect(() => {
     if (getBrandsStatus === "idle") {
-      dispatch(getAllBrands({}))
+      console.log('HEHEHE');
+      
+      dispatch(getAllBrands({
+        name: getBrandNameFilter,
+        orderBy: getBrandOrderBy,
+        order: getBrandOrder,
+        page: 1,
+      }))
     }
-    if (getStylesStatus === "idle") {
-      dispatch(getAllStyles())
-    }
-  }, [dispatch, router, getBrandsStatus, getStylesStatus])
+    // if (getStylesStatus === "idle") {
+    //   dispatch(getAllStyles())
+    // }
+  }, [
+    dispatch, 
+    getBrandsStatus, 
+    getBrandNameFilter,
+    getBrandOrderBy,
+    getBrandOrder,
+    // getStylesStatus
+  ])
 
   return (
     <>

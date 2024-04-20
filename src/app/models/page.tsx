@@ -38,7 +38,9 @@ export default function Models() {
   const getModelColorFilter = useSelector((state: any) => state?.handle_filters?.colors)
   const getModelStyleFilter = useSelector((state: any) => state?.handle_filters?.styles)
   const getModelPageFilter = useSelector((state: any) => state?.handle_filters?.page)
-  const getModelIsFree = useSelector((state: any) => state?.handle_filters?.is_free)
+  const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.model_name)
+  const getModelOrderBy = useSelector((state: any) => state?.handle_filters?.model_orderby)
+  const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
   const keywords = useSelector((state: any) => state?.search_models?.key)
   const searched__models__status = useSelector((state: any) => state?.search_models?.status)
   const getCategoriesStatus = useSelector((state: any) => state?.categories?.status);
@@ -57,7 +59,10 @@ export default function Models() {
         colors: getModelColorFilter,
         styles: getModelStyleFilter,
         brand: getModelBrandFilter,
+        name: getModelNameFilter,
         page: getModelPageFilter,
+        orderBy: getModelOrderBy,
+        order: getModelOrder,
       }))
     }
   }, [
@@ -68,6 +73,9 @@ export default function Models() {
     getModelColorFilter,
     getModelPageFilter,
     getModelStyleFilter,
+    getModelNameFilter,
+    getModelOrderBy,
+    getModelOrder,
   ])
 
 

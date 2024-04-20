@@ -224,6 +224,8 @@ export const LoginContext = (props: LoginContextProps) => {
     </>
   );
 }
+
+
 export const ConfirmContext = () => {
   const dispatch = useDispatch()
   const authState = useSelector((state: any) => state?.auth_slicer?.authState);
@@ -231,10 +233,14 @@ export const ConfirmContext = () => {
   const confirmation_data: ConfirmData = useSelector((state: any) => state?.modal_checker?.confirmation_data);
 
   const [checked, setChecked] = React.useState<boolean>(false)
+  const [loading, setLoading] = React.useState<boolean>(Boolean(confirm_props.is_loading))
 
   React.useEffect(() => {
     dispatch(resetConfirmData())
   }, [])
+  React.useMemo(() => {
+    setLoading(Boolean(confirm_props.is_loading))
+  }, [confirm_props.is_loading])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
@@ -326,6 +332,7 @@ export const ConfirmContext = () => {
         <Buttons
           name='Отмена'
           className='cancel__btn'
+          disabled={loading}
           onClick={() => {
             dispatch(setConfirmState(false))
             dispatch(setOpenModal(false))
@@ -337,12 +344,14 @@ export const ConfirmContext = () => {
         <Buttons
           name='Да'
           className='confirm__btn'
-          onClick={() => {
-            confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
-            dispatch(setConfirmState(false))
-            dispatch(setOpenModal(false))
-            dispatch(resetConfirmProps())
-            dispatch(resetConfirmData())
+          startIcon={loading}
+          disabled={loading}
+          loadingColor='#fff'
+          onClick={async () => {
+              await confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
+          }}
+          sx={{
+            minWidth: '105px'
           }}
         ></Buttons>
       </Grid>

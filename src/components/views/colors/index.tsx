@@ -85,9 +85,9 @@ function ColorsFilter() {
     }
     dispatch(setColorFilter({ cnex: res }))
     dispatch(getAllModels({
-      category_id: getModelCategoryFilter,
-      color_id: res,
-      style_id: getModelStyleFilter,
+      categories: getModelCategoryFilter,
+      colors: res,
+      styles: getModelStyleFilter,
       page: getModelPageFilter,
     }))
     if (getModelCategoryNameFilter) {

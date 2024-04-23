@@ -33,6 +33,8 @@ import { getTopModels, selectTopModels } from '../../../data/get_top_models'
 import { setCategoryFilter, setModelBrandFilter, setModelNameFilter, setModelTopFilter } from '../../../data/handle_filters'
 import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from '../../../data/modal_checker'
 import { setTimeout } from 'timers'
+import { selectRouteCrubms, setRouteCrumbs } from '../../../data/route_crumbs'
+import { RouteCrumb } from '../../../types/interfaces'
 
 const fake = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -162,7 +164,6 @@ export default function ModelsPage() {
     }
   ]
 
-
   const router = useRouter();
   const dispatch = useDispatch<any>();
   // const searchParams = useSearchParams();
@@ -188,6 +189,7 @@ export default function ModelsPage() {
   const all__models = useSelector(selectAllModels)
   const all__categories = useSelector(selectCategories)
   const all__brands = useSelector(selectAllBrands)
+  const route_crumbs = useSelector(selectRouteCrubms)
 
   // const keyword = searchParams.get('keyword') as string
   const [categories, setCategories] = useState<any[]>([])
@@ -198,6 +200,13 @@ export default function ModelsPage() {
   const [category, setCategoryId] = useState<number>(-1)
   const [brand, setBrandId] = useState<any>(-1)
   const [selectedModel, setSelectedModel] = useState<any>(null)
+
+  useEffect(() => {
+    dispatch(setRouteCrumbs([{
+      title: 'Модели',
+      route: '/models'
+    }]))
+  }, [])
 
   useMemo(() => {
     instance.get('/models/counts/?all=true&top=true').then(res => {

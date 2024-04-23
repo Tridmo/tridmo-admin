@@ -1,7 +1,7 @@
 "use client"
 
 import AddInterior from "@/components/screens/interiors/add_new";
-import { useEffect } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStyles } from '../../../data/get_all_styles';
 import { getCategories, getInteriorCategories, getModelCategories } from '../../../data/categories';
@@ -24,7 +24,7 @@ export default function AddNewModel() {
   const colorsData__status = useSelector((state: any) => state?.get_all_colors?.status)
   const materialsData__status = useSelector((state: any) => state?.get_all_materials?.status)
 
-  useEffect(() => {
+  useMemo(() => {
     if (stylesData__status == 'idle') {
       dispatch(getAllStyles())
     }
@@ -59,7 +59,9 @@ export default function AddNewModel() {
 
   return (
     <>
-      <AddModel />
+      <Suspense>
+        <AddModel />
+      </Suspense>
     </>
   );
 }

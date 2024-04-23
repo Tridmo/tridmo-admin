@@ -91,14 +91,14 @@ export default function ModelInfo() {
   };
 
   function DownloadHandler() {
-    if (isAuthenticated) {
-      instance.post(`products/download/${simpleModel?.id}`).then((res) => {
-        router.push(res?.data?.data?.url);
-      });
-    } else {
-      dispatch(setLoginState(true));
-      dispatch(setOpenModal(true));
-    }
+    instance.post(`models/download/${simpleModel?.id}`).then((res) => {
+      router.push(res?.data?.data?.url);
+    });
+    // if (isAuthenticated) {
+    // } else {
+    // dispatch(setLoginState(true));
+    // dispatch(setOpenModal(true));
+    // }
   }
 
   return (

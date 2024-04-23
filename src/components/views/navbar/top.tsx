@@ -25,18 +25,19 @@ import { switch_on } from '../../../data/toggle_cart';
 import { setAuthState } from '../../../data/login';
 import Cookies from 'js-cookie'
 import { IMAGES_BASE_URL } from '../../../utils/image_src';
+import RouteCrumbs from './route_crumbs';
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    boxShadow: 'none'
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  boxShadow: 'none'
 }));
 
 const DropDown = styled(Menu)(
-    ({ theme }: ThemeProps) => `
+  ({ theme }: ThemeProps) => `
 
   .MuiList-root{
     width:162px;
@@ -58,137 +59,176 @@ const DropDown = styled(Menu)(
 
 export default function NavbarTop() {
 
-    const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
-    const userData = useSelector(selectMyProfile)
-    const [searchClicked, setSearchClicked] = useState(false)
-    const [searchVal, setSearchVal] = useState("")
+  const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
+  const routeCrumbs = useSelector((state: any) => state?.route_crumbs)
+  const userData = useSelector(selectMyProfile)
+  const [searchClicked, setSearchClicked] = useState(false)
+  const [searchVal, setSearchVal] = useState("")
 
-    const router = useRouter();
-    const pathname = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
 
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const dispatch = useDispatch<any>();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const dispatch = useDispatch<any>();
 
-    // useEffect(() => {
-    //     setIsAuthenticated(authState);
-    // }, [authState]);
+  // useEffect(() => {
+  //     setIsAuthenticated(authState);
+  // }, [authState]);
 
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const handleLogout = () => {
-        Cookies.remove('accessToken')
-        Cookies.remove('refreshToken')
-        dispatch(setAuthState(false))
-        router.push(pathname)
-        router.refresh();
-        setAnchorEl(null);
-    }
+  const handleLogout = () => {
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
+    dispatch(setAuthState(false))
+    router.push('/login')
+    setAnchorEl(null);
+  }
 
-    function SearchModel(e: any) {
-        e.preventDefault()
-        router.push(`/models?keyword=${searchVal}`)
-        // dispatch(searchModels(val))
-    }
+  function SearchModel(e: any) {
+    e.preventDefault()
+    router.push(`/models?keyword=${searchVal}`)
+    // dispatch(searchModels(val))
+  }
 
-    const openRightBar = () => {
-        dispatch(switch_on(true))
+  const openRightBar = () => {
+    dispatch(switch_on(true))
 
-        // if (router.pathname === '/models' || router.pathname === '/interiors') {
-        //     router.push({
-        //         query: {
-        //             page: getModelPageFilter,
-        //             isOpen: true,
-        //             colors: getModelColorFilter,
-        //             styles: getModelStyleFilter,
-        //             category_name: getModelCategoryNameFilter,
-        //             category: getModelCategoryFilter,
-        //         },
-        //     });
-        // }
-    }
+    // if (router.pathname === '/models' || router.pathname === '/interiors') {
+    //     router.push({
+    //         query: {
+    //             page: getModelPageFilter,
+    //             isOpen: true,
+    //             colors: getModelColorFilter,
+    //             styles: getModelStyleFilter,
+    //             category_name: getModelCategoryNameFilter,
+    //             category: getModelCategoryFilter,
+    //         },
+    //     });
+    // }
+  }
 
-    return (
-        <>
-            {/* <BasicModal /> */}
+  return (
+    <>
+      {/* <BasicModal /> */}
 
-            <Box sx={{
-                position: 'relative',
-            }}>
-                <Box
-                    sx={{
-                        position: 'fixed',
-                        zIndex: 1299,
-                        display: 'flex',
-                        width: '100%',
-                        height: '76px',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        background: "#fff",
-                        boxShadow: '0px 3px 4px 0px #00000014',
-                        marginBottom: 0
-                    }}
-                >
-                    <Box
-                        className='header__logo--wrapper'
-                        sx={{ padding: "20px 18px !important", display: "flex", justifyContent: "start", position: 'absolute', top: 0 }}>
-                        <Link href="/">
-                            <Item sx={{ padding: "0 !important", height: "27px" }}>
-                                <Image className='header__logo' alt="logo" priority={true} src="/img/tridmo-logo.svg" width={40} height={30} />
-                            </Item>
-                        </Link>
+      <Box sx={{
+        position: 'relative',
+      }}>
+        <DropDown
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
 
-                    </Box>
-                    <Grid container spacing={2}
-                        sx={{
-                            width: "100%",
-                            margin: "0 auto",
-                            flexDirection: 'column',
-                            alignItems: "center",
-                            position: "relative"
-                        }}
-                    >
+          <MenuItem
+            onClick={handleLogout}
+            sx={{ padding: "6px 12px" }}
+          >
+            <Image
+              src="/icons/logout-circle-r-line.svg"
+              alt="icon"
+              width={17}
+              height={17}
+            />
+            <SimpleTypography sx={{ color: '#E03838 !important' }} className='drow-down__text' text='Выйти' />
 
-                        <Grid
-                            item
-                            md={9.5}
-                            xs={7}
-                            sx={{
-                                width: '100%',
-                                display: "flex",
-                                padding: "0 !important",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}
-                            className="header__actions"
-                        >
-                            <Box className='header__nav' component={"nav"} sx={{}}>
-                                <Box component={"ul"}
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: 'column',
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        margin: "0",
-                                        padding: "0"
-                                    }}>
+          </MenuItem>
 
-                                </Box>
-                            </Box>
+        </DropDown>
+        <Box
+          sx={{
+            position: 'fixed',
+            padding: '16px 48px 16px calc(76px + 48px)',
+            zIndex: 1299,
+            display: 'flex',
+            width: '100%',
+            height: '76px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: "#fff",
+            boxShadow: '0px 3px 4px 0px #00000014',
+            marginBottom: 0
+          }}
+        >
+          <Grid container spacing={2}
+            sx={{
+              width: "100%",
+              margin: "0 auto",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: "center",
+              position: "relative"
+            }}
+          >
 
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Box>
-        </>
-    )
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                padding: "0 !important",
+                alignItems: "center",
+                justifyContent: 'flex-start'
+              }}
+              className="header__actions"
+            >
+              <Box>
+                <RouteCrumbs />
+              </Box>
+
+            </Grid>
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                padding: "0 !important",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+              className="header__actions"
+            >
+
+              <Box
+                onClick={handleClick}
+                sx={{
+                  display: "flex",
+                  flexDirection: 'column',
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: 'pointer',
+                }}
+              >
+
+                <Image
+                  alt='image'
+                  src={`/img/avatar.png`}
+                  width={40}
+                  height={40}
+                  style={{
+                    borderRadius: '20px',
+                  }}
+                />
+
+              </Box>
+
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </>
+  )
 }
 
 

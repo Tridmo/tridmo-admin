@@ -14,86 +14,90 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import SimpleInp from './simple_input';
 
 interface State {
-    amount: string;
-    password: string;
-    weight: string;
-    weightRange: string;
-    showPassword: boolean;
+  amount: string;
+  password: string;
+  weight: string;
+  weightRange: string;
+  showPassword: boolean;
 }
 interface InputAdornmentsProps {
-    error?: boolean;
-    name?: string;
-    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    value?: unknown;
-    type?: string,
-    placeholder?: string;
-    autoComplete?: string;
-    required?: boolean;
-    helperText?: React.ReactNode;
-    placeholderText: string,
-    label?: string,
+  error?: boolean;
+  name?: string;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  value?: unknown;
+  type?: string,
+  placeholder?: string;
+  autoComplete?: string;
+  required?: boolean;
+  helperText?: React.ReactNode;
+  placeholderText: string,
+  label?: string,
 }
 
 export default function PasswordInputAdornments(props: InputAdornmentsProps) {
-    const [values, setValues] = React.useState<State>({
-        amount: '',
-        password: '',
-        weight: '',
-        weightRange: '',
-        showPassword: false,
+  const [values, setValues] = React.useState<State>({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
+  const handleChange =
+    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
     });
+  };
 
-    const handleChange =
-        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            setValues({ ...values, [prop]: event.target.value });
-        };
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
-    const handleClickShowPassword = () => {
-        setValues({
-            ...values,
-            showPassword: !values.showPassword,
-        });
-    };
-
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
-
-    return (
-        <FormControl sx={{ width: '100%' }} variant="filled">
-            <SimpleInp
-                // id="filled-adornment-password"
-                // helperText={props?.helperText}
-                // FormHelperText={props?.helperText}
-                label={props?.label || 'Пароль'}
-                type={values.showPassword ? 'text' : 'password'}
-                value={props?.value}
-                error={props?.error}
-                autoComplete={props?.autoComplete}
-                onBlur={props?.onBlur}
-                required={props?.required}
-                onChange={props?.onChange}
-                name={props?.name}
-                placeholderText={props?.placeholderText}
-                helperText={props?.helperText}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton
-                            sx={{
-                                margin: 0
-                            }}
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                        >
-                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                    </InputAdornment>
-                }
-            />
-        </FormControl>
-    )
+  return (
+    <FormControl sx={{ width: '100%' }} variant="filled">
+      <SimpleInp
+        // id="filled-adornment-password"
+        // helperText={props?.helperText}
+        // FormHelperText={props?.helperText}
+        label={props?.label || 'Пароль'}
+        type={values.showPassword ? 'text' : 'password'}
+        value={props?.value}
+        error={props?.error}
+        autoComplete={props?.autoComplete}
+        onBlur={props?.onBlur}
+        required={props?.required}
+        onChange={props?.onChange}
+        name={props?.name}
+        placeholderText={props?.placeholderText}
+        helperText={props?.helperText}
+        endAdornment={
+          <InputAdornment position="end"
+            sx={{
+              height: 'auto !important'
+            }}
+          >
+            <IconButton
+              sx={{
+                margin: 0,
+              }}
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+              {values.showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+    </FormControl>
+  )
 }

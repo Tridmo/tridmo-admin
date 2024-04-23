@@ -19,15 +19,15 @@ export default function ModelCrumb(props: breadCrumbProps) {
   const dispatch = useDispatch<any>()
   const handleGoBack = () => {
     dispatch(getAllModels({
-      category_id: [],
-      color_id: [],
-      style_id: [],
+      categories: [],
+      colors: [],
+      styles: [],
       page: 1,
     }))
 
     dispatch(setStyleFilter({ snex: [] }))
     dispatch(setColorFilter({ cnex: [] }))
-    dispatch(setCategoryFilter({ knex: [] }))
+    dispatch(setCategoryFilter([]))
   }
 
   return (

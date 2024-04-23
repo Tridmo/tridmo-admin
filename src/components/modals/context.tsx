@@ -22,6 +22,7 @@ import Link from 'next/link';
 import UsernameInputAdornments from '../inputs/username';
 import instance from '../../utils/axios';
 import { Help, HelpOutlineRounded } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
 //Login context
 interface LoginContextProps {
   // setAlertMessage: any
@@ -44,7 +45,7 @@ const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 export const LoginContext = (props: LoginContextProps) => {
   const authState = useSelector((state: any) => state?.auth_slicer?.authState);
-
+  const router = useRouter()
 
   //declare dispatcher
   const dispatch = useDispatch<any>();
@@ -88,48 +89,41 @@ export const LoginContext = (props: LoginContextProps) => {
         ) => {
           try {
             const res = await axios.post(
-              `auth/signin`,
+              `auth/signin/admin`,
               { email: _values.email, password: _values?.password },
             );
             resetForm();
             props?.setUserEmail(_values?.email);
-            // dispatch(resetMyProfile())
-            if (res?.data?.data?.user?.is_verified) {
-              toast.success(res?.data?.message || 'Авторизация прошла успешна');
 
-              (async () => {
-                // Set cookies
-                const accessTokenPromise = new Promise((resolve, reject) => {
-                  Cookies.set(
-                    'accessToken',
-                    res?.data?.data?.token?.accessToken,
-                    { expires: ACCESS_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
-                  );
-                  resolve(true); // Resolve the promise once cookies are set
-                });
+            toast.success(res?.data?.message || 'Авторизация прошла успешна');
 
-                const refreshTokenPromise = new Promise((resolve, reject) => {
-                  Cookies.set(
-                    'refreshToken',
-                    res?.data?.data?.token?.refreshToken,
-                    { expires: REFRESH_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
-                  );
-                  resolve(true); // Resolve the promise once cookies are set
-                });
+            (async () => {
 
-                // Wait for both promises to resolve
-                await Promise.all([accessTokenPromise, refreshTokenPromise]);
+              const accessTokenPromise = new Promise((resolve, reject) => {
+                Cookies.set(
+                  'accessToken',
+                  res?.data?.data?.token?.accessToken,
+                  { expires: ACCESS_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
+                );
+                resolve(true);
+              });
 
-                // Dispatch actions after cookies are set
-                await dispatch(getMyProfile({ Authorization: `Bearer ${res?.data?.data?.token?.accessToken}` }));
-                await dispatch(setAuthState(true));
-                await dispatch(setOpenModal(false));
-              })();
-            } else {
-              dispatch(setVerifyState(true));
-              // toast.success("Please verify your email!")
-            }
-            dispatch(setLoginState(false));
+              const refreshTokenPromise = new Promise((resolve, reject) => {
+                Cookies.set(
+                  'refreshToken',
+                  res?.data?.data?.token?.refreshToken,
+                  { expires: REFRESH_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
+                );
+                resolve(true);
+              });
+
+              await Promise.all([accessTokenPromise, refreshTokenPromise]);
+
+              await dispatch(getMyProfile({ Authorization: `Bearer ${res?.data?.data?.token?.accessToken}` }));
+              await dispatch(setAuthState(true));
+              router.push('/')
+            })();
+
             setStatus({ success: true });
             setSubmitting(false);
           } catch (err: any) {
@@ -159,28 +153,7 @@ export const LoginContext = (props: LoginContextProps) => {
                   variant="h6"
                   text="Вход"
                 />
-                <Grid
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "start",
-                    marginBottom: "26px"
-                  }}>
-                  <SimpleTypography
-                    className="modal__sub-title"
-                    variant="h6"
-                    text="Еще не зарегистрировались?"
-                  />
-                  <Buttons
-                    sx={{ marginLeft: '8px' }}
-                    name="Зарегистрироваться"
-                    onClick={() => {
-                      dispatch(setSignupState(true));
-                      dispatch(setLoginState(false))
-                    }}
-                    className='underlined__btn'
-                  />
-                </Grid>
+
                 <Box sx={{ marginBottom: "26px", width: "100%" }}>
                   <EmailInputAdornments
                     error={Boolean(touched.email && errors.email)}
@@ -190,7 +163,7 @@ export const LoginContext = (props: LoginContextProps) => {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.email}
-                    placeholderText='example@gmail.com'
+                    placeholderText='example@example.com'
                   />
                 </Box>
 
@@ -207,9 +180,9 @@ export const LoginContext = (props: LoginContextProps) => {
                   placeholderText='Введите пароль'
                 />
 
-                <Box sx={{ marginTop: "10px" }}>
+                {/* <Box sx={{ marginTop: "10px" }}>
                   <Buttons name="Забыли пароль?" className='underlined__btn' />
-                </Box>
+                </Box> */}
                 <Buttons
                   type="submit"
                   name="Войти"
@@ -348,7 +321,7 @@ export const ConfirmContext = () => {
           disabled={loading}
           loadingColor='#fff'
           onClick={async () => {
-              await confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
+            await confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
           }}
           sx={{
             minWidth: '105px'

@@ -116,8 +116,8 @@ export default function BasicPagination(props: PaginationProps) {
   const handleChange = (e: any, page: any) => {
     // dispatch(setPageFilter({page}));
     dispatch(getAllModels({
-      category_id: getModelCategoryFilter,
-      style_id: getModelStyleFilter,
+      categories: getModelCategoryFilter,
+      styles: getModelStyleFilter,
       page: page || 1,
     }))
   }

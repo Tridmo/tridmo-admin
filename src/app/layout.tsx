@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/views/navbar";
-import Footer from "@/components/views/footer";
 import Providers from "@/components/providers";
 import React, { Suspense } from 'react';
-import { NavigationEvents } from '../components/providers/navigation_events';
-import { ToastContainer } from 'react-toastify';
-import TopLoading from '../components/top_loading';
 import AlertWrapper from '../components/alert';
 import { Box } from '@mui/system';
 import BasicModal from '../components/modals/modal';
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -22,7 +19,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -31,13 +27,8 @@ export default function RootLayout({
             {/* <TopLoading /> */}
             <AlertWrapper />
           </Box>
-          <Navbar />
-
-          <section className='body_wrapper_section'>
-            <BasicModal />
-            {children}
-
-          </section>
+          <BasicModal />
+          {children}
         </Providers>
       </body>
     </html>

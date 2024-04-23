@@ -22,15 +22,15 @@ export default function IconBreadcrumbs(props: breadCrumbProps) {
   const handleGoBack = () => {
 
     dispatch(getAllModels({
-      category_id: [],
-      color_id: [],
-      style_id: [],
+      categories: [],
+      colors: [],
+      styles: [],
       page: 1,
     }))
 
     dispatch(setStyleFilter({ snex: [] }))
     dispatch(setColorFilter({ cnex: [] }))
-    dispatch(setCategoryFilter({ knex: [] }))
+    dispatch(setCategoryFilter([]))
   }
 
   return (
@@ -62,7 +62,7 @@ export default function IconBreadcrumbs(props: breadCrumbProps) {
         <Box sx={{ marginRight: "10px", cursor: "pointer" }}
           onClick={() => {
             dispatch(setCategoryNameFilter({ knnex: props?.breadCrumbsData?.category?.parent_name }));
-            dispatch(setCategoryFilter({ knex: [props?.breadCrumbsData?.category?.id] }));
+            dispatch(setCategoryFilter([props?.breadCrumbsData?.category?.id]));
             router.push(`${props?.route}/?category=${props?.breadCrumbsData?.category?.id}&category_name=${props?.breadCrumbsData?.category?.parent_name}`);
           }}
         >
@@ -87,7 +87,7 @@ export default function IconBreadcrumbs(props: breadCrumbProps) {
               { knnex: props?.breadCrumbsData?.category?.parent_name }
             ));
             dispatch(setCategoryFilter(
-              { knex: [props?.breadCrumbsData?.category?.id] }
+              [props?.breadCrumbsData?.category?.id]
             ));
             router.push(`${props?.route}/?category=${props?.breadCrumbsData?.category?.id}&category_name=${props?.breadCrumbsData?.category?.parent_name}`);
 

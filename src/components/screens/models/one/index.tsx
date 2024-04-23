@@ -6,44 +6,50 @@ import ProductSlider from '../../../views/model/slider';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductInfo from '../../../views/model/info'
 import ProductModal from '../../../views/model/model_modal';
-import SimpleTypography from '../../../typography';
-import CustomCard from '../../../custom_card';
-import { sampleModel } from '@/data/samples';
-import Link from 'next/link';
-import Buttons from '@/components/buttons';
-import { selectOneModel } from '../../../../data/get_one_model';
-import IconBreadcrumbs from '../../../breadcrumbs';
-import { selectBrandModels } from '../../../../data/get_brand_models';
-import { selectTopModels } from '../../../../data/get_top_models';
+import { concatRouteCrumb, setRouteCrumbs } from '../../../../data/route_crumbs';
+import { selectOneModel } from '../../../../data/model_slider';
+import { usePathname } from 'next/navigation';
 
 
 export default function OneModel() {
-    const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
-    const model = useSelector(selectOneModel);
-    const brandModels = useSelector(selectBrandModels)
-    const topModels = useSelector(selectTopModels)
+  const model = (useSelector(selectOneModel))?.data?.model;
+  const dispatch = useDispatch()
+  const pathname = usePathname()
 
+  React.useEffect(() => {
+    if (model) {
+      dispatch(setRouteCrumbs(
+        [{
+          title: 'Модели',
+          route: '/models'
+        }, {
+          title: model?.name,
+          route: pathname
+        }]
+      ))
+    }
+  }, [model])
 
-    return (
-        <>
-            <Box sx={{ background: "#fafafa" }} className="products">
-                <Box className='products__container' sx={{ maxWidth: "1200px", width: "100%", margin: "0 auto !important", alignItems: "center", }}>
-                    <Grid
-                        className='products__grid'
-                        container
-                        sx={{
-                            marginTop: '6px',
-                            width: "100%",
-                            paddingBottom: "18px",
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <ProductModal />
-                        <ProductSlider name="slider" />
-                        <ProductInfo />
-                    </Grid>
+  return (
+    <>
+      <Box sx={{ background: "#fafafa" }} className="products">
+        <Box className='products__container' sx={{ maxWidth: "1200px", width: "100%", margin: "0 auto !important", alignItems: "center", }}>
+          <Grid
+            className='products__grid'
+            container
+            sx={{
+              marginTop: '6px',
+              width: "100%",
+              paddingBottom: "18px",
+              justifyContent: 'space-between'
+            }}
+          >
+            <ProductModal />
+            <ProductSlider name="slider" />
+            <ProductInfo />
+          </Grid>
 
-                    {/* {model?.used_interiors?.length > 0 && model?.used_interiors[0] != null ? (
+          {/* {model?.used_interiors?.length > 0 && model?.used_interiors[0] != null ? (
                         <>
                             <Box
                                 sx={{
@@ -92,9 +98,9 @@ export default function OneModel() {
                             </Grid >
                         </>
                     ) : (null)} */}
-                </Box>
-            </Box>
+        </Box>
+      </Box>
 
-        </>
-    )
+    </>
+  )
 }

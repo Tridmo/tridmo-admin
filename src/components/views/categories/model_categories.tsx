@@ -116,7 +116,7 @@ const Categories = () => {
     }
     if (!isExpanded) {
       setChildrenCategoryData([])
-      dispatch(setCategoryFilter({ knex: [] }))
+      dispatch(setCategoryFilter([]))
       dispatch(setCategoryNameFilter({ knnex: null }))
       createQueryString('category', []);
       createQueryString('category_name', []);
@@ -195,7 +195,7 @@ const Categories = () => {
       page: getModelPageFilter,
     }))
 
-    dispatch(setCategoryFilter({ knex: res }))
+    dispatch(setCategoryFilter(res))
 
     setChildrenCategoryData(arr);
   };

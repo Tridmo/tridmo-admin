@@ -29,10 +29,6 @@ const ButtonWrapper = styled(Button)(
       cursor: pointer;
       border-radius: 4px;
 
-      img{
-        margin-right: 8px;
-      }
-
       .MuiButton-startIcon {
         margin-left: 0 !important;
         min-width: 20px !important;
@@ -618,7 +614,7 @@ const ButtonWrapper = styled(Button)(
 
       &.MuiButton-options_menu__btn{
         background: transparent;
-        border-radius: 4px;
+        border-radius: 50%;
         width: 20px;
         height: 20px;
       }
@@ -701,9 +697,9 @@ export default function Buttons({ childrenFirst, ...props }: ButtonsProps) {
       {childrenFirst && !props?.startIcon ? props?.children : null}
       {
         props?.startIcon &&
-        props?.className == 'confirm__btn'
-        ? props?.startIcon
-        : props?.name 
+          props?.className == 'confirm__btn'
+          ? props?.startIcon
+          : props?.name
       }
       {!childrenFirst && !props?.startIcon ? props?.children : null}
     </ButtonWrapper >

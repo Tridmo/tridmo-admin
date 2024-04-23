@@ -17,7 +17,7 @@ export const getAllModels = createAsyncThunk('/models',
     colors?: any[];
     styles?: any[];
     limit?: number;
-    orderBy?: modelOrderBy;
+    orderBy?: modelOrderBy | string;
     order?: order;
     page?: number;
   }) => {

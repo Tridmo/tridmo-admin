@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrands, selectAllBrands } from "../../../data/get_all_brands";
 import {
@@ -35,6 +35,7 @@ import { ThemeProps } from "../../../types/theme";
 import { useRouter } from "next/navigation";
 import { setBrandNameFilter } from "../../../data/handle_filters";
 import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from "../../../data/modal_checker";
+import { setRouteCrumbs } from "../../../data/route_crumbs";
 
 const DropDown = styled(Menu)(
   ({ theme }: ThemeProps) => `
@@ -164,6 +165,13 @@ export default function BrandsPage() {
 
   const fakeBrands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  useEffect(() => {
+    dispatch(setRouteCrumbs([{
+      title: 'Бренды',
+      route: '/brands'
+    }]))
+  }, [])
+
   function navigateTo(link: string) {
     router.push(link);
   }
@@ -192,49 +200,49 @@ export default function BrandsPage() {
 
   function handleClickDelete() {
     const modalContent: ConfirmContextProps = {
-        message: `Вы уверены, что хотите удалить бренд «${selectedBrand?.name}»?`,
-        actions: {
-            on_click: {
-                args: [selectedBrand?.id],
-                func: async () => {
-                  dispatch(setConfirmProps({is_loading: true}))
-                  instance
-                  .delete(`brands/${selectedBrand?.id}`)
-                  .then((res) => {
-                    if (res?.data?.success) {
-                      toast.success(res?.data?.message);
-                      dispatch(
-                        getAllBrands({
-                          name: getBrandNameFilter,
-                          page: getPage,
-                          orderBy: getBrandOrderBy,
-                          order: getBrandOrder,
-                        })
-                      );
-                      dispatch(setConfirmState(false))
-                      dispatch(setOpenModal(false))
-                      dispatch(resetConfirmProps())
-                      dispatch(resetConfirmData())
-                    } else {
-                      toast.success(res?.data?.message);
-                    }
-                  })
-                  .catch((err) => {
-                    toast.error(err?.response?.data?.message);
-                  })
-                  .finally(() => {
-                    dispatch(setConfirmProps({is_loading: false}))
-                    handleClose();
-                  });
+      message: `Вы уверены, что хотите удалить бренд «${selectedBrand?.name}»?`,
+      actions: {
+        on_click: {
+          args: [selectedBrand?.id],
+          func: async () => {
+            dispatch(setConfirmProps({ is_loading: true }))
+            instance
+              .delete(`brands/${selectedBrand?.id}`)
+              .then((res) => {
+                if (res?.data?.success) {
+                  toast.success(res?.data?.message);
+                  dispatch(
+                    getAllBrands({
+                      name: getBrandNameFilter,
+                      page: getPage,
+                      orderBy: getBrandOrderBy,
+                      order: getBrandOrder,
+                    })
+                  );
+                  dispatch(setConfirmState(false))
+                  dispatch(setOpenModal(false))
+                  dispatch(resetConfirmProps())
+                  dispatch(resetConfirmData())
+                } else {
+                  toast.success(res?.data?.message);
                 }
-            }
+              })
+              .catch((err) => {
+                toast.error(err?.response?.data?.message);
+              })
+              .finally(() => {
+                dispatch(setConfirmProps({ is_loading: false }))
+                handleClose();
+              });
+          }
         }
+      }
     }
     dispatch(resetConfirmProps())
     dispatch(setConfirmProps(modalContent))
     dispatch(setConfirmState(true))
     dispatch(setOpenModal(true))
-}
+  }
 
 
   return (
@@ -257,7 +265,7 @@ export default function BrandsPage() {
       >
         <MenuItem onClick={handleClose} sx={{ padding: "6px 12px" }}>
           <Link
-            href={`/editbrand/${selectedBrand?.slug}`}
+            href={`/brands/edit/${selectedBrand?.slug}`}
             style={{
               textDecoration: "none",
               display: "flex",
@@ -444,11 +452,11 @@ export default function BrandsPage() {
                       />
                       <SimpleTypography
                         text={`${brand?.site_link.includes("https://") ||
-                            brand?.site_link.includes("http://")
-                            ? brand?.site_link
-                              .split("://")[1]
-                              .replaceAll("/", "")
-                            : brand?.site_link
+                          brand?.site_link.includes("http://")
+                          ? brand?.site_link
+                            .split("://")[1]
+                            .replaceAll("/", "")
+                          : brand?.site_link
                           }`}
                         sx={{
                           fontSize: "14px",

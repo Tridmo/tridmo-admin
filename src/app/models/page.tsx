@@ -82,11 +82,9 @@ export default function Models() {
 
   return (
     <>
-      <>
-        <Suspense>
-          <ModelsPage />
-        </Suspense>
-      </>
+      <Suspense>
+        <ModelsPage />
+      </Suspense>
     </>
   )
 }

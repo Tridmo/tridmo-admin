@@ -12,15 +12,27 @@ import { selectBrandModels } from "../../../../data/get_brand_models";
 import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 import Link from "next/link";
 import Buttons from "../../../buttons";
+import { setRouteCrumbs } from "../../../../data/route_crumbs";
 
 export default function OneBrand() {
   const isAuthenticated = useSelector(
     (state: any) => state?.auth_slicer?.authState
   );
+  const dispatch = useDispatch()
   const brand = useSelector(selectOneBrand);
   const brandModels = useSelector(selectBrandModels);
 
-  console.log(brandModels);
+  React.useEffect(() => {
+    dispatch(setRouteCrumbs(
+      [{
+        title: 'Бренды',
+        route: '/brands'
+      }, {
+        title: brand?.name,
+        route: `/brands/${brand?.slug}`
+      }]
+    ))
+  }, [])
 
   return (
     <>
@@ -79,7 +91,7 @@ export default function OneBrand() {
                   />
                 </Grid>
                 <Grid item>
-                  <Link href={`/models/addnew/?brand=${brand?.id}`}>
+                  <Link href={`/models/addnew/?brand=${brand?.slug}`}>
                     <Buttons
                       name="Добавить модель"
                       childrenFirst={true}

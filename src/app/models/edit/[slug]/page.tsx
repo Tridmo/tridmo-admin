@@ -9,7 +9,7 @@ import { Box, Grid } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getOneBrand, selectOneBrand } from '@/data/get_one_brand';
 import { getAllStyles } from '../../../../data/get_all_styles';
-import EditBrand from '../../../../components/screens/brands/edit';
+import EditBrand from '@/components/screens/brands/edit';
 import { getModelCategories } from '../../../../data/categories';
 import { getAllBrands } from '../../../../data/get_all_brands';
 import { getModelPlatforms } from '../../../../data/get_model_platforms';
@@ -17,7 +17,7 @@ import { getRenderPlatforms } from '../../../../data/get_render_platforms';
 import { getAllColors } from '../../../../data/get_all_colors';
 import { getAllMaterials } from '../../../../data/get_all_materials';
 import { getOneModel } from '../../../../data/get_one_model';
-import EditModel from '../../../../components/screens/models/edit';
+import EditModel from '@/components/screens/models/edit';
 
 const LoaderStyle = {
   // width: "100px !important",

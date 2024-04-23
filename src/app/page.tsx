@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import HomeScreen from '../components/screens/home';
 
 declare global {

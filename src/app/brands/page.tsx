@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
-import InteriorsPage from '../../components/screens/interiors';
+import InteriorsPage from '@/components/screens/interiors';
 import { getAllBrands } from '../../data/get_all_brands';
-import BrandsPage from '../../components/screens/brands';
+import BrandsPage from '@/components/screens/brands';
 import { getAllStyles } from '../../data/get_all_styles';
 import { setBrandOrderBy } from '../../data/handle_filters';
 
@@ -29,7 +29,7 @@ export default function Brands() {
   React.useEffect(() => {
     if (getBrandsStatus === "idle") {
       console.log('HEHEHE');
-      
+
       dispatch(getAllBrands({
         name: getBrandNameFilter,
         orderBy: getBrandOrderBy,
@@ -41,8 +41,8 @@ export default function Brands() {
     //   dispatch(getAllStyles())
     // }
   }, [
-    dispatch, 
-    getBrandsStatus, 
+    dispatch,
+    getBrandsStatus,
     getBrandNameFilter,
     getBrandOrderBy,
     getBrandOrder,

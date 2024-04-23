@@ -1,16 +1,10 @@
 "use client"
 
 import React, { Suspense } from 'react';
-import type { NextPage } from 'next';
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllModels, selectAllModels } from '@/data/get_all_models';
-import { getAllColors, selectAllColors } from '@/data/get_all_colors';
-import { getAllStyles } from '@/data/get_all_styles';
-import ProductCrumb from '@/components/breadcrumbs/model_crumb';
-import { searchModels } from '@/data/search_model';
 import ModelsPage from '@/components/screens/models';
-import { getTopModels } from '../../data/get_top_models';
 import { getCategories } from '../../data/categories';
 import { getAllBrands } from '../../data/get_all_brands';
 

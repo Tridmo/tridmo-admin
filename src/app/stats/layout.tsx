@@ -1,4 +1,5 @@
-import Navbar from "../../components/views/navbar"
+import React from 'react';
+import Navbar from "@/components/views/navbar"
 
 export default function StatsLayout({
   children,

@@ -1,13 +1,11 @@
+import React from 'react';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
-import React, { Suspense } from 'react';
 import AlertWrapper from '../components/alert';
 import { Box } from '@mui/system';
 import BasicModal from '../components/modals/modal';
-import { usePathname, useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 

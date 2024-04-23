@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories, getCategoriesWithModelCount } from '../../data/categories';
-import CategoriesPage from '../../components/screens/categories';
+import CategoriesPage from '@/components/screens/categories';
 
 declare global {
   interface Window {

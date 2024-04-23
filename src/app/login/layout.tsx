@@ -1,4 +1,4 @@
-import Navbar from "../../components/views/navbar"
+import React from 'react';
 
 export default function LoginLayout({
   children,

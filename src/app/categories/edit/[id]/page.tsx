@@ -10,7 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getOneBrand, selectOneBrand } from '@/data/get_one_brand';
 import { getAllStyles } from '../../../../data/get_all_styles';
 import { getModelCategories, getOneCategory } from '../../../../data/categories';
-import EditCategory from '../../../../components/screens/categories/edit';
+import EditCategory from '@/components/screens/categories/edit';
 
 const LoaderStyle = {
   // width: "100px !important",

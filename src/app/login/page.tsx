@@ -1,6 +1,6 @@
 "use client"
 import * as React from 'react';
-import LoginScreen from '../../components/screens/auth/login';
+import LoginScreen from '@/components/screens/auth/login';
 
 declare global {
   interface Window {

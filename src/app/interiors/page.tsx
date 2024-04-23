@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStyles } from '@/data/get_all_styles';
 import { getAllInteriors } from '@/data/get_all_interiors';
-import InteriorsPage from '../../components/screens/interiors';
+import InteriorsPage from '@/components/screens/interiors';
 
 declare global {
   interface Window {

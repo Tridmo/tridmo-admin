@@ -1,12 +1,12 @@
 "use client"
 
-import AddInterior from "@/components/screens/interiors/add_new";
+import React from 'react';
 import { Suspense, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStyles } from '../../../data/get_all_styles';
 import { getCategories, getInteriorCategories, getModelCategories } from '../../../data/categories';
 import { notFound } from 'next/navigation';
-import AddModel from '../../../components/screens/models/add_new';
+import AddModel from '@/components/screens/models/add_new';
 import { getAllBrands } from '../../../data/get_all_brands';
 import { getModelPlatforms } from '../../../data/get_model_platforms';
 import { getRenderPlatforms } from '../../../data/get_render_platforms';

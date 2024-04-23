@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBrands } from '../../data/get_all_brands';
-import DesignersPage from '../../components/screens/designers';
+import DesignersPage from '@/components/screens/designers';
 import { getAllDesigners } from '../../data/get_all_designers';
 import { getMyProfile } from '../../data/me';
 

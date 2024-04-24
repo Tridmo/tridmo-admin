@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
 import AlertWrapper from '../components/alert';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import BasicModal from '../components/modals/modal';
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });

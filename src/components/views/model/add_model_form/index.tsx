@@ -142,10 +142,10 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
   }
 
   useMemo(() => {
-    if (editing && model && model?.category) {
+    if (editing && model && model?.category && categoriesData) {
       selectParentCategory(model?.category?.parent_id)
     }
-  }, [model])
+  }, [model, categoriesData])
   useMemo(() => {
     if (selectedBrand && brandsData) {
       setBrand(brandsData?.data?.brands?.find(x => x?.slug == selectedBrand))
@@ -308,10 +308,6 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
                 else if (_values.materials?.length != 0)
                   formData.append('materials', JSON.stringify(_values.materials));
 
-              }
-
-              for (let pair of Array.from(formData.entries())) {
-                console.log(pair[0] + ': ' + pair[1]);
               }
 
               const res =

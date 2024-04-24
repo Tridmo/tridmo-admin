@@ -2,11 +2,7 @@
 
 import React, { Suspense, useState } from 'react'
 import { Box, Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { sampleUser } from '@/data/samples';
 import { AddModelForm } from '@/components/views/model/add_model_form';
-import { notFound } from 'next/navigation';
-
 
 export default function EditModel() {
   return (
@@ -20,9 +16,7 @@ export default function EditModel() {
         m={'32px 0'}
       >
         <Grid item width={'100%'}>
-          <Suspense>
-            <AddModelForm editing />
-          </Suspense>
+          <AddModelForm editing />
         </Grid>
       </Grid>
     </Box>

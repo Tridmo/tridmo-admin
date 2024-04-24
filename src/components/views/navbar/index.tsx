@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginState, setSignupState, setVerifyState, setOpenModal } from '@/data/modal_checker';
 import Box from '@mui/material/Box';

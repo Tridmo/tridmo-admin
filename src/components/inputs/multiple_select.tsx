@@ -2,12 +2,11 @@ import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
-import { Box, Chip, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from '@mui/material';
-import { SxProps, styled } from '@mui/system';
+import { Box, Chip, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, styled } from '@mui/material';
 
 const SimpleSelectControl = styled(FormControl)(
-    // text-transform: capitalize;
-    ({ theme }: ThemeProps) => `
+  // text-transform: capitalize;
+  ({ theme }: ThemeProps) => `
     margin: 0 !important;
     
     * {
@@ -85,133 +84,133 @@ const SimpleSelectControl = styled(FormControl)(
 );
 
 interface SimpleSelectProps {
-    sx?: SxProps;
-    className?: string;
-    variant?: 'filled' | 'outlined' | 'standard';
-    paddingX?: number;
-    paddingY?: number;
-    error?: boolean;
-    name?: string;
-    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
-    onChange: (selected: any[]) => void;
-    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
-    value?: any;
-    disabled?: boolean,
-    label?: string,
-    type?: string,
-    autoComplete?: string,
-    required?: boolean;
-    helperText?: any;
-    startAdornment?: any;
-    endAdornment?: any;
-    placeholderText?: string,
-    children?: React.ReactNode,
-    labelFixed?: boolean;
-    initialSelected?: any[];
+  sx?: SxProps;
+  className?: string;
+  variant?: 'filled' | 'outlined' | 'standard';
+  paddingX?: number;
+  paddingY?: number;
+  error?: boolean;
+  name?: string;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
+  onChange: (selected: any[]) => void;
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
+  value?: any;
+  disabled?: boolean,
+  label?: string,
+  type?: string,
+  autoComplete?: string,
+  required?: boolean;
+  helperText?: any;
+  startAdornment?: any;
+  endAdornment?: any;
+  placeholderText?: string,
+  children?: React.ReactNode,
+  labelFixed?: boolean;
+  initialSelected?: any[];
 }
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
     },
+  },
 };
 
 export default function MultipleSelect(props: SimpleSelectProps) {
 
-    const muiOutlineInputRoot: SxProps = {}
-    const muiFormControlRoot: SxProps = {}
+  const muiOutlineInputRoot: SxProps = {}
+  const muiFormControlRoot: SxProps = {}
 
-    if (props?.paddingX) {
-        muiOutlineInputRoot['paddingLeft'] = muiOutlineInputRoot['paddingRight'] = `${props?.paddingX}px`
+  if (props?.paddingX) {
+    muiOutlineInputRoot['paddingLeft'] = muiOutlineInputRoot['paddingRight'] = `${props?.paddingX}px`
+  }
+  if (props?.paddingY) {
+    muiOutlineInputRoot['paddingTop'] = muiOutlineInputRoot['paddingBottom'] = `${props?.paddingY}px`
+  }
+
+  const SX = {
+    '.MuiOutlinedInput-root': muiOutlineInputRoot,
+    '.MuiFormControl-root': muiFormControlRoot,
+  }
+
+  const [current, setCurrent] = React.useState<string | undefined>(props?.placeholderText)
+
+  const [selectedElems, setSelectedElems] = React.useState<any[]>([]);
+
+  const handleChange = (event: SelectChangeEvent<typeof selectedElems>) => {
+    const { target: { value } } = event;
+    const arr = Array.from(value)
+    setSelectedElems(arr);
+  };
+
+  React.useEffect(() => {
+    if (props?.initialSelected && props?.initialSelected.length && !selectedElems.length) {
+      setSelectedElems(props?.initialSelected)
     }
-    if (props?.paddingY) {
-        muiOutlineInputRoot['paddingTop'] = muiOutlineInputRoot['paddingBottom'] = `${props?.paddingY}px`
-    }
+  }, [props?.initialSelected])
 
-    const SX = {
-        '.MuiOutlinedInput-root': muiOutlineInputRoot,
-        '.MuiFormControl-root': muiFormControlRoot,
-    }
+  React.useMemo(() => {
+    props.onChange(selectedElems.map(e => `${e.split('/')[0]}`))
+  }, [selectedElems])
 
-    const [current, setCurrent] = React.useState<string | undefined>(props?.placeholderText)
+  return (
+    <SimpleSelectControl className={props?.className || ''} sx={{ m: 1, width: '100%', ...SX }} variant="filled">
 
-    const [selectedElems, setSelectedElems] = React.useState<any[]>([]);
-
-    const handleChange = (event: SelectChangeEvent<typeof selectedElems>) => {
-        const { target: { value } } = event;
-        const arr = Array.from(value)
-        setSelectedElems(arr);
-    };
-
-    React.useEffect(() => {
-      if(props?.initialSelected && props?.initialSelected.length && !selectedElems.length){
-        setSelectedElems(props?.initialSelected)
+      {
+        props?.labelFixed ?
+          <FormLabel
+            id="demo-multiple-chip-label"
+            sx={{ mb: '6px', fontWeight: 400, fontSize: '14px', color: '#292929', lineHeight: '20px' }}
+          >{props?.label}</FormLabel>
+          : null
       }
-    }, [props?.initialSelected])
 
-    React.useMemo(() => {
-        props.onChange(selectedElems.map(e => `${e.split('/')[0]}`))
-    }, [selectedElems])
-
-    return (
-        <SimpleSelectControl className={props?.className || ''} sx={{ m: 1, width: '100%', ...SX }} variant="filled">
-
-            {
-                props?.labelFixed ?
-                    <FormLabel
-                        id="demo-multiple-chip-label"
-                        sx={{ mb: '6px', fontWeight: 400, fontSize: '14px', color: '#292929', lineHeight: '20px' }}
-                    >{props?.label}</FormLabel>
-                    : null
-            }
-
-            <Select
-                sx={{ ...props?.sx }}
-                autoComplete={props?.autoComplete}
-                error={props?.error}
-                onBlur={props?.onBlur}
-                onChange={handleChange}
-                name={props?.name}
-                value={selectedElems}
-                disabled={props?.disabled}
-                type={props?.type}
-                multiple
-                variant={props?.variant || "standard"}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                    return (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {
-                                selected.map((value) => (
-                                    <Chip
-                                        sx={{
-                                            height: '25px'
-                                        }}
-                                        key={value}
-                                        label={value.split('/')[1]}
-                                    />
-                                ))
-                            }
-                        </Box>)
-                }}
-                MenuProps={MenuProps}
-            // inputProps={{
-            //     startAdornment: props?.startAdornment || (
-            //         <InputAdornment position="start">
-            //         </InputAdornment>
-            //     ),
-            //     endAdornment: props?.endAdornment || (
-            //         <InputAdornment position="start">
-            //         </InputAdornment>
-            //     ),
-            // }}
-            >
-                {/* {
+      <Select
+        sx={{ ...props?.sx }}
+        autoComplete={props?.autoComplete}
+        error={props?.error}
+        onBlur={props?.onBlur}
+        onChange={handleChange}
+        name={props?.name}
+        value={selectedElems}
+        disabled={props?.disabled}
+        type={props?.type}
+        multiple
+        variant={props?.variant || "standard"}
+        input={<OutlinedInput />}
+        renderValue={(selected) => {
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {
+                selected.map((value) => (
+                  <Chip
+                    sx={{
+                      height: '25px'
+                    }}
+                    key={value}
+                    label={value.split('/')[1]}
+                  />
+                ))
+              }
+            </Box>)
+        }}
+        MenuProps={MenuProps}
+      // inputProps={{
+      //     startAdornment: props?.startAdornment || (
+      //         <InputAdornment position="start">
+      //         </InputAdornment>
+      //     ),
+      //     endAdornment: props?.endAdornment || (
+      //         <InputAdornment position="start">
+      //         </InputAdornment>
+      //     ),
+      // }}
+      >
+        {/* {
                     props?.placeholderText ?
                         <MenuItem
                             key={-1}
@@ -225,8 +224,8 @@ export default function MultipleSelect(props: SimpleSelectProps) {
                         : null
                 } */}
 
-                {props?.children}
-            </Select>
-        </SimpleSelectControl >
-    )
+        {props?.children}
+      </Select>
+    </SimpleSelectControl >
+  )
 }

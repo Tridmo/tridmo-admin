@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import SimpleTypography from '../../typography'
 import { Box, keyframes } from '@mui/system'
-import { Checkbox, FormControlLabel } from '@mui/material';
-import styled from '@emotion/styled';
+import { Checkbox, FormControlLabel, styled } from '@mui/material';
 import { getCategories, selectCategories } from '../../../data/categories'
 import Skeleton from '@mui/material/Skeleton';
 import { getAllModels } from '../../../data/get_all_models'

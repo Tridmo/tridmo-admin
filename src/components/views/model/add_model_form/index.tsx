@@ -38,6 +38,10 @@ const availabilityData = [
     value: 2,
     name: 'Не доступно'
   },
+  {
+    value: 3,
+    name: 'Для заказа'
+  },
 ]
 
 const supportedFileTypes = 'application/x-compressed, .zip, .rar, .7z'

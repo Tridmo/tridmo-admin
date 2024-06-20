@@ -109,8 +109,11 @@ export function validateFile(
 
   const size = Math.round(file.size / 1024 / 1024)
 
+  console.log(file)
+  console.log(file.type)
+
   if (allowedTypes && !allowedTypes?.includes(file.type)) {
-    return { error: `File type is not valid (${file.type.split('/')[1]})` }
+    return { error: `File type is not valid (${file.type})` }
   }
   if (maxSize && size > maxSize) {
     return { error: `File is too large (${size}MB)` }
@@ -320,9 +323,14 @@ export default function FileInput(props: InputAdornmentsProps) {
   }
 
   async function handleChange(event) {
+    event.preventDefault();
+    event.stopPropagation();
     setError(null)
 
     const filesUploaded: File[] = event.target.files;
+
+    console.log(event.target.files);
+
 
     if (!filesUploaded || filesUploaded.length === 0) return
 
@@ -580,13 +588,12 @@ export default function FileInput(props: InputAdornmentsProps) {
           }}
           ref={hiddenFileInput}
           id={props?.label}
-          autoComplete={props?.autoComplete}
-          error={props?.error}
-          onBlur={props?.onBlur}
-          onChange={handleChange}
+          onChange={(e: any) => {
+            console.log(e.target.files);
+            handleChange(e)
+          }}
           name={props?.name}
           value={props?.value}
-          disabled={props?.disabled}
           placeholder={props?.placeholderText}
           type='file'
           inputProps={{

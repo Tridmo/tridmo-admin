@@ -29,6 +29,12 @@ import { reducer as get_comments } from '../data/get_comments';
 import { reducer as get_model_platforms } from '../data/get_model_platforms';
 import { reducer as get_render_platforms } from '../data/get_render_platforms';
 import { reducer as get_all_materials } from '../data/get_all_materials';
+import { reducer as get_registrations_stats } from '../data/statistics/get_registrations_stats';
+import { reducer as get_brands_stats } from '../data/statistics/get_brands_stats';
+import { reducer as get_models_stats } from '../data/statistics/get_models_stats';
+import { reducer as get_categories_stats } from '../data/statistics/get_categories_stats';
+import { reducer as get_downloads_stats } from '../data/statistics/get_downloads_stats';
+import { reducer as get_interiors_stats } from '../data/statistics/get_interiors_stats';
 
 
 
@@ -63,6 +69,12 @@ const rootReducer = combineReducers({
   get_model_platforms: get_model_platforms,
   get_render_platforms: get_render_platforms,
   get_all_materials: get_all_materials,
+  get_registrations_stats: get_registrations_stats,
+  get_brands_stats: get_brands_stats,
+  get_models_stats: get_models_stats,
+  get_categories_stats: get_categories_stats,
+  get_downloads_stats: get_downloads_stats,
+  get_interiors_stats: get_interiors_stats,
 });
 
 export default rootReducer;

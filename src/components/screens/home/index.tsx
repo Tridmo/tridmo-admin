@@ -7,7 +7,7 @@ export default function HomeScreen() {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/models')
+    router.push('/stats')
   }, [])
 
   return (

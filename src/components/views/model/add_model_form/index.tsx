@@ -330,7 +330,7 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
               setSubmitting(false);
               resetForm()
 
-              router.push(`/models/${res?.data?.data?.model?.slug}`)
+              // router.push(`/models/${res?.data?.data?.model?.slug}`)
 
             } catch (err: any) {
               setStatus({ success: false });

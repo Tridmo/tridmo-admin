@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { brandOrderBy, modelOrderBy, order } from '../types/filters';
 const initialState = {
+  topListItemLimit: 3,
+  topListTopic: {
+    name: 'по кол-вo загрузок',
+    value: 'downloads'
+  },
   author: '',
   model_brand: '',
   model_name: '',
@@ -38,6 +43,12 @@ const handle_filters = createSlice({
     setAuthor: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
       state.author = params.author;
+    },
+    setTopListItemLimit: (state: any, action: PayloadAction<any>) => {
+      state.topListItemLimit = action.payload;
+    },
+    setTopListTopic: (state: any, action: PayloadAction<any>) => {
+      state.topListTopic = action.payload;
     },
     setCategoryFilter: (state: any, action: PayloadAction<any[]>) => {
       state.categories = action.payload;
@@ -167,6 +178,8 @@ const handle_filters = createSlice({
 });
 
 export const {
+  setTopListItemLimit,
+  setTopListTopic,
   setAuthor,
   setCategoryFilter,
   setModelBrandFilter,
@@ -203,4 +216,6 @@ export const {
   setIs_free,
 } = handle_filters.actions;
 export const reducer = handle_filters.reducer;
+export const selectTopListItemLimit = (state: any) => state?.handle_filters?.topListItemLimit
+export const selectTopListTopic = (state: any) => state?.handle_filters?.topListTopic
 export default handle_filters;

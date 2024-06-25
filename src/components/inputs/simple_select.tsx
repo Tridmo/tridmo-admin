@@ -6,6 +6,7 @@ import { FormLabel, InputAdornment, InputLabel, MenuItem, SxProps, styled } from
 import { Label } from '@mui/icons-material';
 
 interface SimpleSelectProps {
+  formControlSx?: SxProps;
   sx?: SxProps;
   variant?: 'filled' | 'outlined' | 'standard';
   paddingX?: number;
@@ -114,7 +115,7 @@ export default function SimpleSelect(props: SimpleSelectProps) {
   );
 
   return (
-    <SimpleSelectControl disabled={props?.disabled} className={props?.className || ''} sx={{ m: 1, width: '100%' }} variant="filled">
+    <SimpleSelectControl disabled={props?.disabled} className={props?.className || ''} sx={{ m: 1, width: '100%', ...props?.formControlSx }} variant="filled">
 
       {
         props?.labelFixed ?

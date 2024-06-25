@@ -211,7 +211,7 @@ export function AddBrandForm({ editing, ...props }: { editing?: boolean }) {
               setSubmitting(false);
               resetForm()
 
-              router.push(`/brands/${res?.data?.data?.brand?.slug}`)
+              // router.push(`/brands/${res?.data?.data?.brand?.slug}`)
 
             } catch (err: any) {
               setStatus({ success: false });

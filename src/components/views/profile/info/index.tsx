@@ -159,15 +159,15 @@ export default function ProfileInfo(props: ProfileProps) {
               data={[
                 {
                   name: 'Интерьеры',
-                  count: profileInfo?.designs_count
+                  count: profileInfo?.designs_count || 0
                 },
                 {
                   name: 'Бирки',
-                  count: profileInfo?.tags_count
+                  count: profileInfo?.tags_count || 0
                 },
                 {
                   name: 'Загрузки',
-                  count: profileInfo?.downloads_count
+                  count: profileInfo?.downloads_count || 0
                 },
               ]}
             />

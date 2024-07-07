@@ -57,7 +57,7 @@ export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, ma
                     fontWeight: 700,
                     color: mainColor || '#454545'
                   }}
-                  text={elem?.count as string}
+                  text={`${elem?.count || 0}`}
                 />
                 {
                   elem?.secondary_text && (

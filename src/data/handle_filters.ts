@@ -7,30 +7,56 @@ const initialState = {
     value: 'downloads'
   },
   author: '',
+  user_name: '',
+
+  downloaded_model_brand: '',
+  downloaded_model_name: '',
+  downloaded_model_categories: [],
+  downloaded_model_orderby: '',
+  downloaded_model_order: 'desc',
+
+  author_interiors_categories: [],
+  author_interiors_orderby: '',
+  author_interiors_order: 'desc',
+
+  models_page: 1,
+  interiors_page: 1,
+  designer_downloads_page: 1,
+  designer_interiors_page: 1,
+  brand_models_page: 1,
+  designers_page: 1,
+  brands_page: 1,
+
   model_brand: '',
   model_name: '',
   model_top: undefined,
   model_orderby: '',
   model_order: 'desc',
+
   brand_styles: [],
   brand_name: '',
   brand_orderby: '',
   brand_order: 'desc',
+
   categories: [],
   interior_categories: [],
   selected_child: [],
   children_category: [],
   filter_categories: [],
   category_name: [],
+  selected__category: null,
+
   colors: [],
   selected_colors: [],
   selected_colors__id: [],
-  selected__category: null,
+
   is_free: false,
   refreshModelOrder: false,
+
   styles: [],
   selected_styles: [],
   selected_styles_id: [],
+
   page: 1,
   error: null,
   progress: 0,
@@ -61,6 +87,9 @@ const handle_filters = createSlice({
     },
     setModelNameFilter: (state: any, action: PayloadAction<string>) => {
       state.model_name = action.payload;
+    },
+    setUserNameFilter: (state: any, action: PayloadAction<string>) => {
+      state.user_name = action.payload;
     },
     setModelOrderBy: (state: any, action: PayloadAction<modelOrderBy>) => {
       state.model_orderby = action.payload;
@@ -152,10 +181,6 @@ const handle_filters = createSlice({
       const { ...params } = action.payload;
       state.selected_styles_id = params.id
     },
-    setPageFilter: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.page = params.page;
-    },
     setLimitFilter: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
       state.limit = params.limit;
@@ -168,6 +193,68 @@ const handle_filters = createSlice({
       const { ...params } = action.payload;
       state.is_free = params.is_free;
     },
+
+    set_downloaded_model_brand: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_brand = params.downloaded_model_brand;
+    },
+    set_downloaded_model_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_name = params.downloaded_model_name;
+    },
+    set_downloaded_model_categories: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_categories = params.downloaded_model_categories;
+    },
+    set_downloaded_model_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_orderby = params.downloaded_model_orderby;
+    },
+    set_downloaded_model_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_order = params.downloaded_model_order;
+    },
+    set_downloaded_model_page: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaded_model_page = params.downloaded_model_page;
+    },
+
+
+    set_author_interiors_categories: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.author_interiors_categories = params.author_interiors_categories;
+    },
+    set_author_interiors_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.author_interiors_orderby = params.author_interiors_orderby;
+    },
+    set_author_interiors_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.author_interiors_order = params.author_interiors_order;
+    },
+    set_designer_interiors_page: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.designer_interiors_page = params.designer_interiors_page;
+    },
+
+    setPageFilter: (
+      state: any,
+      action: PayloadAction<{
+        p:
+        'models_page' |
+        'interiors_page' |
+        'designer_downloads_page' |
+        'designer_interiors_page' |
+        'brand_models_page' |
+        'designers_page' |
+        'brands_page';
+        n: number;
+      }>
+    ) => {
+      const { ...params } = action.payload;
+      state[params.p] = params.n;
+    },
+
     resetFilters: () => ({
       ...initialState
     }),
@@ -178,6 +265,7 @@ const handle_filters = createSlice({
 });
 
 export const {
+  setUserNameFilter,
   setTopListItemLimit,
   setTopListTopic,
   setAuthor,
@@ -214,6 +302,19 @@ export const {
   setOrderByFilter,
   resetFilters,
   setIs_free,
+
+  set_downloaded_model_brand,
+  set_downloaded_model_name,
+  set_downloaded_model_categories,
+  set_downloaded_model_orderby,
+  set_downloaded_model_order,
+  set_downloaded_model_page,
+
+  set_author_interiors_categories,
+  set_author_interiors_orderby,
+  set_author_interiors_order,
+  set_designer_interiors_page,
+
 } = handle_filters.actions;
 export const reducer = handle_filters.reducer;
 export const selectTopListItemLimit = (state: any) => state?.handle_filters?.topListItemLimit

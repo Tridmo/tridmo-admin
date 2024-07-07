@@ -4,7 +4,7 @@ import { ModelTopList } from "./models/top_list";
 import { CategoriesTopList } from "./categories/top_list";
 
 
-export default function DownloadTopLists() {
+export default function TopLists() {
   return (
     <>
       <Grid container

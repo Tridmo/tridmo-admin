@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import RegistersChartComponent from "../../views/statistics/users/registers_chart";
 import { CountsStats } from "../../views/statistics/counts_stats";
-import DownloadTopLists from "../../views/statistics/top_lists";
+import TopLists from "../../views/statistics/top_lists";
 import DownloadsChartComponent from "../../views/statistics/downloads/chart";
 import TopListHeader from "../../views/statistics/top_list_header";
 import InteriorsChartComponent from "../../views/statistics/interiors/chart";
@@ -30,7 +30,7 @@ export default function Stats() {
             <TopListHeader />
           </Grid>
           <Grid item xs={12} md={12} lg={12} sm={12}>
-            <DownloadTopLists />
+            <TopLists />
           </Grid>
         </Grid>
       </Box>

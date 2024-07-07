@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import NotFoundPage from '@/components/site_info/not_found';
+import UsersPage from '../../components/screens/users';
 
 declare global {
   interface Window {
@@ -9,10 +10,10 @@ declare global {
   }
 }
 
-export default function UsersPage() {
+export default function Users() {
   return (
     <>
-      <NotFoundPage />
+      <UsersPage />
     </>
   )
 }

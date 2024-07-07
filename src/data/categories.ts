@@ -4,12 +4,16 @@ const initialState = {
   data: [],
   one_data: [],
   interior_data: [],
+  user_downloads_data: [],
+  user_interiors_data: [],
   model_data: [],
   data_with_model_count: [],
   status: 'idle',
   with_model_count_status: 'idle',
   model_status: 'idle',
   interior_status: 'idle',
+  user_downloads_status: 'idle',
+  user_interiors_status: 'idle',
   error: null,
 };
 export const getCategories = createAsyncThunk('/catgories', async () => {
@@ -22,6 +26,14 @@ export const getOneCategory = createAsyncThunk('/catgories/:id', async (id: any)
 })
 export const getCategoriesWithModelCount = createAsyncThunk('/catgories/?models_count=true', async () => {
   const response = await api.get(`/categories/main/?models_count=true&orderBy=name&order=asc`)
+  return response.data
+})
+export const getCategoriesByUserDownloads = createAsyncThunk('/catgories/user/downloads/:username', async (username: string) => {
+  const response = await api.get(`/categories/user/downloads/${username}/?orderBy=name&order=asc`)
+  return response.data
+})
+export const getCategoriesByUserInteriors = createAsyncThunk('/catgories/user/interiors/:username', async (username: string) => {
+  const response = await api.get(`/categories/user/interiors/${username}/?orderBy=name&order=asc`)
   return response.data
 })
 export const getModelCategories = createAsyncThunk('/model/categories', async () => {
@@ -94,6 +106,38 @@ const categories = createSlice({
         state.error = action.error.message
       })
 
+      .addCase(getCategoriesByUserDownloads.pending, (state?: any, action?: any) => {
+        state.user_downloads_status = 'loading'
+      })
+      .addCase(getCategoriesByUserDownloads.fulfilled, (state?: any, action?: any) => {
+        state.progress = 20
+        state.user_downloads_status = 'succeeded'
+        // Add any fetched posts to the array;
+        state.user_downloads_data = [];
+        state.user_downloads_data = state.user_downloads_data.concat(action.payload)
+        state.progress = 100
+      })
+      .addCase(getCategoriesByUserDownloads.rejected, (state?: any, action?: any) => {
+        state.user_downloads_status = 'failed'
+        state.error = action.error.message
+      })
+
+      .addCase(getCategoriesByUserInteriors.pending, (state?: any, action?: any) => {
+        state.user_interiors_status = 'loading'
+      })
+      .addCase(getCategoriesByUserInteriors.fulfilled, (state?: any, action?: any) => {
+        state.progress = 20
+        state.user_interiors_status = 'succeeded'
+        // Add any fetched posts to the array;
+        state.user_interiors_data = [];
+        state.user_interiors_data = state.user_interiors_data.concat(action.payload)
+        state.progress = 100
+      })
+      .addCase(getCategoriesByUserInteriors.rejected, (state?: any, action?: any) => {
+        state.user_interiors_status = 'failed'
+        state.error = action.error.message
+      })
+
       .addCase(getModelCategories.pending, (state?: any, action?: any) => {
         state.model_status = 'loading'
       })
@@ -131,6 +175,8 @@ export const { setOneSelectedCategory } = categories.actions;
 export const selectCategories = (state: any) => state?.categories?.data[0]?.data
 export const selectOneCategory = (state: any) => state?.categories?.one_data[0]?.data
 export const selectCategoriesWithModelCount = (state: any) => state?.categories?.data_with_model_count[0]?.data
+export const selectCategoriesByUserDownloads = (state: any) => state?.categories?.user_downloads_data[0]?.data
+export const selectCategoriesByUserInteriors = (state: any) => state?.categories?.user_interiors_data[0]?.data
 export const selectModelCategories = (state: any) => state?.categories?.model_data[0]?.data
 export const selectInteriorCategories = (state: any) => state?.categories?.interior_data[0]?.data
 export const reducer = categories.reducer;

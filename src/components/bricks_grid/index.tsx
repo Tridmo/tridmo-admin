@@ -1,20 +1,19 @@
 import { Box, Grid, Skeleton, SxProps } from "@mui/material";
-import SimpleTypography from "../../typography";
+import SimpleTypography from "../typography";
 
 
 interface Props {
   data: {
     name: string;
-    count: string | number;
+    main_text: string | number;
     secondary_text?: string;
   }[];
   sx?: SxProps;
-  mainColor?: string;
   fullWidth?: boolean;
   loading?: boolean;
 }
 
-export default function CountsGrid({ data, sx, loading, fullWidth, mainColor }: Props) {
+export default function BrickDataGrid({ data, sx, loading, fullWidth }: Props) {
 
   const fakeData = Array.from({ length: 5 })
 
@@ -36,10 +35,10 @@ export default function CountsGrid({ data, sx, loading, fullWidth, mainColor }: 
               sm={fullWidth ? 12 : false}
               key={ind}
               sx={{
-                p: '20px 24px',
+                p: '24px',
                 bgcolor: '#fff',
-                boxShadow: '0px 3px 4px 0px #00000014',
                 borderRadius: '4px',
+                boxShadow: '0px 3px 4px 0px #00000014',
               }}
             >
               <Box
@@ -48,15 +47,22 @@ export default function CountsGrid({ data, sx, loading, fullWidth, mainColor }: 
                 }}
               >
                 <SimpleTypography
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    lineHeight: '20px',
+                    mb: '8px',
+                  }}
                   text={elem?.name}
                 />
                 <SimpleTypography
                   sx={{
-                    fontSize: '32px',
-                    fontWeight: 700,
-                    color: mainColor || '#454545'
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    lineHeight: '22px',
+                    color: !elem?.main_text ? '#e6e6e6' : '#454545'
                   }}
-                  text={elem?.count as string}
+                  text={elem?.main_text as string || 'не указано'}
                 />
                 {
                   elem?.secondary_text && (

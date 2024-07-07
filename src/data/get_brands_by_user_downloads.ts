@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../utils/axios'
+import { brandOrderBy, order } from '../types/filters';
 
 const initialState = {
   data: [],
@@ -7,14 +8,20 @@ const initialState = {
   error: null,
   progress: 0,
 };
-export const getAllDesigners = createAsyncThunk('/users/designers',
-  async (wrapper?: any) => {
-    let send__route = `/users/?role_id=3`
+export const getAllBrandsByUserDownloads = createAsyncThunk('/brands/user/:username',
+  async (wrapper?: {
+    username: string;
+    name?: string;
+    limit?: number;
+    orderBy?: brandOrderBy;
+    order?: order;
+    page?: number;
+  }) => {
+    let send__route = `/brands/user/${wrapper?.username}`
 
-    send__route +=
-      wrapper?.key
-        ? (send__route?.includes("/?") ? `&key=${wrapper?.key}` : `/?key=${wrapper?.key}`)
-        : "";
+    if (wrapper?.name) {
+      send__route += `/?name=${wrapper?.name}`
+    }
 
     send__route +=
       wrapper?.limit
@@ -30,14 +37,13 @@ export const getAllDesigners = createAsyncThunk('/users/designers',
 
     const response = await api.get(send__route)
     return response.data
-
   })
 
-const get_all_designers = createSlice({
-  name: 'get_all_designers',
+const get_brands_by_user_downloads = createSlice({
+  name: 'get_brands_by_user_downloads',
   initialState,
   reducers: {
-    resetAllDesigners() {
+    resetAllBrandsByUserDownloads() {
       return {
         ...initialState
       }
@@ -45,10 +51,10 @@ const get_all_designers = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(getAllDesigners.pending, (state?: any, action?: any) => {
+      .addCase(getAllBrandsByUserDownloads.pending, (state?: any, action?: any) => {
         state.status = 'loading'
       })
-      .addCase(getAllDesigners.fulfilled, (state?: any, action?: any) => {
+      .addCase(getAllBrandsByUserDownloads.fulfilled, (state?: any, action?: any) => {
         state.progress = 20
         state.status = 'succeeded'
         // Add any fetched posts to the array;
@@ -56,14 +62,14 @@ const get_all_designers = createSlice({
         state.data = state.data.concat(action.payload)
         state.progress = 100
       })
-      .addCase(getAllDesigners.rejected, (state?: any, action?: any) => {
+      .addCase(getAllBrandsByUserDownloads.rejected, (state?: any, action?: any) => {
         state.status = 'failed'
         state.error = action.error.message
       })
   }
 });
 
-export const { resetAllDesigners } = get_all_designers.actions;
-export const reducer = get_all_designers.reducer;
-export const selectAllDesigners = (state: any) => state?.get_all_designers?.data[0]?.data?.users
-export default get_all_designers;
+export const { resetAllBrandsByUserDownloads } = get_brands_by_user_downloads.actions;
+export const reducer = get_brands_by_user_downloads.reducer;
+export const selectAllBrandsByUserDownloads = (state: any) => state?.get_brands_by_user_downloads?.data[0]
+export default get_brands_by_user_downloads;

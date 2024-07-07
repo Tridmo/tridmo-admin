@@ -17,6 +17,11 @@ export const getAuthorInteriors = createAsyncThunk('/interiors/:author',
     wrapper?.style_id?.forEach(style_id => {
       send__route += !send__route.includes("/?") ? `/?styles=${style_id}` : `&styles=${style_id}`;
     });
+
+    if (wrapper?.categories?.length) wrapper?.categories?.forEach(category_id => {
+      send__route += send__route.includes("/?") ? `&categories=${category_id}` : `/?categories=${category_id}`;
+    });
+
     send__route +=
       !send__route.includes("/?") && wrapper?.author
         ? `/?author=${wrapper.author}`

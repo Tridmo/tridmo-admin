@@ -10,7 +10,7 @@ import { Box, Typography, Grid, Button, TextField, InputAdornment, IconButton, S
 import Image from 'next/image';
 import SimpleTypography from '../typography'
 import Buttons from '../buttons';
-import axios from '../../utils/axios';
+import axios, { setAuthToken } from '../../utils/axios';
 import { ACCESS_TOKEN_EXPIRATION_DAYS, REFRESH_TOKEN_EXPIRATION_DAYS } from '../../utils/expiration'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import Cookies from 'js-cookie'
@@ -97,32 +97,22 @@ export const LoginContext = (props: LoginContextProps) => {
 
             toast.success(res?.data?.message || 'Авторизация прошла успешна');
 
-            (async () => {
+            const accessToken = res?.data?.data?.token?.accessToken;
+            const refreshToken = res?.data?.data?.token?.refreshToken;
 
-              const accessTokenPromise = new Promise((resolve, reject) => {
-                Cookies.set(
-                  'accessToken',
-                  res?.data?.data?.token?.accessToken,
-                  { expires: ACCESS_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
-                );
-                resolve(true);
-              });
+            Cookies.set('accessToken', accessToken, {
+              expires: ACCESS_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true
+            });
+            Cookies.set('refreshToken', refreshToken, {
+              expires: REFRESH_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true
+            });
 
-              const refreshTokenPromise = new Promise((resolve, reject) => {
-                Cookies.set(
-                  'refreshToken',
-                  res?.data?.data?.token?.refreshToken,
-                  { expires: REFRESH_TOKEN_EXPIRATION_DAYS, path: '/', sameSite: 'Lax', secure: true }
-                );
-                resolve(true);
-              });
+            setAuthToken(accessToken); // Set the token for axios instance
 
-              await Promise.all([accessTokenPromise, refreshTokenPromise]);
+            await dispatch(getMyProfile({ Authorization: `Bearer ${accessToken}` }));
+            await dispatch(setAuthState(true));
 
-              await dispatch(getMyProfile({ Authorization: `Bearer ${res?.data?.data?.token?.accessToken}` }));
-              await dispatch(setAuthState(true));
-              router.push('/')
-            })();
+            router.push('/');
 
             setStatus({ success: true });
             setSubmitting(false);
@@ -135,6 +125,7 @@ export const LoginContext = (props: LoginContextProps) => {
             }
           }
         }}
+
       >
         {({
           errors,

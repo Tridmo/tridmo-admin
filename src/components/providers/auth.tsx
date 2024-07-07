@@ -6,6 +6,7 @@ import { getUpdatedAccessToken } from '../../data/re-update_access_token'
 import Cookies from 'js-cookie'
 const AuthContext = createContext({});
 import { getMyProfile, selectMyProfile } from '../../data/me';
+import { setAuthToken } from "../../utils/axios";
 
 
 export const AuthProvider = ({ children }) => {
@@ -17,7 +18,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     async function loadUserFromCookies() {
 
-      if (Cookies.get('accessToken') && Cookies.get('refreshToken')) {
+      if (Cookies.get('accessToken')) {
+        setAuthToken(Cookies.get('accessToken'))
         dispatch(setAuthState(true));
 
         if (myProfileStatus === 'idle') {

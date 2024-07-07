@@ -14,6 +14,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getAllModels } from '../../../data/get_all_models';
 import { getBrandModels } from '../../../data/get_brand_models';
 import { getTopModels } from '../../../data/get_top_models';
+import { getModelDownloadsStats } from '../../../data/statistics/get_downloads_stats';
+import { currentDate } from '../../../utils/format_date';
+import { getModelTagsStats } from '../../../data/statistics/get_tags_stats';
+import { getModelInteriors } from '../../../data/get_model_interiors';
+import { getModelTagsCategories } from '../../../data/categories';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -42,15 +47,26 @@ const BgBlur = {
 export default function OneProduct() {
 
   const dispatch = useDispatch<any>();
+  const model = useSelector(selectOneModel)
   const getOneModel__status = useSelector((state: any) => state?.get_one_model?.status);
   const getTopModelsStatus = useSelector((state: any) => state?.get_top_models.status);
   const refreshModelOrderStatus = useSelector((state: any) => state?.handle_filters?.refreshModelOrder);
 
   const params = useParams<{ slug: string }>();
+  const { year, month, week } = currentDate()
 
   React.useEffect(() => {
     dispatch(getOneModel(params.slug))
-  }, [params, dispatch, refreshModelOrderStatus])
+  }, [params])
+
+  React.useMemo(() => {
+    if (!!model) {
+      dispatch(getModelDownloadsStats({ month, year, model_id: model?.id }))
+      dispatch(getModelTagsStats({ month, year, model_id: model?.id }))
+      dispatch(getModelInteriors({ model_id: model?.id }))
+      dispatch(getModelTagsCategories(model?.id))
+    }
+  }, [model, getOneModel__status])
 
   if (getOneModel__status === "succeeded") {
     return (

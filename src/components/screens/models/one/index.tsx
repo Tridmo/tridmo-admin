@@ -9,6 +9,9 @@ import ProductModal from '../../../views/model/model_modal';
 import { concatRouteCrumb, setRouteCrumbs } from '../../../../data/route_crumbs';
 import { selectOneModel } from '../../../../data/model_slider';
 import { usePathname } from 'next/navigation';
+import ModelDownloadsChartComponent from '../../../views/statistics/models/one_model_download_chart';
+import ModelTagsChartComponent from '../../../views/statistics/models/one_model_tags_chart';
+import ModelInteriorsList from '../../../views/model/model_interiors_list';
 
 
 export default function OneModel() {
@@ -49,55 +52,21 @@ export default function OneModel() {
             <ProductInfo />
           </Grid>
 
-          {/* {model?.used_interiors?.length > 0 && model?.used_interiors[0] != null ? (
-                        <>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    paddingTop: "37px"
-                                }}
-                            >
-                                <SimpleTypography
-                                    text="Использованные интерьеры"
-                                    className='section__title products__used--title'
-                                    variant="h2"
-                                />
-                            </Box>
-                            <Grid className="models__card--wrap" container spacing={3} sx={{ width: "100%", margin: "0 0 24px 0" }}>
-                                {model?.used_interiors?.map((model: any, index: any) => (
-                                    <Grid
-                                        className='models__card'
-                                        sx={{
-                                            [`&:not(:nth-of-type(4n))`]: {
-                                                padding: "0 9.5px 0 0 !important",
-                                            },
-                                            [`&:nth-of-type(4n)`]: {
-                                                padding: "0 0 0 0 !important",
-                                            },
-                                            marginBottom: "10px"
-                                        }}
-                                        key={index}
-                                        md={12 / 4}
-                                        sm={4}
-                                        xs={6}
-                                        item
-                                    >
-                                        <CustomCard
-                                            type={'interiors'}
-                                            link={`/interiors/${model?.slug}`}
-                                            key={index}
-                                            model={model}
-                                            imgHeight={'268px'}
-                                            withAuthor={true}
-                                        />
-                                    </Grid>
-                                ))
-                                }
-                            </Grid >
-                        </>
-                    ) : (null)} */}
+          <Grid container gap={2} mb={'64px'}>
+            <Grid item xs={12} lg={12} sm={12}>
+              <ModelDownloadsChartComponent />
+            </Grid>
+
+            <Grid item xs={12} lg={12} sm={12}>
+              <ModelTagsChartComponent />
+            </Grid>
+
+            <Grid item xs={12} lg={12} sm={12}>
+              <ModelInteriorsList />
+            </Grid>
+          </Grid>
+
+
         </Box>
       </Box>
 

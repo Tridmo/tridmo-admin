@@ -11,6 +11,7 @@ import { getAllDesigners } from '../../data/get_all_designers';
 import { getAuthorInteriors } from '../../data/get_author_interiors';
 import { current } from '@reduxjs/toolkit';
 import { getDesignerDownloads } from '../../data/get_designer_downloads';
+import { getModelInteriors } from '../../data/get_model_interiors';
 
 const SimplePagination = styled(Pagination)(
   ({ theme }: ThemeProps) =>
@@ -115,7 +116,8 @@ interface PaginationProps {
   'brands' |
   'designers' |
   'designer_downloads' |
-  'designer_interiors';
+  'designer_interiors' |
+  'model_interiors';
 
   dataId?: any;
   count?: number,
@@ -153,6 +155,12 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const get_author_interiors_orderby = useSelector((state: any) => state?.handle_filters?.author_interiors_orderby)
   const get_author_interiors_order = useSelector((state: any) => state?.handle_filters?.author_interiors_order)
   const get_designer_interiors_page = useSelector((state: any) => state?.handle_filters?.designer_interiors_page)
+
+  // ---- model-interiors filters selector ----- //
+  const get_model_interiors_categories = useSelector((state: any) => state?.handle_filters?.model_interiors_categories)
+  const get_model_interiors_orderby = useSelector((state: any) => state?.handle_filters?.model_interiors_orderby)
+  const get_model_interiors_order = useSelector((state: any) => state?.handle_filters?.model_interiors_order)
+  const get_model_interiors_page = useSelector((state: any) => state?.handle_filters?.model_interiors_page)
 
   // ---- pages ---- //
   // const getModelsPageFilter = useSelector((state: any) => state?.handle_filters?.models_page)
@@ -225,6 +233,16 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
         categories: get_author_interiors_categories,
         orderBy: get_author_interiors_orderby,
         order: get_author_interiors_order,
+      }))
+    }
+    if (dataSource == 'model_interiors') {
+      dispatch(setPageFilter({ p: 'model_interiors_page', n: page }))
+      dispatch(getModelInteriors({
+        model_id: dataId,
+        page: page,
+        categories: get_model_interiors_categories,
+        orderBy: get_model_interiors_orderby,
+        order: get_model_interiors_order,
       }))
     }
   }

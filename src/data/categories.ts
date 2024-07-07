@@ -8,10 +8,12 @@ const initialState = {
   user_downloads_data: [],
   user_interiors_data: [],
   model_data: [],
+  model_tags_data: [],
   data_with_model_count: [],
   status: 'idle',
   with_model_count_status: 'idle',
   model_status: 'idle',
+  model_tags_status: 'idle',
   interior_status: 'idle',
   user_downloads_status: 'idle',
   user_interiors_status: 'idle',
@@ -49,6 +51,10 @@ export const getInteriorCategories = createAsyncThunk('/interior/categories', as
 })
 export const getBrandCategories = createAsyncThunk('/brand/categories', async (brand_id: string) => {
   const response = await api.get(`/categories/brand/${brand_id}`)
+  return response.data
+})
+export const getModelTagsCategories = createAsyncThunk('/model_tags/categories', async (model_id: string) => {
+  const response = await api.get(`/categories/model_tags/${model_id}`)
   return response.data
 })
 
@@ -193,6 +199,22 @@ const categories = createSlice({
         state.brand_status = 'failed'
         state.error = action.error.message
       })
+
+      .addCase(getModelTagsCategories.pending, (state?: any, action?: any) => {
+        state.model_tags_status = 'loading'
+      })
+      .addCase(getModelTagsCategories.fulfilled, (state?: any, action?: any) => {
+        state.progress = 20
+        state.model_tags_status = 'succeeded'
+        // Add any fetched posts to the array;
+        state.model_tags_data = [];
+        state.model_tags_data = state.model_tags_data.concat(action.payload)
+        state.progress = 100
+      })
+      .addCase(getModelTagsCategories.rejected, (state?: any, action?: any) => {
+        state.model_tags_status = 'failed'
+        state.error = action.error.message
+      })
   }
 });
 export const { setOneSelectedCategory } = categories.actions;
@@ -204,6 +226,7 @@ export const selectCategoriesByUserInteriors = (state: any) => state?.categories
 export const selectModelCategories = (state: any) => state?.categories?.model_data[0]?.data
 export const selectInteriorCategories = (state: any) => state?.categories?.interior_data[0]?.data
 export const selectBrandCategories = (state: any) => state?.categories?.brand_data[0]?.data
+export const selectModelTagsCategories = (state: any) => state?.categories?.model_tags_data[0]?.data
 
 export const reducer = categories.reducer;
 export default categories

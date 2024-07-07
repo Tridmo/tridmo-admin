@@ -17,6 +17,8 @@ export default function TopLists() {
           sx={{
             p: '24px',
             bgcolor: '#fff',
+            boxShadow: '0px 3px 4px 0px #00000014',
+            borderRadius: '4px',
           }}
         >
           <ModelTopList />
@@ -26,6 +28,8 @@ export default function TopLists() {
           sx={{
             p: '24px',
             bgcolor: '#fff',
+            boxShadow: '0px 3px 4px 0px #00000014',
+            borderRadius: '4px',
           }}
         >
           <BrandTopList />
@@ -36,6 +40,8 @@ export default function TopLists() {
           sx={{
             p: '24px',
             bgcolor: '#fff',
+            boxShadow: '0px 3px 4px 0px #00000014',
+            borderRadius: '4px',
           }}
         >
           <CategoriesTopList />

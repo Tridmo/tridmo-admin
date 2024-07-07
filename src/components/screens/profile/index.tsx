@@ -20,66 +20,67 @@ import SimpleCard from '../../simple_card';
 
 
 export default function Profile() {
-    const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
-    const interiors = useSelector(selectAuthorInteriors)
+  const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
+  const interiors = useSelector(selectAuthorInteriors)
 
-    // const designerWorks = Array.from({ length: 12 }, () => (sampleInterior))
-    const designerWorks = interiors?.data?.interiors
+  // const designerWorks = Array.from({ length: 12 }, () => (sampleInterior))
+  const designerWorks = interiors?.data?.interiors
 
-    return (
-        <>
-            <Box sx={{ background: "#fafafa" }} className="products">
-                <Box className='products__container' sx={{ maxWidth: "1200px", width: "100%", margin: "0 auto 32px auto !important", alignItems: "center", }}>
-                    <Grid container sx={{ marginTop: "32px", marginLeft: 0 }} >
+  return (
+    <>
+      <Box sx={{ background: "#fafafa" }} className="products">
+        <Box className='products__container' sx={{ maxWidth: "1200px", width: "100%", margin: "0 auto 32px auto !important", alignItems: "center", }}>
+          <Grid container sx={{ marginTop: "32px", marginLeft: 0 }} >
 
-                        <Grid item xs={4} sx={{ paddingRight: "10px" }}>
-                            <ProfileInfo of='own' />
-                        </Grid >
+            <Grid item xs={4} sx={{ paddingRight: "10px" }}>
+              <ProfileInfo of='own' />
+            </Grid >
 
-                        <Grid item xs={8}
-                            style={{
-                                paddingLeft: "40px",
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box sx={{ width: '100%' }}>
-                                <SimpleTypography
-                                    text="Галерея"
-                                    className="section__title"
-                                    variant="h2"
-                                />
+            <Grid item xs={8}
+              style={{
+                paddingLeft: "40px",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Box sx={{ width: '100%' }}>
+                <SimpleTypography
+                  text="Галерея"
+                  className="section__title"
+                  variant="h2"
+                />
 
-                                <SimpleCard route='designer_interiors' cols={3} cardImgHeight={232} withAuthor={true} />
+                <SimpleCard route='designer_interiors' cols={3} cardImgHeight={232} withAuthor={true} />
 
-                            </Box>
-                            {designerWorks?.length > 0 ? (
-                                <Grid
-                                    item
-                                    xs={6}
-                                    sx={{
-                                        padding: "0 !important",
-                                        display: "flex",
-                                        alignItems: 'center',
-                                        justifyContent: "center",
-                                        flexBasis: 'auto !important'
-                                    }}
-                                >
-                                    <BasicPagination
-                                        count={designerWorks?.data?.pagination?.pages}
-                                        page={parseInt(designerWorks?.data?.pagination?.current) + 1}
-                                    />
-                                </Grid>
-                            ) : null}
+              </Box>
+              {designerWorks?.length > 0 ? (
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    padding: "0 !important",
+                    display: "flex",
+                    alignItems: 'center',
+                    justifyContent: "center",
+                    flexBasis: 'auto !important'
+                  }}
+                >
+                  <BasicPagination
+                    dataSource='designer_interiors'
+                    count={designerWorks?.data?.pagination?.pages}
+                    page={parseInt(designerWorks?.data?.pagination?.current) + 1}
+                  />
+                </Grid>
+              ) : null}
 
-                        </Grid>
+            </Grid>
 
-                    </Grid>
-                </Box>
-            </Box>
+          </Grid>
+        </Box>
+      </Box>
 
-        </>
-    )
+    </>
+  )
 }

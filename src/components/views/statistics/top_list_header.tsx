@@ -99,6 +99,8 @@ export default function TopListHeader({ sx }: Props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        boxShadow: '0px 3px 4px 0px #00000014',
+        borderRadius: '4px',
         ...sx
       }}
     >

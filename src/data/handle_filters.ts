@@ -15,6 +15,12 @@ const initialState = {
   downloaded_model_orderby: '',
   downloaded_model_order: 'desc',
 
+  brand_models_top: undefined,
+  brand_models_name: '',
+  brand_models_categories: [],
+  brand_models_orderby: '',
+  brand_models_order: 'desc',
+
   author_interiors_categories: [],
   author_interiors_orderby: '',
   author_interiors_order: 'desc',
@@ -237,6 +243,28 @@ const handle_filters = createSlice({
       state.designer_interiors_page = params.designer_interiors_page;
     },
 
+
+    set_brand_models_categories: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.brand_models_categories = params.brand_models_categories;
+    },
+    set_brand_models_top: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.brand_models_top = params.brand_models_top;
+    },
+    set_brand_models_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.brand_models_name = params.brand_models_name;
+    },
+    set_brand_models_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.brand_models_orderby = params.brand_models_orderby;
+    },
+    set_brand_models_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.brand_models_order = params.brand_models_order;
+    },
+
     setPageFilter: (
       state: any,
       action: PayloadAction<{
@@ -314,6 +342,12 @@ export const {
   set_author_interiors_orderby,
   set_author_interiors_order,
   set_designer_interiors_page,
+
+  set_brand_models_top,
+  set_brand_models_name,
+  set_brand_models_categories,
+  set_brand_models_orderby,
+  set_brand_models_order,
 
 } = handle_filters.actions;
 export const reducer = handle_filters.reducer;

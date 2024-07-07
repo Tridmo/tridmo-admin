@@ -11,10 +11,11 @@ interface Props {
   sx?: SxProps;
   mainColor?: string;
   fullWidth?: boolean;
+  fillWidth?: boolean;
   loading?: boolean;
 }
 
-export default function CountsGrid({ data, sx, loading, fullWidth, mainColor }: Props) {
+export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, mainColor }: Props) {
 
   const fakeData = Array.from({ length: 5 })
 
@@ -30,10 +31,10 @@ export default function CountsGrid({ data, sx, loading, fullWidth, mainColor }: 
         !loading ?
           data.map((elem, ind) => (
             <Grid item
-              xs={fullWidth ? 12 : false}
-              lg={fullWidth ? 12 : false}
-              md={fullWidth ? 12 : false}
-              sm={fullWidth ? 12 : false}
+              xs={fullWidth ? 12 : fillWidth}
+              lg={fullWidth ? 12 : fillWidth}
+              md={fullWidth ? 12 : fillWidth}
+              sm={fullWidth ? 12 : fillWidth}
               key={ind}
               sx={{
                 p: '20px 24px',

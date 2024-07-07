@@ -8,9 +8,26 @@ import ProfileInfo from '@/components/views/profile/info';
 import BasicPagination from '@/components/pagination/pagination';
 import { getAuthorInteriors, selectAuthorInteriors } from '../../../../data/get_author_interiors';
 import SimpleCard from '../../../simple_card';
+import { setRouteCrumbs } from '../../../../data/route_crumbs';
+import { selectDesignerProfile } from '../../../../data/get_designer';
 
 
 export default function UserProfile() {
+
+  const dispatch = useDispatch()
+  const profileInfo = useSelector(selectDesignerProfile)
+
+  React.useEffect(() => {
+    dispatch(setRouteCrumbs(
+      [{
+        title: 'Пользователи',
+        route: '/users'
+      }, {
+        title: profileInfo?.full_name,
+        route: `/users/${profileInfo?.username}`
+      }]
+    ))
+  }, [])
 
   return (
     <>

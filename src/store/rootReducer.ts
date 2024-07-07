@@ -35,6 +35,7 @@ import { reducer as get_models_stats } from '../data/statistics/get_models_stats
 import { reducer as get_categories_stats } from '../data/statistics/get_categories_stats';
 import { reducer as get_downloads_stats } from '../data/statistics/get_downloads_stats';
 import { reducer as get_interiors_stats } from '../data/statistics/get_interiors_stats';
+import { reducer as get_tags_stats } from '../data/statistics/get_tags_stats';
 import { reducer as get_designer_downloads } from '../data/get_designer_downloads';
 import { reducer as get_brands_by_user_downloads } from '../data/get_brands_by_user_downloads';
 
@@ -77,6 +78,7 @@ const rootReducer = combineReducers({
   get_categories_stats: get_categories_stats,
   get_downloads_stats: get_downloads_stats,
   get_interiors_stats: get_interiors_stats,
+  get_tags_stats: get_tags_stats,
   get_designer_downloads: get_designer_downloads,
   get_brands_by_user_downloads: get_brands_by_user_downloads,
 });

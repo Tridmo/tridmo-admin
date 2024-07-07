@@ -7,6 +7,7 @@ import { selectModelsStats, selectModelsStatsStatus } from "../../../data/statis
 import { selectCategoriesStats, selectCategoriesStatsStatus } from "../../../data/statistics/get_categories_stats";
 import { selectDownloadsStats, selectDownloadsStatsStatus } from "../../../data/statistics/get_downloads_stats";
 import { selectInteriorsStats, selectInteriorsStatsStatus } from "../../../data/statistics/get_interiors_stats";
+import { selectTagsStats, selectTagsStatsStatus } from "../../../data/statistics/get_tags_stats";
 
 export function CountsStats() {
 
@@ -15,12 +16,14 @@ export function CountsStats() {
   const modelsStats = useSelector(selectModelsStats)
   const downloadsStats = useSelector(selectDownloadsStats)
   const interiorsStats = useSelector(selectInteriorsStats)
+  const tagsStats = useSelector(selectTagsStats)
 
   const regStatsStatus = useSelector(selectRegStatsStatus)
   const brandsStatsStatus = useSelector(selectBrandsStatsStatus)
   const modelsStatsStatus = useSelector(selectModelsStatsStatus)
   const downloadsStatsStatus = useSelector(selectDownloadsStatsStatus)
   const interiorsStatsStatus = useSelector(selectInteriorsStatsStatus)
+  const tagsStatsStatus = useSelector(selectTagsStatsStatus)
 
   return (
     <Box
@@ -29,12 +32,15 @@ export function CountsStats() {
       }}
     >
       <CountsGrid
+        fillWidth
+        mainColor="#7210BE"
         loading={
           regStatsStatus == 'loading' ||
           brandsStatsStatus == 'loading' ||
           modelsStatsStatus == 'loading' ||
           downloadsStatsStatus == 'loading' ||
-          interiorsStatsStatus == 'loading'
+          interiorsStatsStatus == 'loading' ||
+          tagsStatsStatus == 'loading'
         }
         data={[
           {
@@ -57,6 +63,10 @@ export function CountsStats() {
           {
             name: 'Интерьеры',
             count: interiorsStats?.count
+          },
+          {
+            name: 'Бирки',
+            count: tagsStats?.count
           },
         ]}
       />

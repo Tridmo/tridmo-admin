@@ -20,13 +20,8 @@ export default function Providers({
     <Provider store={store}>
       <CookiesProvider>
         <AuthProvider>
-
           <ThemeProviderWrapper>
-            <Suspense>
-              <NavigationEvents />
-            </Suspense>
             {children}
-
           </ThemeProviderWrapper>
         </AuthProvider>
       </CookiesProvider>

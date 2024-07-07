@@ -62,6 +62,8 @@ export default function DownloadsChartComponent() {
         width: '100%',
         bgcolor: '#fff',
         p: '24px',
+        boxShadow: '0px 3px 4px 0px #00000014',
+        borderRadius: '4px',
       }}
     >
       <h3 style={{ marginTop: 0 }}>Загрузки</h3>

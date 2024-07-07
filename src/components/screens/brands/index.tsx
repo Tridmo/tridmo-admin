@@ -628,6 +628,7 @@ export default function BrandsPage() {
           }}
         >
           <BasicPagination
+            dataSource='brands'
             count={all__brands?.data?.pagination?.pages}
             page={parseInt(all__brands?.data?.pagination?.current) + 1}
           />

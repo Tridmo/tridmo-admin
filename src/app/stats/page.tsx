@@ -13,6 +13,7 @@ import { getCategoriesStats, selectCategoriesStats, selectCategoriesStatsStatus 
 import { currentDate } from '../../utils/format_date';
 import { selectTopListItemLimit } from '../../data/handle_filters';
 import { getInteriorsStats, selectInteriorsStats, selectInteriorsStatsStatus } from '../../data/statistics/get_interiors_stats';
+import { getTagsStats, selectTagsStats, selectTagsStatsStatus } from '../../data/statistics/get_tags_stats';
 
 declare global {
   interface Window {
@@ -31,6 +32,7 @@ export default function StatsPage() {
   const brandsStats = useSelector(selectBrandsStats)
   const categoriesStats = useSelector(selectCategoriesStats)
   const interiorsStats = useSelector(selectInteriorsStats)
+  const tagsStats = useSelector(selectTagsStats)
 
   const regStatsStatus = useSelector(selectRegStatsStatus)
   const downloadsStatsStatus = useSelector(selectDownloadsStatsStatus)
@@ -38,6 +40,7 @@ export default function StatsPage() {
   const brandsStatsStatus = useSelector(selectBrandsStatsStatus)
   const categoriesStatsStatus = useSelector(selectCategoriesStatsStatus)
   const interiorsStatsStatus = useSelector(selectInteriorsStatsStatus)
+  const tagsStatsStatus = useSelector(selectTagsStatsStatus)
 
   const { year, month, week } = currentDate()
 
@@ -50,6 +53,9 @@ export default function StatsPage() {
     }
     if (interiorsStatsStatus == 'idle') {
       dispatch(getInteriorsStats({ month, year }))
+    }
+    if (tagsStatsStatus == 'idle') {
+      dispatch(getTagsStats({ month, year }))
     }
     if (modelsStatsStatus == 'idle') {
       dispatch(getModelsStats({ limit: topListItemLimit }))
@@ -67,6 +73,7 @@ export default function StatsPage() {
     brandsStats, brandsStatsStatus,
     categoriesStats, categoriesStatsStatus,
     interiorsStats, interiorsStatsStatus,
+    tagsStats, tagsStatsStatus,
   ])
 
   return (

@@ -147,23 +147,6 @@ const DropDown = styled(Menu)(
 
 export default function ModelsPage() {
 
-  const typeButtons = [
-    {
-      text: 'Все',
-      value: 0,
-      active: true,
-      count: 0,
-      on_click: handleAllClick,
-    },
-    {
-      text: 'Топ',
-      value: 1,
-      active: false,
-      count: 0,
-      on_click: handleTopClick,
-    }
-  ]
-
   const router = useRouter();
   const dispatch = useDispatch<any>();
   // const searchParams = useSearchParams();
@@ -193,7 +176,6 @@ export default function ModelsPage() {
 
   // const keyword = searchParams.get('keyword') as string
   const [categories, setCategories] = useState<any[]>([])
-  const [topButtons, setTopButtons] = useState<any[]>(typeButtons)
   const [activeTopButton, setActiveTopButton] = useState<0 | 1>(0)
   const [allModelsCount, setAllModelsCount] = useState<number>(0)
   const [topModelsCount, setTopModelsCount] = useState<number>(0)
@@ -988,24 +970,9 @@ export default function ModelsPage() {
               sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
             >
               <Pagination
+                dataSource='models'
                 count={all__models?.data?.pagination?.pages}
                 page={parseInt(all__models?.data?.pagination?.current) + 1}
-              // page={page}
-              // pageArray={pageArray}
-              // pagesCount={pagesCount}
-              // increment={(e, data) => {
-              //   props.setPage(page + 1);
-              // }}
-              // changePage={(e, data) => {
-              //   setPage(data);
-              // }}
-              // decrement={(e, data) => {
-              //   setPage(page - 1);
-              // }}
-              // const handleChange = (event, value) => {
-              //   props.changePage(event,value)
-              // };
-              // count={props.pagesCount} page={+props.page} onChange={handleChange}
               />
             </Grid>
           </Grid>

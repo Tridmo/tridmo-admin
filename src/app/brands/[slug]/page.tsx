@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getOneBrand, selectOneBrand } from '../../../data/get_one_brand';
 import { getBrandModels } from '../../../data/get_brand_models';
 import OneBrand from '@/components/screens/brands/one';
+import { getBrandCategories } from '../../../data/categories';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -48,6 +49,7 @@ export default function UserProfile() {
   React.useEffect(() => {
     if (brand) {
       dispatch(getBrandModels({ brand_id: brand?.id }))
+      dispatch(getBrandCategories(brand?.id))
     }
   }, [brand])
 

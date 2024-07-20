@@ -5,25 +5,25 @@ import { selectRegStats, selectRegStatsStatus } from "../../../data/statistics/g
 import { selectBrandsStats, selectBrandsStatsStatus } from "../../../data/statistics/get_brands_stats";
 import { selectModelsStats, selectModelsStatsStatus } from "../../../data/statistics/get_models_stats";
 import { selectCategoriesStats, selectCategoriesStatsStatus } from "../../../data/statistics/get_categories_stats";
-import { selectDownloadsStats, selectDownloadsStatsStatus } from "../../../data/statistics/get_downloads_stats";
+import { selectDownloadsCount, selectDownloadsCountStatus } from "../../../data/statistics/get_downloads_stats";
 import { selectInteriorsStats, selectInteriorsStatsStatus } from "../../../data/statistics/get_interiors_stats";
-import { selectTagsStats, selectTagsStatsStatus } from "../../../data/statistics/get_tags_stats";
+import { selectTagsCount, selectTagsCountStatus } from "../../../data/statistics/get_tags_stats";
 
 export function CountsStats() {
 
   const regStats = useSelector(selectRegStats)
   const brandsStats = useSelector(selectBrandsStats)
   const modelsStats = useSelector(selectModelsStats)
-  const downloadsStats = useSelector(selectDownloadsStats)
+  const downloadsStats = useSelector(selectDownloadsCount)
   const interiorsStats = useSelector(selectInteriorsStats)
-  const tagsStats = useSelector(selectTagsStats)
+  const tagsStats = useSelector(selectTagsCount)
 
   const regStatsStatus = useSelector(selectRegStatsStatus)
   const brandsStatsStatus = useSelector(selectBrandsStatsStatus)
   const modelsStatsStatus = useSelector(selectModelsStatsStatus)
-  const downloadsStatsStatus = useSelector(selectDownloadsStatsStatus)
+  const downloadsStatsStatus = useSelector(selectDownloadsCountStatus)
   const interiorsStatsStatus = useSelector(selectInteriorsStatsStatus)
-  const tagsStatsStatus = useSelector(selectTagsStatsStatus)
+  const tagsStatsStatus = useSelector(selectTagsCountStatus)
 
   return (
     <Box

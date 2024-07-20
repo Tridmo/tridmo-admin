@@ -5,6 +5,7 @@ import TopLists from "../../views/statistics/top_lists";
 import DownloadsChartComponent from "../../views/statistics/downloads/chart";
 import TopListHeader from "../../views/statistics/top_list_header";
 import InteriorsChartComponent from "../../views/statistics/interiors/chart";
+import DownloadsAndTagsChartComponent from "../../views/statistics/downloads_and_tags.chart";
 
 export default function Stats() {
   return (
@@ -21,7 +22,7 @@ export default function Stats() {
             <RegistersChartComponent />
           </Grid>
           <Grid item xs={12} md={12} lg={12} sm={12}>
-            <DownloadsChartComponent />
+            <DownloadsAndTagsChartComponent />
           </Grid>
           <Grid item xs={12} md={12} lg={12} sm={12}>
             <InteriorsChartComponent />

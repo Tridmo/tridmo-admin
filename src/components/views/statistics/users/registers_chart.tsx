@@ -20,6 +20,7 @@ import { months } from '../../../../types/variables';
 import { getRegistrationsStats, selectRegStats, selectRegStatsStatus } from '@/data/statistics/get_registrations_stats';
 import { useSelector } from '../../../../store';
 import { useDispatch } from 'react-redux';
+import { lineChartOptions } from '../../../../types/charts.config';
 
 ChartJS.register(
   CategoryScale,
@@ -129,7 +130,7 @@ export default function RegistersChartComponent() {
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />
@@ -147,7 +148,7 @@ export default function RegistersChartComponent() {
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />

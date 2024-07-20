@@ -19,7 +19,8 @@ import { MonthsSelect, YearsSelect } from '../../../inputs/date_select';
 import { months } from '../../../../types/variables';
 import { useSelector } from '../../../../store';
 import { useDispatch } from 'react-redux';
-import { getDownloadsStats, selectDownloadsStats, selectDownloadsStatsStatus } from '../../../../data/statistics/get_downloads_stats';
+import { getDownloadsChart, selectDownloadsChart, selectDownloadsChartStatus } from '../../../../data/statistics/get_downloads_stats';
+import { lineChartOptions } from '../../../../types/charts.config';
 
 ChartJS.register(
   CategoryScale,
@@ -35,8 +36,8 @@ ChartJS.register(
 export default function DownloadsChartComponent() {
 
   const dispatch = useDispatch<any>()
-  const dataStatus = useSelector(selectDownloadsStatsStatus)
-  const data = useSelector(selectDownloadsStats)
+  const dataStatus = useSelector(selectDownloadsChartStatus)
+  const data = useSelector(selectDownloadsChart)
 
   const [isMonthly, setIsMonthly] = useState<boolean>(true)
   const [selectedYear, setSelectedYear] = useState<any>(new Date().getFullYear())
@@ -44,11 +45,11 @@ export default function DownloadsChartComponent() {
 
   function handleMonthSelect(month) {
     setSelectedMonth(month)
-    dispatch(getDownloadsStats({ year: selectedYear, month }))
+    dispatch(getDownloadsChart({ year: selectedYear, month }))
   }
   function handleYearSelect(year) {
     setSelectedYear(year)
-    dispatch(getDownloadsStats({ year, month: selectedMonth }))
+    dispatch(getDownloadsChart({ year, month: selectedMonth }))
   }
 
   const options = {
@@ -124,7 +125,7 @@ export default function DownloadsChartComponent() {
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />
@@ -142,7 +143,7 @@ export default function DownloadsChartComponent() {
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />

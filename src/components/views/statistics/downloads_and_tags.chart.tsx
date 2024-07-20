@@ -14,13 +14,15 @@ import {
   Filler,
 } from 'chart.js';
 import { Box, FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Skeleton } from '@mui/material';
-import SimpleSelect from '../../../inputs/simple_select';
-import { MonthsSelect, YearsSelect } from '../../../inputs/date_select';
-import { months } from '../../../../types/variables';
-import { useSelector } from '../../../../store';
+import SimpleSelect from '../../inputs/simple_select';
+import { MonthsSelect, YearsSelect } from '../../inputs/date_select';
+import { months } from '../../../types/variables';
+import { useSelector } from '../../../store';
 import { useDispatch } from 'react-redux';
-import { getModelDownloadsStats, selectModelDownloadsStats, selectModelDownloadsStatsStatus } from '../../../../data/statistics/get_downloads_stats';
-import { selectOneModel } from '../../../../data/get_one_model';
+import { getDownloadsChart, selectDownloadsChart, selectDownloadsChartStatus, selectModelDownloadsStats, selectModelDownloadsStatsStatus } from '../../../data/statistics/get_downloads_stats';
+import { selectMyProfile } from '../../../data/me';
+import { lineChartOptions } from '../../../types/charts.config';
+import { getTagsChart, selectModelTagsStats, selectModelTagsStatsStatus, selectTagsChart, selectTagsChartStatus } from '../../../data/statistics/get_tags_stats';
 
 ChartJS.register(
   CategoryScale,
@@ -33,12 +35,18 @@ ChartJS.register(
   Legend
 );
 
-export default function ModelDownloadsChartComponent() {
+interface Props {
+  title?: string;
+}
+
+export default function DownloadsAndTagsChartComponent({ title }: Props) {
 
   const dispatch = useDispatch<any>()
-  const model = useSelector(selectOneModel)
-  const dataStatus = useSelector(selectModelDownloadsStatsStatus)
-  const data = useSelector(selectModelDownloadsStats)
+  const downloadsDataStatus = useSelector(selectDownloadsChartStatus)
+  const downloadsData = useSelector(selectDownloadsChart)
+  const tagsDataStatus = useSelector(selectTagsChartStatus)
+  const tagsData = useSelector(selectTagsChart)
+  const profile = useSelector(selectMyProfile)
 
   const [isMonthly, setIsMonthly] = useState<boolean>(true)
   const [selectedYear, setSelectedYear] = useState<any>(new Date().getFullYear())
@@ -46,29 +54,28 @@ export default function ModelDownloadsChartComponent() {
 
   function handleMonthSelect(month) {
     setSelectedMonth(month)
-    dispatch(getModelDownloadsStats({ year: selectedYear, month, model_id: model?.id }))
+    dispatch(getDownloadsChart({ year: selectedYear, month, brand_id: profile?.brand?.id }))
+    dispatch(getTagsChart({ year: selectedYear, month, brand_id: profile?.brand?.id }))
   }
   function handleYearSelect(year) {
     setSelectedYear(year)
-    dispatch(getModelDownloadsStats({ year, month: selectedMonth, model_id: model?.id }))
+    dispatch(getDownloadsChart({ year, month: selectedMonth, brand_id: profile?.brand?.id }))
+    dispatch(getTagsChart({ year, month: selectedMonth, brand_id: profile?.brand?.id }))
   }
-
-  const options = {
-    scales: { y: { ticks: { stepSize: 1 } } },
-    maintainAspectRatio: false,
-  };
 
   return (
     <Box
       sx={{
+        height: '100%',
         width: '100%',
         bgcolor: '#fff',
         p: '24px',
+        // boxShadow: '0px 1px 3px 0px rgba(0, 0, 0, 0.1)',
         boxShadow: '0px 3px 4px 0px #00000014',
         borderRadius: '4px',
       }}
     >
-      <h3 style={{ marginTop: 0 }}>Загрузки</h3>
+      <h3 style={{ marginTop: 0 }}>{title || 'Статистика'}</h3>
       <Box
         sx={{
           width: '100%',
@@ -110,7 +117,11 @@ export default function ModelDownloadsChartComponent() {
         }}
       >
         {
-          dataStatus == 'succeeded' && !!data ?
+          downloadsDataStatus == 'succeeded' &&
+            tagsDataStatus == 'succeeded' &&
+            !!downloadsData &&
+            !!tagsData
+            ?
             (
               !!isMonthly ?
                 <Line
@@ -118,33 +129,47 @@ export default function ModelDownloadsChartComponent() {
                     labels: months.map(m => m.name),
                     datasets: [
                       {
-                        label: 'Ежемесячная загрузки',
-                        data: data?.chart_data?.monthly_downloads,
-                        borderColor: 'rgba(0, 204, 102, 1)',
-                        backgroundColor: 'rgba(102, 255, 153, 0.2)',
+                        label: 'Загрузки',
+                        data: downloadsData?.chart_data?.monthly_downloads,
+                        borderColor: 'rgba(42, 157, 144, 1)',
+                        backgroundColor: 'rgba(42, 157, 144, 0.2)',
+                        fill: true,
+                      },
+                      {
+                        label: 'Бирки',
+                        data: tagsData?.chart_data?.monthly_tags,
+                        borderColor: 'rgba(231, 110, 80, 1)',
+                        backgroundColor: 'rgba(231, 110, 80, 0.2)',
                         fill: true,
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />
                 :
                 <Line
                   data={{
-                    labels: Array.from({ length: data?.chart_data?.daily_downloads.length }, (_, i) => i + 1), // Days 1 to 30
+                    labels: Array.from({ length: downloadsData?.chart_data?.daily_downloads?.length }, (_, i) => `${i + 1}`), // Days 1 to 30
                     datasets: [
                       {
-                        label: 'Ежедневные загрузки',
-                        data: data?.chart_data?.daily_downloads,
-                        borderColor: 'rgba(255, 153, 0, 1)',
-                        backgroundColor: 'rgba(255, 204, 102, 0.2)',
+                        label: 'Загрузки',
+                        data: downloadsData?.chart_data?.daily_downloads,
+                        borderColor: 'rgba(42, 157, 144, 1)',
+                        backgroundColor: 'rgba(42, 157, 144, 0.2)',
+                        fill: true,
+                      },
+                      {
+                        label: 'Бирки',
+                        data: tagsData?.chart_data?.daily_tags,
+                        borderColor: 'rgba(231, 110, 80, 1)',
+                        backgroundColor: 'rgba(231, 110, 80, 0.2)',
                         fill: true,
                       },
                     ],
                   }}
-                  options={options}
+                  options={lineChartOptions}
                   width={'100%'}
                   height={'300px'}
                 />

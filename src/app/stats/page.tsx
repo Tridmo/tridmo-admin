@@ -14,6 +14,7 @@ import { currentDate } from '../../utils/format_date';
 import { selectTopListItemLimit } from '../../data/handle_filters';
 import { getInteriorsStats, selectInteriorsStats, selectInteriorsStatsStatus } from '../../data/statistics/get_interiors_stats';
 import { getTagsCount, getTagsChart, selectTagsChart, selectTagsChartStatus, selectTagsCount, selectTagsCountStatus } from '../../data/statistics/get_tags_stats';
+import { selectMyProfile } from '../../data/me';
 
 declare global {
   interface Window {
@@ -46,37 +47,42 @@ export default function StatsPage() {
   const tagsCountStatus = useSelector(selectTagsCountStatus)
   const tagsChartStatus = useSelector(selectTagsChartStatus)
 
+  const profile = useSelector(selectMyProfile)
+
   const { year, month, week } = currentDate()
 
   React.useEffect(() => {
-    if (regStatsStatus == 'idle') {
-      dispatch(getRegistrationsStats({ month, year }))
-    }
-    if (downloadsCountStatus == 'idle') {
-      dispatch(getDownloadsCount({ month, year }))
-    }
-    if (downloadsChartStatus == 'idle') {
-      dispatch(getDownloadsChart({ month, year }))
-    }
-    if (interiorsStatsStatus == 'idle') {
-      dispatch(getInteriorsStats({ month, year }))
-    }
-    if (tagsCountStatus == 'idle') {
-      dispatch(getTagsCount({ month, year }))
-    }
-    if (tagsChartStatus == 'idle') {
-      dispatch(getTagsChart({ month, year }))
-    }
-    if (modelsStatsStatus == 'idle') {
-      dispatch(getModelsStats({ limit: topListItemLimit }))
-    }
-    if (brandsStatsStatus == 'idle') {
-      dispatch(getBrandsStats({ limit: topListItemLimit }))
-    }
-    if (categoriesStatsStatus == 'idle') {
-      dispatch(getCategoriesStats({ limit: topListItemLimit }))
+    if (profile) {
+      if (regStatsStatus == 'idle') {
+        dispatch(getRegistrationsStats({ month, year }))
+      }
+      if (downloadsCountStatus == 'idle') {
+        dispatch(getDownloadsCount({ month, year }))
+      }
+      if (downloadsChartStatus == 'idle') {
+        dispatch(getDownloadsChart({ month, year }))
+      }
+      if (interiorsStatsStatus == 'idle') {
+        dispatch(getInteriorsStats({ month, year }))
+      }
+      if (tagsCountStatus == 'idle') {
+        dispatch(getTagsCount({ month, year }))
+      }
+      if (tagsChartStatus == 'idle') {
+        dispatch(getTagsChart({ month, year }))
+      }
+      if (modelsStatsStatus == 'idle') {
+        dispatch(getModelsStats({ limit: topListItemLimit }))
+      }
+      if (brandsStatsStatus == 'idle') {
+        dispatch(getBrandsStats({ limit: topListItemLimit }))
+      }
+      if (categoriesStatsStatus == 'idle') {
+        dispatch(getCategoriesStats({ limit: topListItemLimit }))
+      }
     }
   }, [
+    profile,
     regStatsStatus,
     downloadsCountStatus,
     downloadsChartStatus,

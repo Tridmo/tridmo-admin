@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
 
       if (Cookies.get('accessToken')) {
         setAuthToken(Cookies.get('accessToken'))
-        dispatch(setAuthState(true));
 
         if (myProfileStatus === 'idle') {
           await dispatch(getMyProfile())
@@ -86,6 +85,7 @@ export const AuthProvider = ({ children }) => {
           dispatch(setAuthState(false));
         }
 
+        dispatch(setAuthState(true));
       }
 
       if (Cookies.get('refreshToken')) {

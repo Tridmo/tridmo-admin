@@ -66,22 +66,15 @@ export const LoginContext = (props: LoginContextProps) => {
     <>
       <Formik
         initialValues={{
-          email: '',
+          username: '',
           password: '',
           submit: null
         }}
-        // 998971113539
         validationSchema={Yup.object().shape({
-          email: Yup.string()
-            .min(4, "too short")
-            .max(50, "too long")
-            .email('Указанный адрес электронной почты должен быть действительным адресом электронной почты.')
+          username: Yup.string()
             .required('Поле обязательно для заполнения.'),
           password: Yup.string()
             .required('Пароль не указан.')
-            .max(255)
-            .min(6, 'Пароль слишком короткий — минимум 6 символов.')
-          // .matches(/[a-zA-Z]/, 'Пароль can only contain Latin letters.')
         })}
         onSubmit={async (
           _values,
@@ -90,10 +83,10 @@ export const LoginContext = (props: LoginContextProps) => {
           try {
             const res = await axios.post(
               `auth/signin/admin`,
-              { email: _values.email, password: _values?.password },
+              { username: _values.username, password: _values?.password },
             );
             resetForm();
-            props?.setUserEmail(_values?.email);
+            props?.setUserEmail(_values?.username);
 
             toast.success(res?.data?.message || 'Авторизация прошла успешна');
 
@@ -147,15 +140,16 @@ export const LoginContext = (props: LoginContextProps) => {
                 />
 
                 <Box sx={{ marginBottom: "26px", width: "100%" }}>
-                  <EmailInputAdornments
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                    name="email"
-                    type="email"
+                  <SimpleInp
+                    label='Логин'
+                    error={Boolean(touched.username && errors.username)}
+                    helperText={touched.username && errors.username}
+                    name="username"
+                    type="text"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.email}
-                    placeholderText='example@example.com'
+                    value={values.username}
+                    placeholderText='username'
                   />
                 </Box>
 

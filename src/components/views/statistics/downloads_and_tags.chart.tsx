@@ -75,7 +75,7 @@ export default function DownloadsAndTagsChartComponent({ title }: Props) {
         borderRadius: '4px',
       }}
     >
-      <h3 style={{ marginTop: 0 }}>{title || 'Статистика'}</h3>
+      <h3 style={{ marginTop: 0 }}>{title || 'Загрузки и Бирки'}</h3>
       <Box
         sx={{
           width: '100%',

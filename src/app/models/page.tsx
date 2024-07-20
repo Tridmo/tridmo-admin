@@ -19,14 +19,10 @@ export default function Models() {
   const router = useRouter();
 
   // ---- intial staters ---- //
-
   const getModelStatus = useSelector((state: any) => state?.get_all_models?.status);
   const getTOpModelStatus = useSelector((state: any) => state?.get_top_models?.status);
-  const getColorStatus = useSelector((state: any) => state?.get_all_colors?.status);
-  const StyleStatus = useSelector((state: any) => state?.get_all_styles?.status)
 
   // ---- filters selector ----- //
-
   const getModelCategoryFilter = useSelector((state: any) => state?.handle_filters?.categories)
   const getModelBrandFilter = useSelector((state: any) => state?.handle_filters?.model_brand)
   const getModelColorFilter = useSelector((state: any) => state?.handle_filters?.colors)
@@ -35,8 +31,6 @@ export default function Models() {
   const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.model_name)
   const getModelOrderBy = useSelector((state: any) => state?.handle_filters?.model_orderby)
   const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
-  const keywords = useSelector((state: any) => state?.search_models?.key)
-  const searched__models__status = useSelector((state: any) => state?.search_models?.status)
   const getCategoriesStatus = useSelector((state: any) => state?.categories?.status);
   const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
 

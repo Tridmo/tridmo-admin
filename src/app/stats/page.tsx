@@ -6,14 +6,14 @@ import Stats from '../../components/screens/stats';
 import { useSelector } from 'react-redux';
 import { getRegistrationsStats, selectRegStats, selectRegStatsStatus } from '../../data/statistics/get_registrations_stats';
 import { useDispatch } from 'react-redux';
-import { getDownloadsStats, selectDownloadsStats, selectDownloadsStatsStatus } from '../../data/statistics/get_downloads_stats';
+import { getDownloadsCount, getDownloadsChart, selectDownloadsChart, selectDownloadsChartStatus, selectDownloadsCount, selectDownloadsCountStatus } from '../../data/statistics/get_downloads_stats';
 import { getModelsStats, selectModelsStats, selectModelsStatsStatus } from '../../data/statistics/get_models_stats';
 import { getBrandsStats, selectBrandsStats, selectBrandsStatsStatus } from '../../data/statistics/get_brands_stats';
 import { getCategoriesStats, selectCategoriesStats, selectCategoriesStatsStatus } from '../../data/statistics/get_categories_stats';
 import { currentDate } from '../../utils/format_date';
 import { selectTopListItemLimit } from '../../data/handle_filters';
 import { getInteriorsStats, selectInteriorsStats, selectInteriorsStatsStatus } from '../../data/statistics/get_interiors_stats';
-import { getTagsStats, selectTagsStats, selectTagsStatsStatus } from '../../data/statistics/get_tags_stats';
+import { getTagsCount, getTagsChart, selectTagsChart, selectTagsChartStatus, selectTagsCount, selectTagsCountStatus } from '../../data/statistics/get_tags_stats';
 
 declare global {
   interface Window {
@@ -27,20 +27,24 @@ export default function StatsPage() {
   const topListItemLimit = useSelector(selectTopListItemLimit)
 
   const regStats = useSelector(selectRegStats)
-  const downloadsStats = useSelector(selectDownloadsStats)
+  const downloadsCount = useSelector(selectDownloadsCount)
+  const downloadsChart = useSelector(selectDownloadsChart)
   const modelsStats = useSelector(selectModelsStats)
   const brandsStats = useSelector(selectBrandsStats)
   const categoriesStats = useSelector(selectCategoriesStats)
   const interiorsStats = useSelector(selectInteriorsStats)
-  const tagsStats = useSelector(selectTagsStats)
+  const tagsCount = useSelector(selectTagsCount)
+  const tagsChart = useSelector(selectTagsChart)
 
   const regStatsStatus = useSelector(selectRegStatsStatus)
-  const downloadsStatsStatus = useSelector(selectDownloadsStatsStatus)
+  const downloadsCountStatus = useSelector(selectDownloadsCountStatus)
+  const downloadsChartStatus = useSelector(selectDownloadsChartStatus)
   const modelsStatsStatus = useSelector(selectModelsStatsStatus)
   const brandsStatsStatus = useSelector(selectBrandsStatsStatus)
   const categoriesStatsStatus = useSelector(selectCategoriesStatsStatus)
   const interiorsStatsStatus = useSelector(selectInteriorsStatsStatus)
-  const tagsStatsStatus = useSelector(selectTagsStatsStatus)
+  const tagsCountStatus = useSelector(selectTagsCountStatus)
+  const tagsChartStatus = useSelector(selectTagsChartStatus)
 
   const { year, month, week } = currentDate()
 
@@ -48,14 +52,20 @@ export default function StatsPage() {
     if (regStatsStatus == 'idle') {
       dispatch(getRegistrationsStats({ month, year }))
     }
-    if (downloadsStatsStatus == 'idle') {
-      dispatch(getDownloadsStats({ month, year }))
+    if (downloadsCountStatus == 'idle') {
+      dispatch(getDownloadsCount({ month, year }))
+    }
+    if (downloadsChartStatus == 'idle') {
+      dispatch(getDownloadsChart({ month, year }))
     }
     if (interiorsStatsStatus == 'idle') {
       dispatch(getInteriorsStats({ month, year }))
     }
-    if (tagsStatsStatus == 'idle') {
-      dispatch(getTagsStats({ month, year }))
+    if (tagsCountStatus == 'idle') {
+      dispatch(getTagsCount({ month, year }))
+    }
+    if (tagsChartStatus == 'idle') {
+      dispatch(getTagsChart({ month, year }))
     }
     if (modelsStatsStatus == 'idle') {
       dispatch(getModelsStats({ limit: topListItemLimit }))
@@ -67,13 +77,15 @@ export default function StatsPage() {
       dispatch(getCategoriesStats({ limit: topListItemLimit }))
     }
   }, [
-    regStats, regStatsStatus,
-    downloadsStats, downloadsStatsStatus,
-    modelsStats, modelsStatsStatus,
-    brandsStats, brandsStatsStatus,
-    categoriesStats, categoriesStatsStatus,
-    interiorsStats, interiorsStatsStatus,
-    tagsStats, tagsStatsStatus,
+    regStatsStatus,
+    downloadsCountStatus,
+    downloadsChartStatus,
+    modelsStatsStatus,
+    brandsStatsStatus,
+    categoriesStatsStatus,
+    interiorsStatsStatus,
+    tagsCountStatus,
+    tagsChartStatus,
   ])
 
   return (

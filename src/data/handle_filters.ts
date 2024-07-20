@@ -7,7 +7,11 @@ const initialState = {
     value: 'downloads'
   },
   author: '',
-  user_name: '',
+
+  users_name: '',
+  users_orderby: '',
+  users_order: '',
+  users_page: 1,
 
   downloaded_model_brand: '',
   downloaded_model_name: '',
@@ -101,7 +105,13 @@ const handle_filters = createSlice({
       state.model_name = action.payload;
     },
     setUserNameFilter: (state: any, action: PayloadAction<string>) => {
-      state.user_name = action.payload;
+      state.users_name = action.payload;
+    },
+    setUserOrderBy: (state: any, action: PayloadAction<modelOrderBy>) => {
+      state.users_orderby = action.payload;
+    },
+    setUserOrder: (state: any, action: PayloadAction<order>) => {
+      state.users_order = action.payload;
     },
     setModelOrderBy: (state: any, action: PayloadAction<modelOrderBy>) => {
       state.model_orderby = action.payload;
@@ -319,6 +329,8 @@ const handle_filters = createSlice({
 
 export const {
   setUserNameFilter,
+  setUserOrderBy,
+  setUserOrder,
   setTopListItemLimit,
   setTopListTopic,
   setAuthor,

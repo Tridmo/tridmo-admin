@@ -17,7 +17,7 @@ interface Props {
 
 export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, mainColor }: Props) {
 
-  const fakeData = Array.from({ length: 5 })
+  const fakeData = Array.from({ length: 6 })
 
   return (
     <Grid container
@@ -76,10 +76,10 @@ export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, ma
           :
           fakeData.map((elem, ind) => (
             <Grid
-              xs={2}
-              md={2}
-              lg={2}
-              sm={2}
+              xs={fullWidth ? 12 : fillWidth}
+              lg={fullWidth ? 12 : fillWidth}
+              md={fullWidth ? 12 : fillWidth}
+              sm={fullWidth ? 12 : fillWidth}
               key={ind}
               sx={{
                 p: '24px',

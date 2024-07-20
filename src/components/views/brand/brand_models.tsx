@@ -181,11 +181,9 @@ export default function BrandModels() {
   }
 
   useMemo(() => {
-    instance.get(`/models/count/?top=false&brand_id=${brand?.id}`).then(res => {
-      setAllModelsCount(res?.data?.data?.count)
-    })
     instance.get(`/models/count/?top=true&brand_id=${brand?.id}`).then(res => {
-      setTopModelsCount(res?.data?.data?.count)
+      setAllModelsCount(res?.data?.data?.count)
+      setTopModelsCount(res?.data?.data?.top)
     })
   }, [all__models, all__models_status])
 

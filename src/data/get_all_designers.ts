@@ -66,4 +66,5 @@ const get_all_designers = createSlice({
 export const { resetAllDesigners } = get_all_designers.actions;
 export const reducer = get_all_designers.reducer;
 export const selectAllDesigners = (state: any) => state?.get_all_designers?.data[0]?.data?.users
+export const selectAllDesignersStatus = (state: any) => state?.get_all_designers?.status
 export default get_all_designers;

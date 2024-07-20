@@ -157,7 +157,7 @@ export default function UsersPage() {
   const router = useRouter();
   const dispatch = useDispatch<any>();
   const users_status = useSelector((state: any) => state?.get_all_designers?.status)
-  const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.user_name)
+  const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
   const getModelOrderBy = useSelector((state: any) => state?.handle_filters?.model_orderby)
   const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
 
@@ -312,7 +312,6 @@ export default function UsersPage() {
                         <SearchInput
                           placeHolder='Поиск'
                           startIcon
-                          value={getModelNameFilter}
                           search={(s) => handleSearch(s)}
                           sx={{
                             borderColor: '#B8B8B8',

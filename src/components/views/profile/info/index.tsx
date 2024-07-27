@@ -19,6 +19,11 @@ import UserInteriorsList from '../interiors_list';
 import { selectCategoriesByUserDownloads } from '../../../../data/categories';
 import SimpleCountsList from '../simple_counts_list';
 import { selectAllBrandsByUserDownloads } from '../../../../data/get_brands_by_user_downloads';
+import { Block, DeleteForever, Launch, ModeEdit, RateReview, SmsOutlined } from '@mui/icons-material';
+import { selectChatToken } from '../../../../data/get_chat_token';
+import Cookies from 'js-cookie';
+import { chatApi, setChatToken } from '../../../../utils/axios';
+import { setSelectedConversation } from '../../../../data/chat';
 
 const tableWrapperSx: SxProps = {
   boxShadow: '0px 3px 4px 0px #00000014',
@@ -60,6 +65,20 @@ export default function ProfileInfo(props: ProfileProps) {
   const profileInfo = useSelector(props?.of == 'designer' ? selectDesignerProfile : selectMyProfile)
   const all__categories = useSelector(selectCategoriesByUserDownloads)
   const all__brands = useSelector(selectAllBrandsByUserDownloads)
+  const chatToken = useSelector(selectChatToken)
+
+  async function handleCreateConversation() {
+
+    setChatToken(Cookies.get('chatToken') || chatToken)
+
+    chatApi.post(`/conversations`, {
+      members: [profileInfo?.user_id]
+    })
+      .then(res => {
+        dispatch(setSelectedConversation(res?.data?.id))
+        router.push('/chat')
+      })
+  }
 
   if (getProfileStatus == 'succeeded') {
     return (
@@ -75,31 +94,93 @@ export default function ProfileInfo(props: ProfileProps) {
               <Box
                 sx={{
                   display: 'flex',
+                  justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
               >
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <Image
-                    width={80}
-                    height={80}
-                    alt="avatar"
-                    style={{ objectFit: "cover", margin: '0 auto', borderRadius: '50%' }}
-                    src={profileInfo?.image_src ? `${IMAGES_BASE_URL}/${profileInfo?.image_src}` : '/img/avatar.png'}
-                  />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Image
+                      width={80}
+                      height={80}
+                      alt="avatar"
+                      style={{ objectFit: "cover", margin: '0 auto', borderRadius: '50%' }}
+                      src={profileInfo?.image_src ? `${IMAGES_BASE_URL}/${profileInfo?.image_src}` : '/img/avatar.png'}
+                    />
+                  </Box>
+                  <Box ml={'8px'}>
+                    <SimpleTypography sx={{
+                      fontSize: '22px',
+                      fontWeight: '400',
+                      lineHeight: '28px',
+                    }} text={profileInfo?.full_name} />
+                    <SimpleTypography sx={{
+                      color: '#888',
+                      fontSize: '20px',
+                      fontWeight: '400',
+                      lineHeight: '28px',
+                    }} text={profileInfo?.username} />
+                  </Box>
                 </Box>
-                <Box ml={'8px'}>
-                  <SimpleTypography sx={{
-                    fontSize: '22px',
-                    fontWeight: '400',
-                    lineHeight: '28px',
-                  }} text={profileInfo?.full_name} />
-                  <SimpleTypography sx={{
-                    color: '#888',
-                    fontSize: '20px',
-                    fontWeight: '400',
-                    lineHeight: '28px',
-                  }} text={profileInfo?.username} />
-                </Box>
+
+                <Grid container gap={1}
+                  sx={{
+                    width: '50%',
+                    '& > div .btn': {
+                      width: '100%',
+                    },
+                    '.btn > button': {
+                      width: '100%'
+                    }
+                  }}
+                >
+                  <Grid item xs={5.8} md={5.8} sm={5.8}>
+                    <Buttons
+                      sx={{ padding: '10px !important' }}
+                      className='bookmark__btn btn'
+                      name="Редактировать"
+                      childrenFirst={true}
+                    >
+                      <ModeEdit sx={{ width: '19px', height: '19px', mr: '8px' }} />
+                    </Buttons>
+                  </Grid>
+                  <Grid item xs={5.8} md={5.8} sm={5.8}>
+                    <Buttons
+                      onClick={() => handleCreateConversation()}
+                      sx={{ padding: '10px !important', m: '0 !important' }}
+                      className='signIn__btn btn'
+                      name="Написать"
+                      childrenFirst={true}
+                    >
+                      <RateReview sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                    </Buttons>
+                  </Grid>
+                  <Grid item xs={5.8} md={5.8} sm={5.8}>
+                    <Buttons
+                      sx={{ padding: '10px !important' }}
+                      className='warning_outlined__btn btn'
+                      name="Блокировать"
+                      childrenFirst={true}
+                    >
+                      <Block sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                    </Buttons>
+                  </Grid>
+                  <Grid item xs={5.8} md={5.8} sm={5.8}>
+                    <Buttons
+                      sx={{ padding: '10px !important' }}
+                      className='red_outlined__btn btn'
+                      name="Удалить"
+                      childrenFirst={true}
+                    >
+                      <DeleteForever sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                    </Buttons>
+                  </Grid>
+                </Grid>
               </Box>
             </Grid>
 

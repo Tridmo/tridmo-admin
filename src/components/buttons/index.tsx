@@ -391,7 +391,41 @@ const ButtonWrapper = styled(Button)(
         }
       }
 
-      &.MuiButton-bookmar__btn{
+      &.MuiButton-warning_outlined__btn{
+        padding:9px 12px;
+        color: #E4B40A;
+        background-color: #FEF9E7;
+        position:relative;
+        border: 1.7px solid #F9DD78;
+        border-radius: 4px;
+
+        &:hover{
+          border-color: #E4B40A;
+        } 
+
+        img{
+          margin-right: 8px;
+        }
+      }
+
+      &.MuiButton-red_outlined__btn{
+        padding:9px 12px;
+        color: #BC2020;
+        background-color: #FBE9E9;
+        position:relative;
+        border: 1.7px solid #DA1515;
+        border-radius: 4px;
+
+        &:hover{
+          border-color: #BC2020;
+        } 
+
+        img{
+          margin-right: 8px;
+        }
+      }
+
+      &.MuiButton-bookmark__btn{
         padding:9px 12px;
         color: #303030;
         background-color: #fff;

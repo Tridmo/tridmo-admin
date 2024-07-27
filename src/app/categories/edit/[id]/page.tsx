@@ -11,6 +11,7 @@ import { getOneBrand, selectOneBrand } from '@/data/get_one_brand';
 import { getAllStyles } from '../../../../data/get_all_styles';
 import { getModelCategories, getOneCategory } from '../../../../data/categories';
 import EditCategory from '@/components/screens/categories/edit';
+import { selectMyProfile } from '../../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -41,17 +42,20 @@ export default function EditCategoryPage() {
   const categoriesData__status = useSelector((state: any) => state?.categories?.model_status);
   const dispatch = useDispatch<any>()
   const params = useParams<{ id: string }>()
+  const profile = useSelector(selectMyProfile)
 
   React.useMemo(() => {
-    dispatch(getOneCategory(params?.id))
-  }, [params.id])
+    if (profile) dispatch(getOneCategory(params?.id))
+  }, [profile, params.id])
 
   React.useMemo(() => {
-    if (categoriesData__status == 'idle') {
-      dispatch(getModelCategories())
+    if (profile) {
+      if (categoriesData__status == 'idle') {
+        dispatch(getModelCategories())
+      }
     }
   }, [
-    dispatch,
+    profile,
     categoriesData__status
   ])
 

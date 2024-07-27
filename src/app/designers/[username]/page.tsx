@@ -1,20 +1,12 @@
 "use client"
 
 import * as React from 'react';
-import type { NextPage } from 'next'
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneInterior, selectOneInterior } from '@/data/get_one_interior';
 import { useParams, useRouter } from 'next/navigation';
-import IconBreadcrumbs from '@/components/breadcrumbs';
 import ConnectionError from '@/components/site_info/connection_error';
 import { Box, Grid } from '@mui/material';
 
 import CircularProgress from '@mui/material/CircularProgress';
-import { getBrandModels } from '@/data/get_brand_models';
-import { getTopModels } from '@/data/get_top_models';
-import OneInterior from '@/components/screens/interiors/one';
-import { getComments } from '@/data/get_comments';
-import Profile from '@/components/screens/profile';
 import { selectMyProfile } from '@/data/me';
 import { getAuthorInteriors, selectAuthorInteriors } from '@/data/get_author_interiors';
 import { getProfile } from '@/data/get_profile';
@@ -56,13 +48,15 @@ export default function Designer() {
   const params = useParams<{ username: string }>()
 
   React.useEffect(() => {
-    if (isAuthenticated && profile && params?.username == profile?.username) {
-      router.push('/profile')
-    } else {
-      dispatch(getDesignerProfile(params?.username))
-      dispatch(getAuthorInteriors({ author: params?.username }))
+    if (profile) {
+      if (params?.username == profile?.username) {
+        router.push('/profile')
+      } else {
+        dispatch(getDesignerProfile(params?.username))
+        dispatch(getAuthorInteriors({ author: params?.username }))
+      }
     }
-  }, [dispatch, params, isAuthenticated, profile])
+  }, [profile, params])
 
   if (getProfileStatus === "succeeded") {
     return (

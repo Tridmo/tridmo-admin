@@ -14,6 +14,7 @@ import { getBrandModels } from '../../../data/get_brand_models';
 import { getTopModels } from '../../../data/get_top_models';
 import OneInterior from '@/components/screens/interiors/one';
 import { getComments } from '../../../data/get_comments';
+import { selectMyProfile } from '../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -47,10 +48,11 @@ export default function OneProduct() {
   const refreshModelOrderStatus = useSelector((state: any) => state?.handle_filters?.refreshModelOrder);
   const selectedInterior = useSelector(selectOneInterior)
   const params = useParams<{ slug: string }>();
+  const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
-    dispatch(getOneInterior(params.slug))
-  }, [params, dispatch, refreshModelOrderStatus])
+    if (profile) dispatch(getOneInterior(params.slug))
+  }, [profile, params, dispatch, refreshModelOrderStatus])
 
   React.useEffect(() => {
     if (selectedInterior) {

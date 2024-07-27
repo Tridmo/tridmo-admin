@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllBrands } from '../../data/get_all_brands';
 import DesignersPage from '@/components/screens/designers';
 import { getAllDesigners } from '../../data/get_all_designers';
-import { getMyProfile } from '../../data/me';
+import { getMyProfile, selectMyProfile } from '../../data/me';
 
 declare global {
   interface Window {
@@ -20,15 +20,18 @@ export default function Designers() {
 
   const getDesignersStatus = useSelector((state: any) => state?.get_all_designers?.status);
   const getProfileStatus = useSelector((state: any) => state?.get_profile?.status);
+  const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
-    if (getDesignersStatus === "idle") {
-      dispatch(getAllDesigners({}))
+    if (profile) {
+      if (getDesignersStatus === "idle") {
+        dispatch(getAllDesigners({}))
+      }
+      if (getProfileStatus === "idle") {
+        dispatch(getMyProfile())
+      }
     }
-    if (getProfileStatus === "idle") {
-      dispatch(getMyProfile())
-    }
-  }, [dispatch, router, getDesignersStatus, getProfileStatus])
+  }, [profile, getDesignersStatus, getProfileStatus])
 
   return (
     <>

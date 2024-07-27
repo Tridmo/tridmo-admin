@@ -7,6 +7,7 @@ import { getAllModels, selectAllModels } from '@/data/get_all_models';
 import ModelsPage from '@/components/screens/models';
 import { getCategories } from '../../data/categories';
 import { getAllBrands } from '../../data/get_all_brands';
+import { selectMyProfile } from '../../data/me';
 
 declare global {
   interface Window {
@@ -34,6 +35,7 @@ export default function Models() {
   const getCategoriesStatus = useSelector((state: any) => state?.categories?.status);
   const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
 
+  const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
     if (getCategoriesStatus == 'idle') dispatch(getCategories())
@@ -41,20 +43,22 @@ export default function Models() {
   }, [getCategoriesStatus, getBrandsStatus])
 
   React.useEffect(() => {
-    if (getModelStatus === "idle") {
-      dispatch(getAllModels({
-        categories: getModelCategoryFilter,
-        colors: getModelColorFilter,
-        styles: getModelStyleFilter,
-        brand: getModelBrandFilter,
-        name: getModelNameFilter,
-        page: getModelPageFilter,
-        orderBy: getModelOrderBy,
-        order: getModelOrder,
-      }))
+    if (profile) {
+      if (getModelStatus === "idle") {
+        dispatch(getAllModels({
+          categories: getModelCategoryFilter,
+          colors: getModelColorFilter,
+          styles: getModelStyleFilter,
+          brand: getModelBrandFilter,
+          name: getModelNameFilter,
+          page: getModelPageFilter,
+          orderBy: getModelOrderBy,
+          order: getModelOrder,
+        }))
+      }
     }
   }, [
-    dispatch,
+    profile,
     getModelStatus,
     getTOpModelStatus,
     getModelCategoryFilter,

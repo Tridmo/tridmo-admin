@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllStyles } from '@/data/get_all_styles';
 import { getAllInteriors } from '@/data/get_all_interiors';
 import InteriorsPage from '@/components/screens/interiors';
+import { selectMyProfile } from '../../data/me';
 
 declare global {
   interface Window {
@@ -32,19 +33,23 @@ export default function Interiors() {
   const getModelPageFilter = useSelector((state: any) => state?.handle_filters?.page)
   const getModelIsFree = useSelector((state: any) => state?.handle_filters?.is_free)
 
+  const profile = useSelector(selectMyProfile)
+
   React.useEffect(() => {
-    if (getInteriorsStatus === "idle") {
-      dispatch(getAllInteriors({
-        categories: getModelCategoryFilter,
-        colors: getModelColorFilter,
-        styles: getModelStyleFilter,
-        page: getModelPageFilter,
-      }))
+    if (profile) {
+      if (getInteriorsStatus === "idle") {
+        dispatch(getAllInteriors({
+          categories: getModelCategoryFilter,
+          colors: getModelColorFilter,
+          styles: getModelStyleFilter,
+          page: getModelPageFilter,
+        }))
+      }
+      if (StyleStatus === "idle") {
+        dispatch(getAllStyles());
+      }
     }
-    if (StyleStatus === "idle") {
-      dispatch(getAllStyles());
-    }
-  }, [getModelStatus, dispatch, getColorStatus, getModelColorFilter, getModelIsFree, getModelPageFilter, getModelStyleFilter, getModelCategoryFilter, StyleStatus, router, getInteriorsStatus])
+  }, [profile, getModelStatus, dispatch, getColorStatus, getModelColorFilter, getModelIsFree, getModelPageFilter, getModelStyleFilter, getModelCategoryFilter, StyleStatus, router, getInteriorsStatus])
 
   return (
     <>

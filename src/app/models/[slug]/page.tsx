@@ -19,6 +19,7 @@ import { currentDate } from '../../../utils/format_date';
 import { getModelTagsStats } from '../../../data/statistics/get_tags_stats';
 import { getModelInteriors } from '../../../data/get_model_interiors';
 import { getModelTagsCategories } from '../../../data/categories';
+import { selectMyProfile } from '../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -51,6 +52,7 @@ export default function OneProduct() {
   const getOneModel__status = useSelector((state: any) => state?.get_one_model?.status);
   const getTopModelsStatus = useSelector((state: any) => state?.get_top_models.status);
   const refreshModelOrderStatus = useSelector((state: any) => state?.handle_filters?.refreshModelOrder);
+  const profile = useSelector(selectMyProfile)
 
   const params = useParams<{ slug: string }>();
   const { year, month, week } = currentDate()
@@ -60,13 +62,15 @@ export default function OneProduct() {
   }, [params])
 
   React.useMemo(() => {
-    if (!!model) {
-      dispatch(getModelDownloadsStats({ month, year, model_id: model?.id }))
-      dispatch(getModelTagsStats({ month, year, model_id: model?.id }))
-      dispatch(getModelInteriors({ model_id: model?.id }))
-      dispatch(getModelTagsCategories(model?.id))
+    if (profile) {
+      if (!!model) {
+        dispatch(getModelDownloadsStats({ month, year, model_id: model?.id }))
+        dispatch(getModelTagsStats({ month, year, model_id: model?.id }))
+        dispatch(getModelInteriors({ model_id: model?.id }))
+        dispatch(getModelTagsCategories(model?.id))
+      }
     }
-  }, [model, getOneModel__status])
+  }, [profile, model, getOneModel__status])
 
   if (getOneModel__status === "succeeded") {
     return (

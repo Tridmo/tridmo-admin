@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getOneBrand, selectOneBrand } from '@/data/get_one_brand';
 import { getAllStyles } from '../../../../data/get_all_styles';
 import EditBrand from '@/components/screens/brands/edit';
+import { selectMyProfile } from '../../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -39,16 +40,20 @@ export default function UserProfile() {
   const getBrandStatus = useSelector((state: any) => state?.get_one_brand?.status)
   const stylesData__status = useSelector((state: any) => state?.get_all_styles.status);
   const dispatch = useDispatch<any>()
+  const profile = useSelector(selectMyProfile)
+
   const params = useParams<{ slug: string }>()
 
   React.useMemo(() => {
-    dispatch(getOneBrand(params?.slug))
-  }, [params.slug])
+    if (profile) dispatch(getOneBrand(params?.slug))
+  }, [profile, params.slug])
   React.useMemo(() => {
-    if (stylesData__status == 'idle') {
-      dispatch(getAllStyles())
+    if (profile) {
+      if (stylesData__status == 'idle') {
+        dispatch(getAllStyles())
+      }
     }
-  }, [stylesData__status])
+  }, [profile, stylesData__status])
 
   if (getBrandStatus === "succeeded") {
     return (

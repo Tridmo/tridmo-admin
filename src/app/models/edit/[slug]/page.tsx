@@ -18,6 +18,7 @@ import { getAllColors } from '../../../../data/get_all_colors';
 import { getAllMaterials } from '../../../../data/get_all_materials';
 import { getOneModel } from '../../../../data/get_one_model';
 import EditModel from '@/components/screens/models/edit';
+import { selectMyProfile } from '../../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -57,33 +58,38 @@ export default function EditModelPage() {
   const refreshModelOrderStatus = useSelector((state: any) => state?.handle_filters?.refreshModelOrder);
   const params = useParams<{ slug: string }>();
 
+  const profile = useSelector(selectMyProfile)
+
   React.useEffect(() => {
     dispatch(getOneModel(params.slug))
   }, [])
 
   React.useMemo(() => {
-    if (stylesData__status == 'idle') {
-      dispatch(getAllStyles())
-    }
-    if (categoriesData__status == 'idle') {
-      dispatch(getModelCategories())
-    }
-    if (brandsData__status == 'idle') {
-      dispatch(getAllBrands({}))
-    }
-    if (modelPlatformsData__status == 'idle') {
-      dispatch(getModelPlatforms())
-    }
-    if (renderPlatformsData__status == 'idle') {
-      dispatch(getRenderPlatforms())
-    }
-    if (colorsData__status == 'idle') {
-      dispatch(getAllColors())
-    }
-    if (materialsData__status == 'idle') {
-      dispatch(getAllMaterials())
+    if (profile) {
+      if (stylesData__status == 'idle') {
+        dispatch(getAllStyles())
+      }
+      if (categoriesData__status == 'idle') {
+        dispatch(getModelCategories())
+      }
+      if (brandsData__status == 'idle') {
+        dispatch(getAllBrands({}))
+      }
+      if (modelPlatformsData__status == 'idle') {
+        dispatch(getModelPlatforms())
+      }
+      if (renderPlatformsData__status == 'idle') {
+        dispatch(getRenderPlatforms())
+      }
+      if (colorsData__status == 'idle') {
+        dispatch(getAllColors())
+      }
+      if (materialsData__status == 'idle') {
+        dispatch(getAllMaterials())
+      }
     }
   }, [
+    profile,
     stylesData__status,
     categoriesData__status,
     brandsData__status,

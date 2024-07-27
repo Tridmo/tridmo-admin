@@ -11,6 +11,7 @@ import { getOneBrand, selectOneBrand } from '../../../data/get_one_brand';
 import { getBrandModels } from '../../../data/get_brand_models';
 import OneBrand from '@/components/screens/brands/one';
 import { getBrandCategories } from '../../../data/categories';
+import { selectMyProfile } from '../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -41,17 +42,20 @@ export default function UserProfile() {
   const dispatch = useDispatch<any>()
   const params = useParams<{ slug: string }>()
   const brand = useSelector(selectOneBrand)
+  const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
-    dispatch(getOneBrand(params?.slug))
-  }, [params, dispatch])
+    if (profile) dispatch(getOneBrand(params?.slug))
+  }, [profile, params, dispatch])
 
   React.useEffect(() => {
-    if (brand) {
-      dispatch(getBrandModels({ brand_id: brand?.id }))
-      dispatch(getBrandCategories(brand?.id))
+    if (profile) {
+      if (brand) {
+        dispatch(getBrandModels({ brand_id: brand?.id }))
+        dispatch(getBrandCategories(brand?.id))
+      }
     }
-  }, [brand])
+  }, [profile, brand])
 
   if (getBrandStatus === "succeeded") {
     return (

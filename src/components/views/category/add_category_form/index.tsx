@@ -15,7 +15,7 @@ import { CSSProperties, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import { getCategories, getModelCategories, selectCategories, selectInteriorCategories, selectModelCategories, selectOneCategory } from '../../../../data/categories';
+import { getCategories, getModelCategories, getInteriorCategories, selectCategories, selectInteriorCategories, selectModelCategories, selectOneCategory } from '../../../../data/categories';
 import { useRouter } from 'next/navigation';
 import { selectAllColors } from '../../../../data/get_all_colors';
 import { selectAllMaterials } from '../../../../data/get_all_materials';
@@ -157,7 +157,9 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
 
               dispatch(getCategories())
               dispatch(getModelCategories())
-              router.push(`/categories`)
+              dispatch(getInteriorCategories())
+
+              router.refresh()
 
             } catch (err: any) {
               setStatus({ success: false });

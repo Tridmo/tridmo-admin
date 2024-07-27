@@ -12,6 +12,7 @@ import { getModelPlatforms } from '../../../data/get_model_platforms';
 import { getRenderPlatforms } from '../../../data/get_render_platforms';
 import { getAllColors } from '../../../data/get_all_colors';
 import { getAllMaterials } from '../../../data/get_all_materials';
+import { selectMyProfile } from '../../../data/me';
 
 export default function AddNewModel() {
   const dispatch = useDispatch<any>()
@@ -23,31 +24,34 @@ export default function AddNewModel() {
   const renderPlatformsData__status = useSelector((state: any) => state?.get_render_platforms?.status)
   const colorsData__status = useSelector((state: any) => state?.get_all_colors?.status)
   const materialsData__status = useSelector((state: any) => state?.get_all_materials?.status)
+  const profile = useSelector(selectMyProfile)
 
   useMemo(() => {
-    if (stylesData__status == 'idle') {
-      dispatch(getAllStyles())
-    }
-    if (categoriesData__status == 'idle') {
-      dispatch(getModelCategories())
-    }
-    if (brandsData__status == 'idle') {
-      dispatch(getAllBrands({}))
-    }
-    if (modelPlatformsData__status == 'idle') {
-      dispatch(getModelPlatforms())
-    }
-    if (renderPlatformsData__status == 'idle') {
-      dispatch(getRenderPlatforms())
-    }
-    if (colorsData__status == 'idle') {
-      dispatch(getAllColors())
-    }
-    if (materialsData__status == 'idle') {
-      dispatch(getAllMaterials())
+    if (profile) {
+      if (stylesData__status == 'idle') {
+        dispatch(getAllStyles())
+      }
+      if (categoriesData__status == 'idle') {
+        dispatch(getModelCategories())
+      }
+      if (brandsData__status == 'idle') {
+        dispatch(getAllBrands({}))
+      }
+      if (modelPlatformsData__status == 'idle') {
+        dispatch(getModelPlatforms())
+      }
+      if (renderPlatformsData__status == 'idle') {
+        dispatch(getRenderPlatforms())
+      }
+      if (colorsData__status == 'idle') {
+        dispatch(getAllColors())
+      }
+      if (materialsData__status == 'idle') {
+        dispatch(getAllMaterials())
+      }
     }
   }, [
-    dispatch,
+    profile,
     stylesData__status,
     categoriesData__status,
     brandsData__status,

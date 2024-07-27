@@ -20,6 +20,7 @@ import UserProfile from '../../../components/screens/users/one';
 import { getAuthorInteriors } from '../../../data/get_author_interiors';
 import { getCategoriesByUserDownloads, getCategoriesByUserInteriors } from '../../../data/categories';
 import { getAllBrandsByUserDownloads } from '../../../data/get_brands_by_user_downloads';
+import { selectMyProfile } from '../../../data/me';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -50,17 +51,20 @@ export default function OneProduct() {
   const dispatch = useDispatch<any>();
   const user = useSelector((state: any) => state?.get_designer);
   const getUser__status = useSelector((state: any) => state?.get_designer?.status);
+  const profile = useSelector(selectMyProfile)
 
   const params = useParams<{ username: string }>();
 
   React.useEffect(() => {
-    dispatch(getDesignerProfile(params.username))
-    dispatch(getDesignerDownloads({ username: params.username }))
-    dispatch(getCategoriesByUserDownloads(params.username))
-    dispatch(getCategoriesByUserInteriors(params.username))
-    dispatch(getAllBrandsByUserDownloads({ username: params.username }))
-    dispatch(getAuthorInteriors({ author: params.username }))
-  }, [])
+    if (profile) {
+      dispatch(getDesignerProfile(params.username))
+      dispatch(getDesignerDownloads({ username: params.username }))
+      dispatch(getCategoriesByUserDownloads(params.username))
+      dispatch(getCategoriesByUserInteriors(params.username))
+      dispatch(getAllBrandsByUserDownloads({ username: params.username }))
+      dispatch(getAuthorInteriors({ author: params.username }))
+    }
+  }, [profile])
 
   if (getUser__status === "succeeded") {
     return (

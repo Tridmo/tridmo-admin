@@ -5,10 +5,10 @@ import { CookiesProvider } from "react-cookie";
 import { AuthProvider } from '@/components/providers/auth'
 import store from "@/store";
 import ThemeProviderWrapper from '@/theme/ThemeProvider';
-import React, { Suspense } from 'react';
-import { NavigationEvents } from './navigation_events';
-import { PersistGate } from 'redux-persist/integration/react'
-import WeavyProvider from './weavy';
+import React from 'react';
+import dynamic from 'next/dynamic';
+
+const WeavyProvider = dynamic(() => import('./weavy'), { ssr: false });
 
 export default function Providers({
   children,

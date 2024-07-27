@@ -41,6 +41,8 @@ import { reducer as get_brands_by_user_downloads } from '../data/get_brands_by_u
 import { reducer as get_model_interiors } from '../data/get_model_interiors';
 import { reducer as chat } from '../data/chat';
 import { reducer as get_chat_token } from '../data/get_chat_token';
+import { reducer as get_notifications } from '../data/get_notifications';
+import { reducer as toggle_cart } from '../data/toggle_cart';
 
 
 
@@ -87,6 +89,8 @@ const rootReducer = combineReducers({
   get_model_interiors: get_model_interiors,
   chat: chat,
   get_chat_token: get_chat_token,
+  get_notifications: get_notifications,
+  toggle_cart: toggle_cart,
 });
 
 export default rootReducer;

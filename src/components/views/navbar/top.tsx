@@ -26,6 +26,7 @@ import { setAuthState } from '../../../data/login';
 import Cookies from 'js-cookie'
 import { IMAGES_BASE_URL } from '../../../utils/image_src';
 import RouteCrumbs from './route_crumbs';
+import { ChatOutlined } from '@mui/icons-material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -101,19 +102,6 @@ export default function NavbarTop() {
 
   const openRightBar = () => {
     dispatch(switch_on(true))
-
-    // if (router.pathname === '/models' || router.pathname === '/interiors') {
-    //     router.push({
-    //         query: {
-    //             page: getModelPageFilter,
-    //             isOpen: true,
-    //             colors: getModelColorFilter,
-    //             styles: getModelStyleFilter,
-    //             category_name: getModelCategoryNameFilter,
-    //             category: getModelCategoryFilter,
-    //         },
-    //     });
-    // }
   }
 
   return (
@@ -199,6 +187,26 @@ export default function NavbarTop() {
               }}
               className="header__actions"
             >
+              <IconButton
+                onClick={openRightBar}
+                aria-label="menu"
+                sx={{ marginRight: "16px", backgroundColor: false ? 'rgba(0, 0, 0, 0.04)' : 'transparent' }}
+              >
+                <Image
+                  src="/icons/bell-icon.svg"
+                  alt='Bell'
+                  width={21}
+                  height={21}
+                ></Image>
+              </IconButton>
+
+              <Link href={'/chat'}>
+                <IconButton
+                  sx={{ marginRight: "16px", }}
+                >
+                  <ChatOutlined htmlColor='#424242' />
+                </IconButton>
+              </Link>
 
               <Box
                 onClick={handleClick}

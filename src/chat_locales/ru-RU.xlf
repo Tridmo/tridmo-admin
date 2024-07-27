@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file target-language="ru-RU" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+		<body>
+			<trans-unit id="s3bdfdd0bd23b0c44">
+				<source>
+					Сервер отключен, повторите попытку через несколько минут...
+				</source>
+			</trans-unit>
+			<trans-unit id="s527d43090df3bdb7">
+				<source>
+					Сейчас вы не в сети.
+				</source>
+			</trans-unit>
+			<trans-unit id="s3c1bff8f22445f9e">
+				<source>
+					Здесь пока ничего интересного.
+				</source>
+			</trans-unit>
+			<trans-unit id="s737d13effc0cee9d">
+				<source>
+					Предварительный просмотр недоступен :(
+				</source>
+			</trans-unit>
+			<trans-unit id="s1ea911617f4bf7e7">
+				<source>
+					Открыть в
+					<x id="0" equiv-text="${this.provider}" />
+					?
+				</source>
+			</trans-unit>
+			<trans-unit id="s417b90913e05bc17">
+				<source>
+					Предварительный просмотр
+				</source>
+			</trans-unit>
+			<trans-unit id="sc65ea2cf2f21a13a">
+				<source>
+					Уменьшить
+				</source>
+			</trans-unit>
+			<trans-unit id="s236ae937cbcd6a39">
+				<source>
+					Увеличить
+				</source>
+			</trans-unit>
+			<trans-unit id="s473ac9da86ea91f9">
+				<source>
+					По ширине
+				</source>
+			</trans-unit>
+			<trans-unit id="s2ea30e6262e90c5b">
+				<source>
+					По размеру экрана
+				</source>
+			</trans-unit>
+			<trans-unit id="s26f91b6796e33111">
+				<source>
+					Восстановить
+				</source>
+			</trans-unit>
+			<trans-unit id="sdc673e73b5c13aea">
+				<source>
+					Удалить
+				</source>
+			</trans-unit>
+			<trans-unit id="s9fb1c9e781c38ec2">
+				<source>
+					Открыть в
+					<x id="0" equiv-text="${fileProvider}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="sd3386a2ef42e80b9">
+				<source>
+					Скачать
+				</source>
+			</trans-unit>
+			<trans-unit id="s60320a18282b2b33">
+				<source>
+					Переименовать
+				</source>
+			</trans-unit>
+			<trans-unit id="s0d7fcbf8f03c7116">
+				<source>
+					Отписаться
+				</source>
+			</trans-unit>
+			<trans-unit id="s58aac558ddaa15a3">
+				<source>
+					Подписаться
+				</source>
+			</trans-unit>
+			<trans-unit id="s9ebb630d372e4145">
+				<source>
+					Корзина
+				</source>
+			</trans-unit>
+			<trans-unit id="s2359515613fb2d9a">
+				<source>
+					Комментарий удален.
+				</source>
+			</trans-unit>
+			<trans-unit id="s8f4be9f086eb530f">
+				<source>
+					Отменить
+				</source>
+			</trans-unit>
+			<trans-unit id="sbcee3db8f10c0f9c">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					добавлен
+					<x id="1" equiv-text="${fileName}" />
+					в
+					<x id="2" equiv-text="${appName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="hd424f1e143fa57e9">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					добавлен
+					<x id="1" equiv-text="&lt;em&gt;${ fileName}&lt;/em&gt;" />
+					в
+					<x id="2" equiv-text="&lt;strong&gt;${appName}&lt;/strong&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="sc02b2394071115dc">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отредактировано
+					<x id="1" equiv-text="${fileName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="h01130b08c68f9a5e">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отредактировано
+					<x id="1" equiv-text="&lt;em&gt;${ имя_файла}&lt;/em&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="s3732b439b691ea10">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					прокомментировал
+					<x id="1" equiv-text="${fileName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="hf66c4d1a8623e3f6">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					оставил комментарий к
+					<x id="1" equiv-text="&lt;em&gt;$ {fileName}&lt;/em&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="h25b3f8f8b362512a">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					оставил комментарий к
+					<x id="1" equiv-text="&lt;strong&gt;$ {appName}&lt;/strong&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="s155459b88b1ea946">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					ответил на ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="hac73f0c2a8a81295">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					ответил на ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="sa03f857bf0a8da28">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					ответил на сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="h4de4b38bbb77efd1">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					ответил на сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="s89d4ec73de971102">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					упомянул вас в комментарии
+				</source>
+			</trans-unit>
+			<trans-unit id="h7dbb7ebbddd1e749">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					упомянул вас в комментарии
+				</source>
+			</trans-unit>
+			<trans-unit id="s8b635140729fa01d">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					опубликовано в
+					<x id="1" equiv-text="${appName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="hc347e1c50a2cbca3">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					опубликовано в
+					<x id="1" equiv-text="&lt;strong&gt;$ {appName}&lt;/strong&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="s862e32090efc3ff3">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					упомянул вас в сообщении
+				</source>
+			</trans-unit>
+			<trans-unit id="h1c3b785e6e3a8e66">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					упомянул вас в сообщении
+				</source>
+			</trans-unit>
+			<trans-unit id="s705788463d78fe90">
+				<source>
+					Новое сообщение от
+					<x id="0" equiv-text="${name}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="h9ca2f3f1d2bab6a3">
+				<source>
+					Новое сообщение от
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="s4985d93aab4206ee">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отправил сообщение в
+					<x id="1" equiv-text="${appName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="hd9c939638dd93e26">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отправил сообщение в
+					<x id="1" equiv-text="&lt;strong&gt;${appName}&lt;/strong&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="s9ad031fe2ca83e58">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					упомянул вас в сообщении
+				</source>
+			</trans-unit>
+			<trans-unit id="h58b3d0836b9c096b">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					упомянул вас в сообщении
+				</source>
+			</trans-unit>
+			<trans-unit id="s49d5970ba2260205">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отредактировал сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="h553c0e517daf2138">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отредактировал сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="s400d02db3723548e">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					понравился
+					<x id="1" equiv-text="${fileName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="hdf80c9b60917645e">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					понравился
+					<x id="1" equiv-text="&lt;em&gt;${ имя_файла}&lt;/em&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="sde63c2e93c5e1d54">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					на
+					<x id="2" equiv-text="${fileName}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="h38e95b7f86619e86">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					в
+					<x id="2" equiv-text="&lt;em&gt;${fileName}&lt;/em&gt;" />
+				</source>
+			</trans-unit>
+			<trans-unit id="seb5b50de97156156">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					понравился ваш комментарий
+				</source>
+			</trans-unit>
+			<trans-unit id="hec9260735fe49119">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					понравился ваш комментарий
+				</source>
+			</trans-unit>
+			<trans-unit id="s9d791f9471ce2450">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					на ваш комментарий
+				</source>
+			</trans-unit>
+			<trans-unit id="h9c07a82c6eebf5c1">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					к вашему комментарию
+				</source>
+			</trans-unit>
+			<trans-unit id="sc415bef8633075ec">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					понравилось ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="hcb4eab821844b51b">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					понравилось ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="se687fac361e868f6">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					на ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="hdaefe9c8c54b22f3">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					на ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="s8f5a7ee3698b3a1f">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					понравился ваш пост
+				</source>
+			</trans-unit>
+			<trans-unit id="he6123e657aaaff16">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					понравился ваш пост
+				</source>
+			</trans-unit>
+			<trans-unit id="s84c4982a56c56159">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					на ваше сообщение
+				</source>
+			</trans-unit>
+			<trans-unit id="h9103c911268b0c9e">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					отреагировал
+					<x id="1" equiv-text="${reaction}" />
+					к вашему посту
+				</source>
+			</trans-unit>
+			<trans-unit id="s19a7a03b4b8cfd32">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					проголосовал в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="hb7e18fe8a4d7621d">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					проголосовал в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="s34ca77bbc683247b">
+				<source>
+					<x id="0" equiv-text="${name1}" />
+					и
+					<x id="1" equiv-text="${name2}" />
+					проголосовали в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="h806676f9cb17dc43">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name1}&lt;/strong&gt;" />
+					и
+					<x id="1" equiv-text="&lt;strong&gt;${ name2}&lt;/strong&gt;" />
+					голосовал в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="sc68f2f748870a6eb">
+				<source>
+					<x id="0" equiv-text="${name1}" />
+					,
+					<x id="1" equiv-text="${name2}" />
+					и
+					<x id="2" equiv-text="${name3}" />
+					голосовал в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="hd101f9562d8144ba">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name1}&lt;/strong&gt;" />
+					,
+					<x id="1" equiv-text="&lt;strong&gt;${ name2}&lt;/strong&gt;" />
+					и
+					<x id="2" equiv-text="&lt;strong&gt;${name3}&lt;/strong&gt;" />
+					проголосовали в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="s6eb27836e516576a">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					и
+					<x id="1" equiv-text="${count}" />
+					других проголосовали в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="heea6eb8beac3fd2f">
+				<source>
+					<x id="0" equiv-text="&lt;strong&gt;${name}&lt;/strong&gt;" />
+					и
+					<x id="1" equiv-text="${count}" />
+					другие голосовали в вашем опросе
+				</source>
+			</trans-unit>
+			<trans-unit id="s9ff2ac475c7b07db">
+				<source>
+					Реакция
+				</source>
+			</trans-unit>
+			<trans-unit id="sfef95f1ec987bff3">
+				<source>
+					Встреча в Zoom
+				</source>
+			</trans-unit>
+			<trans-unit id="s72180ed8bd45fa30">
+				<source>
+					Встреча команд
+				</source>
+			</trans-unit>
+			<trans-unit id="s75d8b6d20cb17169">
+				<source>
+					Google Meet
+				</source>
+			</trans-unit>
+			<trans-unit id="sff2f8a87373e1d2a">
+				<source>
+					Встреча завершена
+				</source>
+			</trans-unit>
+			<trans-unit id="s96cf128ca399b6fc">
+				<source>
+					Присоединиться к встрече
+				</source>
+			</trans-unit>
+			<trans-unit id="s52caf8c8abd32779">
+				<source>
+					Голосование за
+					<x id="0" equiv-text="${this.option.text}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="sbed0d484327fe0c8">
+				<source>
+					отредактировано
+				</source>
+			</trans-unit>
+			<trans-unit id="s64ef2a6c2dd1d3d1">
+				<source>
+					Изменить
+				</source>
+			</trans-unit>
+			<trans-unit id="s2a200f62cfdb269c">
+				<source>
+					Облачный браузер файлов
+				</source>
+			</trans-unit>
+			<trans-unit id="sc16e00a7a8b2fde2">
+				<source>
+					Назад
+				</source>
+			</trans-unit>
+			<trans-unit id="s8ad15eeb66d528ff">
+				<source>
+					Выберите сайт Confluence
+				</source>
+			</trans-unit>
+			<trans-unit id="sa51cfa5b38f02434">
+				<source>
+					Выбор страницы Confluence
+				</source>
+			</trans-unit>
+			<trans-unit id="s79145f82d32504e5">
+				<source>
+					С устройства
+				</source>
+			</trans-unit>
+			<trans-unit id="s1d2863ddb9533fcc">
+				<source>
+					Из облака
+				</source>
+			</trans-unit>
+			<trans-unit id="s1302c950c73f84cd">
+				<source>
+					Команды Майкрософт
+				</source>
+			</trans-unit>
+			<trans-unit id="sb33fd019a70e1a18">
+				<source>
+					Голосование
+				</source>
+			</trans-unit>
+			<trans-unit id="s251a18781c6a3625">
+				<source>
+					+ добавить опцию
+				</source>
+			</trans-unit>
+			<trans-unit id="sfaacc9c26728c711">
+				<source>
+					Перетащите сюда файлы для загрузки.
+				</source>
+			</trans-unit>
+			<trans-unit id="se9beb5e1e43f9764">
+				<source>
+					Редактировать комментарий
+				</source>
+			</trans-unit>
+			<trans-unit id="sbe2dba1939d68a7a">
+				<source>
+					Редактировать комментарий...
+				</source>
+			</trans-unit>
+			<trans-unit id="sed073ac6112070e7">
+				<source>
+					Создать комментарий...
+				</source>
+			</trans-unit>
+			<trans-unit id="sc374276841a6c39e">
+				<source>
+					Версии недоступны для внешних облачных файлов.
+				</source>
+			</trans-unit>
+			<trans-unit id="sdc12d4d35420eeb7">
+				<source>
+					Комментарии
+				</source>
+			</trans-unit>
+			<trans-unit id="se19e2ed58cd65d6c">
+				<source>
+					Версии
+				</source>
+			</trans-unit>
+			<trans-unit id="s46cbf33973ae5386">
+				<source>
+					Восстановить боковую панель
+				</source>
+			</trans-unit>
+			<trans-unit id="s9c4d64a06ba60af0">
+				<source>
+					Развернуть боковую панель
+				</source>
+			</trans-unit>
+			<trans-unit id="s6e68e284db76e5b4">
+				<source>
+					Виденный
+					<x id="0" equiv-text="${member.display_name}" />
+					в
+					<x id="1" equiv-text="${dateSeenFull}" />
+				</source>
+			</trans-unit>
+			<trans-unit id="sd3b60ec2f9fb421b">
+				<source>
+					Новые сообщения
+				</source>
+			</trans-unit>
+			<trans-unit id="s275e39c24f663f7e">
+				<source>
+					Начни разговор!
+				</source>
+			</trans-unit>
+			<trans-unit id="s16430e1864d70df9">
+				<source>
+					Введите сообщение...
+				</source>
+			</trans-unit>
+			<trans-unit id="s5bb4026da28b7914">
+				<source>
+					пометить, как прочитанное
+				</source>
+			</trans-unit>
+			<trans-unit id="sb5d1c3e0fa747687">
+				<source>
+					Отметить как непрочитанное
+				</source>
+			</trans-unit>
+			<trans-unit id="sf993bb199fefbe04">
+				<source>
+					Все
+				</source>
+			</trans-unit>
+			<trans-unit id="sf8e156354e5bacb8">
+				<source>
+					Деятельность
+				</source>
+			</trans-unit>
+			<trans-unit id="s4880dc3125543292">
+				<source>
+					Упоминания
+				</source>
+			</trans-unit>
+			<trans-unit id="se47f210d062e8068">
+				<source>
+					Обновлений пока нет.
+				</source>
+			</trans-unit>
+			<trans-unit id="sfeddbc6c931b7ad7">
+				<source>
+					отметить все как прочитанное
+				</source>
+			</trans-unit>
+			<trans-unit id="s5be3c6d61cd9182f">
+				<source>
+					Уведомления
+				</source>
+			</trans-unit>
+			<trans-unit id="s7c23790a4d2b3420">
+				<source>
+					Вы еще не подписаны на обновления.
+				</source>
+			</trans-unit>
+			<trans-unit id="s57a6b59f8e17ed4b">
+				<source>
+					Заменить существующий файл?
+				</source>
+			</trans-unit>
+			<trans-unit id="s2a8434b16dc214a3">
+				<source>
+					Заменять
+				</source>
+			</trans-unit>
+			<trans-unit id="s9252c3f0ce55297b">
+				<source>
+					Добавить файлы
+				</source>
+			</trans-unit>
+			<trans-unit id="s0b3525368392bc8b">
+				<source>
+					Конфликт файлов
+				</source>
+			</trans-unit>
+			<trans-unit id="s6271883e61d007c2">
+				<source>
+					Ошибка загрузки
+				</source>
+			</trans-unit>
+			<trans-unit id="s78636b92c1a3909c">
+				<source>
+					В ожидании
+				</source>
+			</trans-unit>
+			<trans-unit id="se725f4eac532d6d0">
+				<source>
+					Все загрузки завершены
+				</source>
+			</trans-unit>
+			<trans-unit id="sef49aec68fd1dc66">
+				<source>
+					Имя
+				</source>
+			</trans-unit>
+			<trans-unit id="s7f47cec3e840a432">
+				<source>
+					Модифицированный
+				</source>
+			</trans-unit>
+			<trans-unit id="s78789724e789221c">
+				<source>
+					Размер
+				</source>
+			</trans-unit>
+			<trans-unit id="s94c650bef124bd01">
+				<source>
+					По возрастанию
+				</source>
+			</trans-unit>
+			<trans-unit id="s15bdec250a4a55fb">
+				<source>
+					По убыванию
+				</source>
+			</trans-unit>
+			<trans-unit id="s45a359a3fa397256">
+				<source>
+					Посмотреть список
+				</source>
+			</trans-unit>
+			<trans-unit id="sb206d032da78e466">
+				<source>
+					Вид сетки
+				</source>
+			</trans-unit>
+			<trans-unit id="s2b85774393f15042">
+				<source>
+					Скрыть мусор
+				</source>
+			</trans-unit>
+			<trans-unit id="s426827ed0daf0c4f">
+				<source>
+					Показать удаленные
+				</source>
+			</trans-unit>
+			<trans-unit id="s728c109d24cb2252">
+				<source>
+					Скачать файлы
+				</source>
+			</trans-unit>
+			<trans-unit id="sd7c7478edbbcced8">
+				<source>
+					Действия с файлами
+				</source>
+			</trans-unit>
+			<trans-unit id="s70af97de3ad8fb23">
+				<source>
+					Добрый
+				</source>
+			</trans-unit>
+			<trans-unit id="sa667dd9e4a8a6750">
+				<source>
+					Добавьте несколько файлов, чтобы начать!
+				</source>
+			</trans-unit>
+			<trans-unit id="s12b57a05d9905236">
+				<source>
+					По вашему запросу не найдено ни одного человека.
+				</source>
+			</trans-unit>
+			<trans-unit id="se323ece17b96a4df">
+				<source>
+					Больше пользователей не найдено.
+				</source>
+			</trans-unit>
+			<trans-unit id="sffa721bb6aa3128d">
+				<source>
+					Поиск...
+				</source>
+			</trans-unit>
+			<trans-unit id="s4854cd48f30ff8ee">
+				<source>
+					Люди
+				</source>
+			</trans-unit>
+			<trans-unit id="sf7a5eea7c80c2137">
+				<source>
+					Боты
+				</source>
+			</trans-unit>
+			<trans-unit id="s382a2aa3984474dd">
+				<source>
+					Создавать
+				</source>
+			</trans-unit>
+			<trans-unit id="s355b21b89ce5d9c5">
+				<source>
+					Подробности
+				</source>
+			</trans-unit>
+			<trans-unit id="se2afa9653ced894f">
+				<source>
+					Выберите изображение
+				</source>
+			</trans-unit>
+			<trans-unit id="s08313776ae04f67f">
+				<source>
+					Удалить изображение
+				</source>
+			</trans-unit>
+			<trans-unit id="s4020ae71422bf3cd">
+				<source>
+					Название комнаты
+				</source>
+			</trans-unit>
+			<trans-unit id="s49360e6ce199180f">
+				<source>
+					Изменение названия группового чата меняет его для всех.
+				</source>
+			</trans-unit>
+			<trans-unit id="s9f5a5f23312798f0">
+				<source>
+					Члены
+				</source>
+			</trans-unit>
+			<trans-unit id="saae1c70e168b45b4">
+				<source>
+					Админ
+				</source>
+			</trans-unit>
+			<trans-unit id="s215e54ddbbcc5f07">
+				<source>
+					Выйти из разговора
+				</source>
+			</trans-unit>
+			<trans-unit id="sb38253b7012e60c5">
+				<source>
+					Удалить участника
+				</source>
+			</trans-unit>
+			<trans-unit id="s03844c0e2397a948">
+				<source>
+					Удалить от имени администратора
+				</source>
+			</trans-unit>
+			<trans-unit id="sbcf612e1db77bcec">
+				<source>
+					Сделать администратором
+				</source>
+			</trans-unit>
+			<trans-unit id="s515e890f5b7dece7">
+				<source>
+					Добавить участников
+				</source>
+			</trans-unit>
+			<trans-unit id="s0204546ecda4bd3f">
+				<source>
+					Беседа без названия
+				</source>
+			</trans-unit>
+			<trans-unit id="scb6a9c1a1757adbc">
+				<source>
+					Ты
+				</source>
+			</trans-unit>
+			<trans-unit id="sbc0cd0b4dfb7dde1">
+				<source>
+					Открепить
+				</source>
+			</trans-unit>
+			<trans-unit id="s8db89619f41917b4">
+				<source>
+					Закрепить
+				</source>
+			</trans-unit>
+			<trans-unit id="sb5d079518d9b14e2">
+				<source>
+					Снять пометку
+				</source>
+			</trans-unit>
+			<trans-unit id="sd98b59251f065471">
+				<source>
+					Пометить
+				</source>
+			</trans-unit>
+			<trans-unit id="s0058d65423075c1c">
+				<source>
+					Новый разговор
+				</source>
+			</trans-unit>
+			<trans-unit id="sf001ba58cf846564">
+				<source>
+					Мессенджер
+				</source>
+			</trans-unit>
+			<trans-unit id="s1a60287b81ec038c">
+				<source>
+					Искать разговоры...
+				</source>
+			</trans-unit>
+			<trans-unit id="s2662796b3275bb5b">
+				<source>
+					Создайте разговор, чтобы начать.
+				</source>
+			</trans-unit>
+			<trans-unit id="scd9d7826cea1fd2d">
+				<source>
+					Выберите разговор
+				</source>
+			</trans-unit>
+			<trans-unit id="sab28965d6b550459">
+				<source>
+					Пост был уничтожен.
+				</source>
+			</trans-unit>
+			<trans-unit id="s6acd68c5d25381a5">
+				<source>
+					<x id="0" equiv-text="${this.commentCount}" />
+					комментарии
+				</source>
+			</trans-unit>
+			<trans-unit id="s343f95633406dc81">
+				<source>
+					1 Комментарий
+				</source>
+			</trans-unit>
+			<trans-unit id="s8b4c8439803b5b65">
+				<source>
+					Редактировать пост
+				</source>
+			</trans-unit>
+			<trans-unit id="s4e53b5a018b324d9">
+				<source>
+					Редактировать пост...
+				</source>
+			</trans-unit>
+			<trans-unit id="sf863f06a8efefe1e">
+				<source>
+					Создать публикацию...
+				</source>
+			</trans-unit>
+			<trans-unit id="sb357ea19a722d827">
+				<source>
+					Почта
+				</source>
+			</trans-unit>
+			<trans-unit id="sf60480d4fe3a8e08">
+				<source>
+					<x id="0" equiv-text="${name}" />
+					печатает
+					<x id="1" equiv-text="${ellipsis}" />
+				</source>
+				<note from="lit-localize">
+					А печатает...
+				</note>
+			</trans-unit>
+			<trans-unit id="s2cc555789d54845c">
+				<source>
+					<x id="0" equiv-text="${nameList}" />
+					печатают
+					<x id="1" equiv-text="${ellipsis}" />
+				</source>
+				<note from="lit-localize">
+					А, Б и С пишут...
+				</note>
+			</trans-unit>
+			<trans-unit id="saf84ec86139d349e">
+				<source>
+					Комментировать
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для комментирования
+				</note>
+			</trans-unit>
+			<trans-unit id="sc00a88b90cd60661">
+				<source>
+					Отказаться
+				</source>
+				<note from="lit-localize">
+					Действие кнопки, которое нужно отменить
+				</note>
+			</trans-unit>
+			<trans-unit id="s9bfc95548d124b1c">
+				<source>
+					Реагировать
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для реагирования
+				</note>
+			</trans-unit>
+			<trans-unit id="sea4f08110bb8f15d">
+				<source>
+					Убрать
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для удаления
+				</note>
+			</trans-unit>
+			<trans-unit id="sf59f359396914fa2">
+				<source>
+					Убрать все
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для удаления всех
+				</note>
+			</trans-unit>
+			<trans-unit id="s57adf424d57c8a0f">
+				<source>
+					Отправлять
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для отправки
+				</note>
+			</trans-unit>
+			<trans-unit id="s8b0432eecbd8b034">
+				<source>
+					Обновлять
+				</source>
+				<note from="lit-localize">
+					Действие кнопки для обновления
+				</note>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

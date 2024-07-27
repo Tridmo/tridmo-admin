@@ -8,6 +8,7 @@ import ThemeProviderWrapper from '@/theme/ThemeProvider';
 import React, { Suspense } from 'react';
 import { NavigationEvents } from './navigation_events';
 import { PersistGate } from 'redux-persist/integration/react'
+import WeavyProvider from './weavy';
 
 export default function Providers({
   children,
@@ -21,7 +22,9 @@ export default function Providers({
       <CookiesProvider>
         <AuthProvider>
           <ThemeProviderWrapper>
-            {children}
+            <WeavyProvider>
+              {children}
+            </WeavyProvider>
           </ThemeProviderWrapper>
         </AuthProvider>
       </CookiesProvider>

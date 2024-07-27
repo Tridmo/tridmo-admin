@@ -39,6 +39,8 @@ import { reducer as get_tags_stats } from '../data/statistics/get_tags_stats';
 import { reducer as get_designer_downloads } from '../data/get_designer_downloads';
 import { reducer as get_brands_by_user_downloads } from '../data/get_brands_by_user_downloads';
 import { reducer as get_model_interiors } from '../data/get_model_interiors';
+import { reducer as chat } from '../data/chat';
+import { reducer as get_chat_token } from '../data/get_chat_token';
 
 
 
@@ -83,6 +85,8 @@ const rootReducer = combineReducers({
   get_designer_downloads: get_designer_downloads,
   get_brands_by_user_downloads: get_brands_by_user_downloads,
   get_model_interiors: get_model_interiors,
+  chat: chat,
+  get_chat_token: get_chat_token,
 });
 
 export default rootReducer;

@@ -10,10 +10,11 @@ interface Props {
   }[];
   sx?: SxProps;
   fullWidth?: boolean;
+  fill?: boolean;
   loading?: boolean;
 }
 
-export default function BrickDataGrid({ data, sx, loading, fullWidth }: Props) {
+export default function BrickDataGrid({ data, sx, loading, fullWidth, fill }: Props) {
 
   const fakeData = Array.from({ length: 5 })
 
@@ -29,10 +30,10 @@ export default function BrickDataGrid({ data, sx, loading, fullWidth }: Props) {
         !loading ?
           data.map((elem, ind) => (
             <Grid item
-              xs={fullWidth ? 12 : false}
-              lg={fullWidth ? 12 : false}
-              md={fullWidth ? 12 : false}
-              sm={fullWidth ? 12 : false}
+              xs={fullWidth ? 12 : !!fill}
+              lg={fullWidth ? 12 : !!fill}
+              md={fullWidth ? 12 : !!fill}
+              sm={fullWidth ? 12 : !!fill}
               key={ind}
               sx={{
                 p: '24px',
@@ -48,6 +49,7 @@ export default function BrickDataGrid({ data, sx, loading, fullWidth }: Props) {
               >
                 <SimpleTypography
                   sx={{
+                    minWidth: '150px',
                     fontSize: '16px',
                     fontWeight: 400,
                     lineHeight: '20px',

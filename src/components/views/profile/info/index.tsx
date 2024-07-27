@@ -186,6 +186,7 @@ export default function ProfileInfo(props: ProfileProps) {
 
             <Grid item xs={12}>
               <BrickDataGrid
+                fill
                 loading={!profileInfo}
                 data={[
                   {

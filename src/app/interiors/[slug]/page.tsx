@@ -15,6 +15,7 @@ import { getTopModels } from '../../../data/get_top_models';
 import OneInterior from '@/components/screens/interiors/one';
 import { getComments } from '../../../data/get_comments';
 import { selectMyProfile } from '../../../data/me';
+import { setSelectedInterior } from '../../../data/modal_checker';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -57,6 +58,7 @@ export default function OneProduct() {
   React.useEffect(() => {
     if (selectedInterior) {
       dispatch(getComments({ entity_id: selectedInterior?.id }))
+      dispatch(setSelectedInterior(selectedInterior))
     }
   }, [selectedInterior])
 

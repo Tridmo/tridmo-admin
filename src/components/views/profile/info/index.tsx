@@ -7,10 +7,10 @@ import Link from 'next/link';
 import Buttons from '../../../buttons';
 import { useRouter } from 'next/navigation';
 import { sampleUser } from '@/data/samples';
-import { selectDesignerProfile } from '../../../../data/get_designer';
+import { getDesignerProfile, selectDesignerProfile } from '../../../../data/get_designer';
 import { selectMyProfile } from '../../../../data/me';
 import { IMAGES_BASE_URL } from '../../../../utils/image_src';
-import { setProfileEditState, setOpenModal } from '../../../../data/modal_checker';
+import { setProfileEditState, setOpenModal, ConfirmContextProps, setConfirmProps, setConfirmState, resetConfirmProps, resetConfirmData, setEditingProfile } from '../../../../data/modal_checker';
 import formatDate from '../../../../utils/format_date';
 import CountsGrid from '../../statistics/counts_component';
 import BrickDataGrid from '../../../bricks_grid';
@@ -19,11 +19,13 @@ import UserInteriorsList from '../interiors_list';
 import { selectCategoriesByUserDownloads } from '../../../../data/categories';
 import SimpleCountsList from '../simple_counts_list';
 import { selectAllBrandsByUserDownloads } from '../../../../data/get_brands_by_user_downloads';
-import { Block, DeleteForever, Launch, ModeEdit, RateReview, SmsOutlined } from '@mui/icons-material';
+import { Block, DeleteForever, Launch, LockOpen, LockOutlined, ModeEdit, RateReview, SmsOutlined } from '@mui/icons-material';
 import { selectChatToken } from '../../../../data/get_chat_token';
 import Cookies from 'js-cookie';
-import { chatApi, setChatToken } from '../../../../utils/axios';
+import instance, { chatApi, setChatToken } from '../../../../utils/axios';
 import { setSelectedConversation } from '../../../../data/chat';
+import { toast } from 'react-toastify';
+import { getAllDesigners } from '../../../../data/get_all_designers';
 
 const tableWrapperSx: SxProps = {
   boxShadow: '0px 3px 4px 0px #00000014',
@@ -60,12 +62,16 @@ interface ProfileProps {
 
 export default function ProfileInfo(props: ProfileProps) {
   const router = useRouter()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
   const getProfileStatus = useSelector((state: any) => props?.of == 'designer' ? state?.get_designer?.status : state?.get_profile?.status)
   const profileInfo = useSelector(props?.of == 'designer' ? selectDesignerProfile : selectMyProfile)
   const all__categories = useSelector(selectCategoriesByUserDownloads)
   const all__brands = useSelector(selectAllBrandsByUserDownloads)
   const chatToken = useSelector(selectChatToken)
+
+  const getUserNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
+  const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.users_orderby)
+  const getUsersOrder = useSelector((state: any) => state?.handle_filters?.users_order)
 
   async function handleCreateConversation() {
 
@@ -78,6 +84,102 @@ export default function ProfileInfo(props: ProfileProps) {
         dispatch(setSelectedConversation(res?.data?.id))
         router.push('/chat')
       })
+  }
+
+  function handleClickEdit() {
+    dispatch(setEditingProfile(profileInfo))
+    dispatch(setProfileEditState(true))
+    dispatch(setOpenModal(true))
+  }
+
+  function handleClickBan() {
+    const modalContent: ConfirmContextProps = {
+      message: `Вы уверены, что хотите ${profileInfo?.is_banned ? 'разблокировать' : 'заблокировать'} ${profileInfo?.full_name}?`,
+      actions: {
+        on_click: {
+          args: [profileInfo?.user_id],
+          func: async (checked: boolean, id: number) => {
+            dispatch(setConfirmProps({ is_loading: true }))
+            instance.post(`users/${profileInfo?.is_banned ? 'unban' : 'ban'}/${id}`, { permanent: true })
+              .then(res => {
+                if (res?.data?.success) {
+                  toast.success(res?.data?.message)
+                  dispatch(getDesignerProfile(profileInfo?.username))
+                  dispatch(getAllDesigners({
+                    key: getUserNameFilter,
+                    orderBy: getUsersOrderBy,
+                    order: getUsersOrder,
+                  }))
+                  dispatch(setConfirmState(false))
+                  dispatch(setOpenModal(false))
+                  dispatch(resetConfirmProps())
+                  dispatch(resetConfirmData())
+                }
+                else {
+                  toast.success(res?.data?.message)
+                  dispatch(setConfirmProps({ is_loading: false }))
+                }
+              }).catch(err => {
+                toast.error(err?.response?.data?.message)
+                dispatch(setConfirmProps({ is_loading: false }))
+              }).finally(() => {
+                dispatch(setConfirmProps({ is_loading: false }))
+              })
+          }
+        }
+      }
+    }
+    dispatch(resetConfirmProps())
+    dispatch(setConfirmProps(modalContent))
+    dispatch(setConfirmState(true))
+    dispatch(setOpenModal(true))
+  }
+
+  function handleClickDelete() {
+    const modalContent: ConfirmContextProps = {
+      message: `Вы уверены, что хотите удалить ${profileInfo?.full_name}?`,
+      use_word_match: true,
+      word_match: `Удалить ${profileInfo?.full_name}`,
+      confirm_button_text: 'Да, удалить',
+      actions: {
+        on_click: {
+          args: [profileInfo?.user_id],
+          func: async (checked: boolean, id: number) => {
+            dispatch(setConfirmProps({ is_loading: true }))
+            instance.delete(`users/${id}`)
+              .then(res => {
+                if (res?.data?.success) {
+                  toast.success(res?.data?.message)
+                  dispatch(getAllDesigners({
+                    key: getUserNameFilter,
+                    orderBy: getUsersOrderBy,
+                    order: getUsersOrder,
+                  }))
+                  dispatch(setConfirmState(false))
+                  dispatch(setOpenModal(false))
+                  dispatch(resetConfirmProps())
+                  dispatch(resetConfirmData())
+                  router.refresh()
+                  router.push('/users')
+                }
+                else {
+                  toast.success(res?.data?.message)
+                  dispatch(setConfirmProps({ is_loading: false }))
+                }
+              }).catch(err => {
+                toast.error(err?.response?.data?.message)
+                dispatch(setConfirmProps({ is_loading: false }))
+              }).finally(() => {
+                dispatch(setConfirmProps({ is_loading: false }))
+              })
+          }
+        }
+      }
+    }
+    dispatch(resetConfirmProps())
+    dispatch(setConfirmProps(modalContent))
+    dispatch(setConfirmState(true))
+    dispatch(setOpenModal(true))
   }
 
   if (getProfileStatus == 'succeeded') {
@@ -141,6 +243,7 @@ export default function ProfileInfo(props: ProfileProps) {
                 >
                   <Grid item xs={5.8} md={5.8} sm={5.8}>
                     <Buttons
+                      onClick={handleClickEdit}
                       sx={{ padding: '10px !important' }}
                       className='bookmark__btn btn'
                       name="Редактировать"
@@ -162,16 +265,22 @@ export default function ProfileInfo(props: ProfileProps) {
                   </Grid>
                   <Grid item xs={5.8} md={5.8} sm={5.8}>
                     <Buttons
+                      onClick={handleClickBan}
                       sx={{ padding: '10px !important' }}
                       className='warning_outlined__btn btn'
-                      name="Блокировать"
+                      name={profileInfo?.is_banned ? "Разблокировать" : "Блокировать"}
                       childrenFirst={true}
                     >
-                      <Block sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                      {
+                        profileInfo?.is_banned ?
+                          <LockOpen sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                          : <LockOutlined sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                      }
                     </Buttons>
                   </Grid>
                   <Grid item xs={5.8} md={5.8} sm={5.8}>
                     <Buttons
+                      onClick={handleClickDelete}
                       sx={{ padding: '10px !important' }}
                       className='red_outlined__btn btn'
                       name="Удалить"

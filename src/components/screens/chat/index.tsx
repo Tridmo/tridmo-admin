@@ -8,11 +8,20 @@ import { selectMyProfile } from '../../../data/me';
 import { tokenFactory } from '../../../utils/chat';
 import { WyMessenger, useWeavy } from '@weavy/uikit-react';
 import { CHAT_SERVER_URL } from '../../../utils/env_vars';
+import { setRouteCrumbs } from '../../../data/route_crumbs';
 
 export default function Chat() {
 
+  const dispatch = useDispatch<any>()
   const selectedConversation = useSelector(selectSelectedConversation)
   const selected = selectedConversation;
+
+  useEffect(() => {
+    dispatch(setRouteCrumbs([{
+      title: 'Чат',
+      route: '/chat'
+    }]))
+  }, [])
 
   useEffect(() => {
     if (selected == selectedConversation) {

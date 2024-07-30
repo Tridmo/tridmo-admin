@@ -36,6 +36,7 @@ import { sampleModel } from "@/data/samples";
 import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 import instance from "@/utils/axios";
 import { selectMyProfile } from "../../../../data/me";
+import { modelStatuses } from "../../../../types/variables";
 
 export default function ModelInfo() {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -329,13 +330,7 @@ export default function ModelInfo() {
               </TableCell>
               <TableCell sx={TcStyle}>
                 <SimpleTypography
-                  text={
-                    simpleModel?.availability == 1
-                      ? "Доступно"
-                      : simpleModel?.availability == 2
-                        ? "Не доступно"
-                        : ""
-                  }
+                  text={modelStatuses[simpleModel?.availability]}
                   className="table__text"
                 />
               </TableCell>

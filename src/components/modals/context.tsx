@@ -4,9 +4,9 @@ import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { getMyProfile, resetMyProfile, selectMyProfile } from '../../data/me';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, ConfirmContextProps, setConfirmData, setConfirmState, resetConfirmProps, resetConfirmData, ConfirmData } from '../../data/modal_checker';
+import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, ConfirmContextProps, setConfirmData, setConfirmState, resetConfirmProps, resetConfirmData, ConfirmData, setInteriorStatusChangeState, setSelectedInterior, setEditingProfile } from '../../data/modal_checker';
 import { setAuthState } from "../../data/login";
-import { Box, Typography, Grid, Button, TextField, InputAdornment, IconButton, SxProps, Checkbox, FormControl, FormControlLabel, Tooltip, tooltipClasses, styled, TooltipProps } from '@mui/material';
+import { Box, Grid, Button, SxProps, Checkbox, FormControlLabel, Tooltip, tooltipClasses, styled, TooltipProps, ToggleButtonGroup, ToggleButton, toggleButtonGroupClasses, toggleButtonClasses } from '@mui/material';
 import Image from 'next/image';
 import SimpleTypography from '../typography'
 import Buttons from '../buttons';
@@ -23,6 +23,9 @@ import UsernameInputAdornments from '../inputs/username';
 import instance from '../../utils/axios';
 import { Help, HelpOutlineRounded } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
+import { getAllInteriors } from '../../data/get_all_interiors';
+import { interiorStatuses } from '../../types/variables';
+import { getDesignerProfile } from '../../data/get_designer';
 //Login context
 interface LoginContextProps {
   // setAlertMessage: any
@@ -193,6 +196,7 @@ export const ConfirmContext = () => {
 
   const [checked, setChecked] = React.useState<boolean>(false)
   const [loading, setLoading] = React.useState<boolean>(Boolean(confirm_props.is_loading))
+  const [word, setWord] = React.useState<string>('')
 
   React.useEffect(() => {
     dispatch(resetConfirmData())
@@ -279,6 +283,49 @@ export const ConfirmContext = () => {
             </Box>
             : null
         }
+        {
+          confirm_props?.use_word_match && confirm_props?.word_match ?
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                marginTop: '16px'
+              }}
+            >
+              <p
+                style={{
+                  fontWeight: 400,
+                  fontSize: '12px'
+                }}
+              >
+                Введите
+                <b
+                  style={{
+                    borderRadius: '4px',
+                    border: '1px solid #DA1515',
+                    backgroundColor: '#FBE9E9',
+                    color: '#BC2020',
+                    margin: '0 4px',
+                    padding: '0 8px'
+                  }}
+                >
+                  {confirm_props.word_match}
+                </b>
+                ниже, чтобы продолжить
+              </p>
+              <SimpleInp
+                value={word}
+                error={!word}
+                onChange={(e) => {
+                  setWord(e.target.value)
+                }}
+              />
+            </Box>
+            : <></>
+        }
       </Grid>
 
       <Grid
@@ -291,7 +338,7 @@ export const ConfirmContext = () => {
         <Buttons
           name='Отмена'
           className='cancel__btn'
-          disabled={loading}
+          // disabled={loading}
           onClick={() => {
             dispatch(setConfirmState(false))
             dispatch(setOpenModal(false))
@@ -301,10 +348,10 @@ export const ConfirmContext = () => {
         ></Buttons>
 
         <Buttons
-          name='Да'
+          name={confirm_props.confirm_button_text || 'Да'}
           className='confirm__btn'
           startIcon={loading}
-          disabled={loading}
+          disabled={loading || (confirm_props.use_word_match && (!word || word != confirm_props.word_match))}
           loadingColor='#fff'
           onClick={async () => {
             await confirm_props?.actions?.on_click.func(checked, ...confirm_props?.actions?.on_click.args)
@@ -315,6 +362,196 @@ export const ConfirmContext = () => {
         ></Buttons>
       </Grid>
     </Grid >
+  );
+}
+
+export const ChangeInteriorStatusContext = () => {
+  const authState = useSelector((state: any) => state?.auth_slicer?.authState);
+  const router = useRouter()
+  const dispatch = useDispatch<any>();
+  const [selected, setSelected] = React.useState<any>(null)
+
+  const selectedInterior = useSelector((state: any) => state?.modal_checker?.selectedInterior)
+  const getInteriorsCategoryFilter = useSelector((state: any) => state?.handle_filters?.interiors_categories)
+  const getInteriorsPageFilter = useSelector((state: any) => state?.handle_filters?.interiors_page)
+  const getInteriorsNameFilter = useSelector((state: any) => state?.handle_filters?.interiors_name)
+  const getInteriorsStatusFilter = useSelector((state: any) => state?.handle_filters?.interiors_status)
+  const getInteriorsOrderBy = useSelector((state: any) => state?.handle_filters?.interiors_orderby)
+  const getInteriorsOrder = useSelector((state: any) => state?.handle_filters?.interiors_order)
+
+  const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    [`& .${toggleButtonGroupClasses.root}`]: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    [`& .${toggleButtonGroupClasses.grouped}`]: {
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+      border: 0,
+      borderRadius: '4px',
+      [`&.${toggleButtonGroupClasses.disabled}`]: {
+        border: 0,
+      },
+    },
+    [`& .${toggleButtonGroupClasses.middleButton},& .${toggleButtonGroupClasses.lastButton}`]:
+    {
+      // marginLeft: -1,
+      borderLeft: '1px solid transparent',
+    },
+    [`& > .${toggleButtonClasses.selected}`]: {
+      opacity: '1 !important'
+    },
+    [`& > .${toggleButtonClasses.root}`]: {
+      opacity: '0.5',
+    }
+  }));
+
+  return (
+    <>
+      <Formik
+        initialValues={{
+          status: '',
+          submit: null
+        }}
+        validationSchema={Yup.object().shape({
+          status: Yup.string()
+            .required('Поле обязательно для заполнения.'),
+        })}
+        onSubmit={async (
+          _values,
+          { resetForm, setErrors, setStatus, setSubmitting }
+        ) => {
+          try {
+            const res = await axios.put(
+              `interiors/status/${selectedInterior?.id}`,
+              { status: _values.status },
+            );
+            resetForm();
+            toast.success(res?.data?.message);
+
+            dispatch(getAllInteriors({
+              categories: getInteriorsCategoryFilter,
+              name: getInteriorsNameFilter,
+              status: getInteriorsStatusFilter,
+              page: getInteriorsPageFilter,
+              orderBy: getInteriorsOrderBy,
+              order: getInteriorsOrder,
+            }))
+            setStatus({ success: true });
+            setSubmitting(false);
+
+            dispatch(setInteriorStatusChangeState(false))
+            dispatch(setSelectedInterior({
+              ...selectedInterior,
+              ...res?.data?.data?.interior
+            }))
+            dispatch(setOpenModal(false))
+
+          } catch (err: any) {
+            setStatus({ success: false });
+            setErrors({ submit: err.message });
+            setSubmitting(false);
+            if (err.response.data.message) {
+              toast.error(err.response.data.message);
+            }
+          }
+        }}
+
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          setFieldValue,
+          isSubmitting,
+          touched,
+          values
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Grid style={{ transformOrigin: '0 0 0' }}>
+              <Grid sx={{ display: 'flex', alignItems: "start", justifyContent: "start", flexDirection: "column" }}>
+                <SimpleTypography
+                  text={`Выберите статус для «${selectedInterior?.name}»`}
+                  sx={{
+                    mb: '24px',
+                    fontWeight: 400,
+                    fontSize: '22px',
+                    lineHeight: '28px',
+                    textAlign: 'center'
+                  }}
+                />
+
+                <Box sx={{ marginBottom: "26px", width: "100%" }}>
+                  <StyledToggleButtonGroup
+                    value={values.status}
+                    fullWidth
+                    exclusive
+                    size='small'
+                    id='status'
+                    aria-label="status"
+                    onChange={(e, value) => {
+                      setFieldValue('status', value)
+                      setSelected(value)
+                    }}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {
+                      Object.keys(interiorStatuses).map(key => (
+                        <ToggleButton
+                          key={key}
+                          value={key}
+                          aria-label={interiorStatuses[key].text}
+                          style={{
+                            backgroundColor: interiorStatuses[key].bgcolor,
+                            color: interiorStatuses[key].color,
+                            border: `1px solid ${selected == key ? interiorStatuses[key].color : 'transparent'}`
+                          }}
+                        >
+                          {interiorStatuses?.[key]?.text}
+                        </ToggleButton>
+                      ))
+                    }
+                  </StyledToggleButtonGroup>
+                </Box>
+
+              </Grid>
+              <Grid
+                item
+                width={'100%'}
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+              >
+                <Buttons
+                  name='Отмена'
+                  className='cancel__btn'
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    dispatch(setInteriorStatusChangeState(false))
+                    dispatch(setOpenModal(false))
+                  }}
+                />
+
+                <Buttons
+                  type='submit'
+                  name='Сохранит'
+                  className='save__btn'
+                  startIcon={isSubmitting}
+                  disabled={Boolean(errors.submit) || isSubmitting || !selected}
+                  loadingColor='#fff'
+                  sx={{
+                    minWidth: '105px'
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </form>)}
+      </Formik>
+    </>
   );
 }
 
@@ -743,7 +980,7 @@ export const VerificationContext = (props: LoginContextProps) => {
 
 export const EditProfileContext = (props: LoginContextProps) => {
   const dispatch = useDispatch<any>();
-  const profile = useSelector(selectMyProfile)
+  const profile = useSelector((state: any) => state?.modal_checker?.editingProfile)
 
   const formControlSx: SxProps = {
     width: '90%',
@@ -760,7 +997,6 @@ export const EditProfileContext = (props: LoginContextProps) => {
           first_name: '',
           last_name: '',
           username: '',
-          birth_date: '',
           address: '',
           telegram: '',
           phone: '',
@@ -781,7 +1017,6 @@ export const EditProfileContext = (props: LoginContextProps) => {
               usernameRegex,
               'Имя пользователя может содержать только буквы, цифры, символы подчеркивания (_), тире (-) и точки (.).'
             ),
-          birth_date: Yup.date().max(new Date()).optional(),
           address: Yup.string().optional(),
           telegram: Yup.string().optional(),
           phone: Yup.string().optional(),
@@ -808,18 +1043,18 @@ export const EditProfileContext = (props: LoginContextProps) => {
 
             if (_values.first_name || _values.last_name) formData.append('full_name', `${_values.first_name || profile?.full_name?.split(' ')[0]} ${_values.last_name || profile?.full_name?.split(' ')[1]}`)
             if (_values.username) formData.append('username', _values.username)
-            if (_values.birth_date) formData.append('birth_date', _values.birth_date)
             if (_values.address) formData.append('address', _values.address)
             if (_values.telegram) formData.append('telegram', _values.telegram)
             if (_values.phone) formData.append('phone', _values.phone)
             if (_values.portfolio_link) formData.append('portfolio_link', _values.portfolio_link)
 
-            const res = await instance.put(`users/profile`, formData);
+            const res = await instance.put(`users/profile/${profile?.user_id}`, formData);
             setStatus({ success: true });
             dispatch(setProfileEditState(false));
+            dispatch(setEditingProfile(null));
             dispatch(setOpenModal(false));
-            dispatch(getMyProfile());
-            toast.success(res?.data?.message || 'Успешно сохранено');
+            dispatch(getDesignerProfile(profile?.username));
+            toast.success(res?.data?.message);
           } catch (err: any) {
             setStatus({ success: false });
             toast.error(err?.response?.data?.message)
@@ -910,20 +1145,6 @@ export const EditProfileContext = (props: LoginContextProps) => {
 
                     <Box sx={formControlSx}>
                       <SimpleInp
-                        error={Boolean(touched.birth_date && errors.birth_date)}
-                        helperText={touched.birth_date && errors.birth_date}
-                        name="birth_date"
-                        type='date'
-                        label='Дата рождения'
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.birth_date || profile?.birth_date}
-                        placeholderText='birth_date'
-                      />
-                    </Box>
-
-                    <Box sx={formControlSx}>
-                      <SimpleInp
                         error={Boolean(touched.address && errors.address)}
                         helperText={touched.address && errors.address}
                         name="address"
@@ -994,15 +1215,33 @@ export const EditProfileContext = (props: LoginContextProps) => {
 
                 </Grid>
 
-                {/* <Buttons name="Forgot your password?" className='underlined__btn' /> */}
-                <Buttons
-                  type="submit"
-                  name="Сохранить"
-                  startIcon={isSubmitting}
-                  disabled={Boolean(errors.submit) || isSubmitting}
-                  className='signIn__btn'
-                />
-
+                <Grid
+                  item
+                  width={'100%'}
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'flex-end'}
+                  mt={'24px'}
+                >
+                  <Buttons
+                    name='Отмена'
+                    className='cancel__btn'
+                    // disabled={loading}
+                    onClick={() => {
+                      dispatch(setProfileEditState(false))
+                      dispatch(setOpenModal(false))
+                      dispatch(setEditingProfile(null))
+                    }}
+                  />
+                  <Buttons
+                    sx={{ ml: '8px' }}
+                    type="submit"
+                    name="Сохранить"
+                    startIcon={isSubmitting}
+                    disabled={Boolean(errors.submit) || isSubmitting}
+                    className='save__btn'
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </form>)}

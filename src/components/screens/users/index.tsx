@@ -103,28 +103,32 @@ const listSx: SxProps = {
 const widthControl = {
 
   '&:nth-of-type(1)': {
-    minWidth: '360px',
-    maxWidth: '360px',
+    minWidth: '25%',
+    maxWidth: '25%',
   },
   '&:nth-of-type(2)': {
-    minWidth: '320px',
-    maxWidth: '320px',
+    minWidth: '12%',
+    maxWidth: '12%',
   },
   '&:nth-of-type(3)': {
-    minWidth: '200px',
-    maxWidth: '200px',
+    minWidth: '22%',
+    maxWidth: '22%',
   },
   '&:nth-of-type(4)': {
-    minWidth: '100px',
-    maxWidth: '100px',
+    minWidth: '14%',
+    maxWidth: '14%',
   },
   '&:nth-of-type(5)': {
-    minWidth: '100px',
-    maxWidth: '100px',
+    minWidth: '8%',
+    maxWidth: '8%',
   },
   '&:nth-of-type(6)': {
-    minWidth: '100px',
-    maxWidth: '100px',
+    minWidth: '8%',
+    maxWidth: '8%',
+  },
+  '&:nth-of-type(7)': {
+    minWidth: '8%',
+    maxWidth: '8%',
   },
 }
 
@@ -335,6 +339,10 @@ export default function UsersPage() {
                   sx={{ ...liHeaderTextSx, ...widthControl }}
                 />
                 <SimpleTypography
+                  text=''
+                  sx={{ ...liHeaderTextSx, ...widthControl }}
+                />
+                <SimpleTypography
                   text='E-mail'
                   sx={{ ...liHeaderTextSx, ...widthControl }}
                 />
@@ -382,7 +390,8 @@ export default function UsersPage() {
                                 opacity: '1'
                               },
                               '&::after': {
-                                backgroundImage: `url(${IMAGES_BASE_URL}/${user?.image_src})`,
+                                backgroundImage: user?.image_src ? `url(${IMAGES_BASE_URL}/${user?.image_src})` : `url('/img/avatar.png')`,
+                                bgcolor: '#fff',
                                 transition: 'opacity 0.3s ease',
                                 zIndex: 3000,
                                 backgroundRepeat: 'no-repeat',
@@ -402,7 +411,7 @@ export default function UsersPage() {
                             }}
                           >
                             <Image
-                              src={`${IMAGES_BASE_URL}/${user?.image_src}`}
+                              src={user?.image_src ? `${IMAGES_BASE_URL}/${user?.image_src}` : `/img/avatar.png`}
                               alt='image'
                               width={36}
                               height={36}
@@ -435,6 +444,34 @@ export default function UsersPage() {
                               }}
                             />
                           </ListItemText>
+                        </ListItemText>
+
+                        <ListItemText title='Нажмите, чтобы открыть'
+                          onClick={() => navigateTo(`/users/${user?.username}`)}
+                          sx={{ ...widthControl, ...itemAsLink }}
+                        >
+                          {
+                            !!user?.is_banned && (
+                              <Box
+                                sx={{
+                                  padding: '2px 8px',
+                                  borderRadius: '8px',
+                                  bgcolor: '#ffcccc',
+                                }}
+                              >
+                                <SimpleTypography
+                                  text={'Заблокирован'}
+                                  sx={{
+                                    color: '#990000',
+                                    fontSize: '14px',
+                                    fontWeight: 400,
+                                    lineHeight: '14px',
+                                    textAlign: 'center',
+                                  }}
+                                />
+                              </Box>
+                            )
+                          }
                         </ListItemText>
 
                         <ListItemText title='Нажмите, чтобы открыть'

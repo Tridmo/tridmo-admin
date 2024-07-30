@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { setCategoryFilter, setColorFilter, setOrderByFilter, setStyleFilter } from '../../../data/handle_filters'
 import { getAllModels } from '../../../data/get_all_models';
 import { getAllInteriors } from '../../../data/get_all_interiors';
+import { interiorsOrderBy } from '../../../types/filters';
 const FiltersItem = styled(Box)(
   ({ theme }: ThemeProps) => `
         background: #F5F5F5;
@@ -102,7 +103,7 @@ function Sorts({ route, ...props }) {
         categories: getCategoryFilter,
         styles: getStyleFilter,
         page: getPageFilter,
-        orderBy: sorts[selected].orderBy,
+        orderBy: sorts[selected].orderBy as interiorsOrderBy,
       }))
     }
 

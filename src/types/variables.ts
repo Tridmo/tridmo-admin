@@ -12,3 +12,22 @@ export const months = [
   { number: 11, name: 'Ноябрь' },
   { number: 12, name: 'Декабрь' }
 ];
+
+export const interiorStatuses = {
+  0: {
+    text: 'Непроверено',
+    bgcolor: '#ffffcc',
+    color: '#999900',
+  },
+  1: {
+    text: 'Проверено',
+    bgcolor: '#ccffdd',
+    color: '#006600',
+  },
+}
+
+export const modelStatuses = {
+  1: 'Доступно',
+  2: 'Не доступно',
+  3: 'Под заказ',
+}

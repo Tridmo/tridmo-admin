@@ -29,6 +29,12 @@ const initialState = {
   author_interiors_orderby: '',
   author_interiors_order: 'desc',
 
+  interiors_categories: [],
+  interiors_orderby: '',
+  interiors_status: '',
+  interiors_name: '',
+  interiors_order: 'desc',
+
   model_interiors_categories: [],
   model_interiors_author: '',
   model_interiors_orderby: '',
@@ -217,86 +223,90 @@ const handle_filters = createSlice({
     },
 
     set_downloaded_model_brand: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_brand = params.downloaded_model_brand;
+
+      state.downloaded_model_brand = action.payload;
     },
     set_downloaded_model_name: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_name = params.downloaded_model_name;
+
+      state.downloaded_model_name = action.payload;
     },
     set_downloaded_model_categories: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_categories = params.downloaded_model_categories;
+
+      state.downloaded_model_categories = action.payload;
     },
     set_downloaded_model_orderby: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_orderby = params.downloaded_model_orderby;
+
+      state.downloaded_model_orderby = action.payload;
     },
     set_downloaded_model_order: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_order = params.downloaded_model_order;
+
+      state.downloaded_model_order = action.payload;
     },
     set_downloaded_model_page: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.downloaded_model_page = params.downloaded_model_page;
+
+      state.downloaded_model_page = action.payload;
     },
 
 
     set_author_interiors_categories: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.author_interiors_categories = params.author_interiors_categories;
+      state.author_interiors_categories = action.payload;
     },
     set_author_interiors_orderby: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.author_interiors_orderby = params.author_interiors_orderby;
+      state.author_interiors_orderby = action.payload;
     },
     set_author_interiors_order: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.author_interiors_order = params.author_interiors_order;
+      state.author_interiors_order = action.payload;
     },
     set_designer_interiors_page: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.designer_interiors_page = params.designer_interiors_page;
+      state.designer_interiors_page = action.payload;
+    },
+
+
+    set_interiors_categories: (state: any, action: PayloadAction<any>) => {
+      state.interiors_categories = action.payload;
+    },
+    set_interiors_status: (state: any, action: PayloadAction<any>) => {
+      state.interiors_status = action.payload;
+    },
+    set_interiors_name: (state: any, action: PayloadAction<any>) => {
+      state.interiors_name = action.payload;
+    },
+    set_interiors_orderby: (state: any, action: PayloadAction<any>) => {
+      state.interiors_orderby = action.payload;
+    },
+    set_interiors_order: (state: any, action: PayloadAction<any>) => {
+      state.interiors_order = action.payload;
     },
 
 
     set_brand_models_categories: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.brand_models_categories = params.brand_models_categories;
+      state.brand_models_categories = action.payload;
     },
     set_brand_models_top: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.brand_models_top = params.brand_models_top;
+      state.brand_models_top = action.payload;
     },
     set_brand_models_name: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.brand_models_name = params.brand_models_name;
+      state.brand_models_name = action.payload;
     },
     set_brand_models_orderby: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.brand_models_orderby = params.brand_models_orderby;
+      state.brand_models_orderby = action.payload;
     },
     set_brand_models_order: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.brand_models_order = params.brand_models_order;
+      state.brand_models_order = action.payload;
     },
 
 
     set_model_interiors_categories: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.model_interiors_categories = params.model_interiors_categories;
+      state.model_interiors_categories = action.payload;
     },
     set_model_interiors_author: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.model_interiors_author = params.model_interiors_author;
+      state.model_interiors_author = action.payload;
     },
     set_model_interiors_orderby: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.model_interiors_orderby = params.model_interiors_orderby;
+      state.model_interiors_orderby = action.payload;
     },
     set_model_interiors_order: (state: any, action: PayloadAction<any>) => {
-      const { ...params } = action.payload;
-      state.model_interiors_order = params.model_interiors_order;
+      state.model_interiors_order = action.payload;
     },
 
     setPageFilter: (
@@ -379,6 +389,12 @@ export const {
   set_author_interiors_orderby,
   set_author_interiors_order,
   set_designer_interiors_page,
+
+  set_interiors_categories,
+  set_interiors_status,
+  set_interiors_name,
+  set_interiors_orderby,
+  set_interiors_order,
 
   set_model_interiors_categories,
   set_model_interiors_author,

@@ -4,9 +4,10 @@ import React, { Suspense } from 'react';
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStyles } from '@/data/get_all_styles';
-import { getAllInteriors } from '@/data/get_all_interiors';
+import { getAllInteriors, getCheckedInteriors, getUncheckedInteriors, selectAllInteriors, selectAllInteriorsStatus, selectCheckedInteriorsStatus, selectUncheckedInteriorsStatus } from '@/data/get_all_interiors';
 import InteriorsPage from '@/components/screens/interiors';
 import { selectMyProfile } from '../../data/me';
+import { getInteriorCategories } from '../../data/categories';
 
 declare global {
   interface Window {
@@ -18,44 +19,34 @@ export default function Interiors() {
   const dispatch = useDispatch<any>();
   const router = useRouter();
 
-  // ---- intial staters ---- //
+  const getInteriorsStatus = useSelector(selectAllInteriorsStatus);
+  const interiorsCategoriesStatus = useSelector((state: any) => state?.categories?.interior_status)
 
-  const getModelStatus = useSelector((state: any) => state?.get_all_models?.status);
-  const getColorStatus = useSelector((state: any) => state?.get_all_colors?.status);
-  const StyleStatus = useSelector((state: any) => state?.get_all_styles?.status)
-  const getInteriorsStatus = useSelector((state: any) => state?.get_all_interiors?.status);
-
-  // ---- filters selector ----- //
-
-  const getModelCategoryFilter = useSelector((state: any) => state?.handle_filters?.categories)
-  const getModelColorFilter = useSelector((state: any) => state?.handle_filters?.colors)
-  const getModelStyleFilter = useSelector((state: any) => state?.handle_filters?.styles)
-  const getModelPageFilter = useSelector((state: any) => state?.handle_filters?.page)
-  const getModelIsFree = useSelector((state: any) => state?.handle_filters?.is_free)
+  const getInteriorsCategoryFilter = useSelector((state: any) => state?.handle_filters?.interiors_categories)
+  const getInteriorsPageFilter = useSelector((state: any) => state?.handle_filters?.interiors_page)
+  const getInteriorsNameFilter = useSelector((state: any) => state?.handle_filters?.interiors_name)
+  const getInteriorsOrderBy = useSelector((state: any) => state?.handle_filters?.interiors_orderby)
+  const getInteriorsOrder = useSelector((state: any) => state?.handle_filters?.interiors_order)
 
   const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
     if (profile) {
       if (getInteriorsStatus === "idle") {
-        dispatch(getAllInteriors({
-          categories: getModelCategoryFilter,
-          colors: getModelColorFilter,
-          styles: getModelStyleFilter,
-          page: getModelPageFilter,
-        }))
+        dispatch(getAllInteriors())
       }
-      if (StyleStatus === "idle") {
-        dispatch(getAllStyles());
+      if (interiorsCategoriesStatus == 'idle') {
+        dispatch(getInteriorCategories())
       }
     }
-  }, [profile, getModelStatus, dispatch, getColorStatus, getModelColorFilter, getModelIsFree, getModelPageFilter, getModelStyleFilter, getModelCategoryFilter, StyleStatus, router, getInteriorsStatus])
+  }, [
+    profile,
+    interiorsCategoriesStatus,
+  ])
 
   return (
     <>
-      <Suspense>
-        <InteriorsPage />
-      </Suspense>
+      <InteriorsPage />
     </>
   )
 }

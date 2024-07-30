@@ -149,6 +149,10 @@ const ButtonWrapper = styled(Button)(
         &:hover{
           background: #ea2e2e;
         } 
+        
+        &:disabled{
+          background: #e58484; 
+        }
       }
 
       &.MuiButton-login__btn {
@@ -217,6 +221,20 @@ const ButtonWrapper = styled(Button)(
         &:disabled{
           background: #E0E0E0;
           color: #686868; 
+        }
+      }
+
+      &.MuiButton-save__btn{
+        background: #7210BE;
+        color:#fff;
+        border-radius:4px;
+
+        &:hover{
+          background: #9E35EE;  
+        }
+
+        &:disabled{
+          background: #d6a1ff; 
         }
       }
 

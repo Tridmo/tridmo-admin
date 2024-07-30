@@ -4,9 +4,9 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal, keyframes, SxProps } from '@mui/material';
 import Image from 'next/image'
 import { Grid } from '@mui/material';
-import { SignUpContext, LoginContext, VerificationContext, EditProfileContext, ConfirmContext } from './context'
+import { SignUpContext, LoginContext, VerificationContext, EditProfileContext, ConfirmContext, ChangeInteriorStatusContext } from './context'
 import { useDispatch, useSelector } from '../../store';
-import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, setConfirmState } from '../../data/modal_checker';
+import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, setConfirmState, setInteriorStatusChangeState } from '../../data/modal_checker';
 import AlertWrapper from '../alert';
 import LoadingBar from 'react-top-loading-bar';
 import EditProfile from './edit_profile';
@@ -21,7 +21,10 @@ export default function BasicModal(props: { styles?: SxProps }) {
   const isSignupOpen = useSelector((state: any) => state?.modal_checker?.isSignup);
   const isVerifyOpen = useSelector((state: any) => state?.modal_checker?.isVerify);
   const isProfileEditOpen = useSelector((state: any) => state?.modal_checker?.isProfileEdit);
+  const isInteriorStatusChangeOpen = useSelector((state: any) => state?.modal_checker?.interiorStatusChange);
   const isModalOpen = useSelector((state: any) => state?.modal_checker?.isModalOpen);
+
+  console.log(isInteriorStatusChangeOpen);
 
   const style: SxProps = {
     zIndex: 9001,
@@ -49,6 +52,7 @@ export default function BasicModal(props: { styles?: SxProps }) {
     dispatch(setLoginState(false))
     dispatch(setVerifyState(false))
     dispatch(setProfileEditState(false))
+    dispatch(setInteriorStatusChangeState(false))
     dispatch(setOpenModal(false))
   };
   const modalSlider = keyframes`
@@ -85,28 +89,30 @@ export default function BasicModal(props: { styles?: SxProps }) {
           </Box> */}
 
           {
-            isConfirmOpen ?
-              <ConfirmContext /> :
-              isSignupOpen ?
-                <SignUpContext
-                  setUserEmail={(email: any) => { setUserEmail(email) }}
-                /> :
-                isLoginOpen ?
-                  <LoginContext
+            isInteriorStatusChangeOpen ?
+              <ChangeInteriorStatusContext />
+              : isConfirmOpen ?
+                <ConfirmContext /> :
+                isSignupOpen ?
+                  <SignUpContext
                     setUserEmail={(email: any) => { setUserEmail(email) }}
-                  />
-                  :
-                  isVerifyOpen ?
-                    <VerificationContext
-                      userEmail={userEmail}
-                      setProgress={(val: any) => { setProgress(val) }}
+                  /> :
+                  isLoginOpen ?
+                    <LoginContext
+                      setUserEmail={(email: any) => { setUserEmail(email) }}
                     />
                     :
-                    isProfileEditOpen ?
-                      <EditProfileContext
+                    isVerifyOpen ?
+                      <VerificationContext
+                        userEmail={userEmail}
                         setProgress={(val: any) => { setProgress(val) }}
                       />
-                      : null
+                      :
+                      isProfileEditOpen ?
+                        <EditProfileContext
+                          setProgress={(val: any) => { setProgress(val) }}
+                        />
+                        : null
           }
         </Box>
       </Modal>

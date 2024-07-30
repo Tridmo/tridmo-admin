@@ -24,7 +24,7 @@ import formatDate from '../../../utils/format_date'
 import SimpleInp from '../../inputs/simple_input'
 import SearchInput from '../../inputs/search'
 import SimpleSelect from '../../inputs/simple_select'
-import { selectCategories } from '../../../data/categories'
+import { selectCategories, selectModelCategories } from '../../../data/categories'
 import { selectAllBrands } from '../../../data/get_all_brands'
 import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
@@ -170,12 +170,11 @@ export default function ModelsPage() {
   const open = Boolean(anchorEl);
 
   const all__models = useSelector(selectAllModels)
-  const all__categories = useSelector(selectCategories)
+  const categories = useSelector(selectModelCategories)
   const all__brands = useSelector(selectAllBrands)
   const route_crumbs = useSelector(selectRouteCrubms)
 
   // const keyword = searchParams.get('keyword') as string
-  const [categories, setCategories] = useState<any[]>([])
   const [activeTopButton, setActiveTopButton] = useState<0 | 1>(0)
   const [allModelsCount, setAllModelsCount] = useState<number>(0)
   const [topModelsCount, setTopModelsCount] = useState<number>(0)
@@ -204,16 +203,10 @@ export default function ModelsPage() {
     }
   }, [all__models, all__models_status, getModelTopFilter])
 
-  useMemo(() => {
-    if (all__categories) {
-      let arr: any[] = []
-      const cats: any[] = Array.from(all__categories)
-      cats.map(c => arr = arr.concat(c['children'] && c['children'][0] ? c['children'] : []))
-      setCategories(arr)
-    }
-  }, [all__categories])
+
 
   function navigateTo(link: string) {
+    router.refresh()
     router.push(link)
   }
   // function setActiveTopButton(index: number) {
@@ -550,8 +543,8 @@ export default function ModelsPage() {
               >
                 <form style={{ width: '100%' }}>
                   <Grid width={'100%'} container justifyContent={'space-between'}>
-                    <Grid item>
-                      <FormControl>
+                    <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
+                      <FormControl sx={{ mr: '8px' }}>
                         <SearchInput
                           placeHolder='Поиск по название'
                           startIcon
@@ -565,6 +558,17 @@ export default function ModelsPage() {
                           }}
                         />
                       </FormControl>
+                      {
+                        !!getModelNameFilter?.length && (
+                          <SimpleTypography
+                            text={`Найдено ${all__models?.data?.pagination?.data_count || 0} совпадений`}
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '16px'
+                            }}
+                          />
+                        )
+                      }
                     </Grid>
 
                     <Grid item>

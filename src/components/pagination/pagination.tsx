@@ -162,14 +162,12 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const get_model_interiors_order = useSelector((state: any) => state?.handle_filters?.model_interiors_order)
   const get_model_interiors_page = useSelector((state: any) => state?.handle_filters?.model_interiors_page)
 
-  // ---- pages ---- //
-  // const getModelsPageFilter = useSelector((state: any) => state?.handle_filters?.models_page)
-  // const getInteriorsPageFilter = useSelector((state: any) => state?.handle_filters?.interiors_page)
-  // const getMyInteriorsPageFilter = useSelector((state: any) => state?.handle_filters?.my_interiors_page)
-  // const getProjectsPageFilter = useSelector((state: any) => state?.handle_filters?.projects_page)
-  // const getSavedModelsPageFilter = useSelector((state: any) => state?.handle_filters?.saved_models_page)
-  // const getDesignersPageFilter = useSelector((state: any) => state?.handle_filters?.designers_page)
-  // const getBrandsPageFilter = useSelector((state: any) => state?.handle_filters?.brands_page)
+  const getInteriorsCategoryFilter = useSelector((state: any) => state?.handle_filters?.interiors_categories)
+  const getInteriorsPageFilter = useSelector((state: any) => state?.handle_filters?.interiors_page)
+  const getInteriorsNameFilter = useSelector((state: any) => state?.handle_filters?.interiors_name)
+  const getInteriorsStatusFilter = useSelector((state: any) => state?.handle_filters?.interiors_status)
+  const getInteriorsOrderBy = useSelector((state: any) => state?.handle_filters?.interiors_orderby)
+  const getInteriorsOrder = useSelector((state: any) => state?.handle_filters?.interiors_order)
 
 
   const handleChange = (e: any, page: any) => {
@@ -191,10 +189,12 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
     if (dataSource == 'interiors') {
       dispatch(setPageFilter({ p: 'interiors_page', n: page }))
       dispatch(getAllInteriors({
-        categories: getModelCategoryFilter,
-        colors: getModelColorFilter,
-        styles: getModelStyleFilter,
         page: page,
+        categories: getInteriorsCategoryFilter,
+        name: getInteriorsNameFilter,
+        status: getInteriorsStatusFilter,
+        orderBy: getInteriorsOrderBy,
+        order: getInteriorsOrder,
       }))
     }
     if (dataSource == 'brand_models') {

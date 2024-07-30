@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppTypeGuid } from '../../types/weavy';
 import { setSelectedConversation } from '../../data/chat';
+import { selectMyProfile } from '../../data/me';
 
 const WeavyContext = createContext({});
 
@@ -16,7 +17,7 @@ export default function WeavyProvider({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<any>();
-  const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
+  const profile = useSelector(selectMyProfile)
 
   document.addEventListener("wy:link", (e: any) => {
     e.preventDefault()
@@ -34,7 +35,7 @@ export default function WeavyProvider({ children }) {
   return (
     <WeavyContext.Provider value={{}}>
       {
-        isAuthenticated &&
+        !!profile &&
         <WyContext
           url={CHAT_SERVER_URL}
           tokenFactory={tokenFactory}

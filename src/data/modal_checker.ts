@@ -4,7 +4,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface ConfirmContextProps {
   message?: string;
   info?: string;
-  is_loading?: boolean; 
+  is_loading?: boolean;
+  use_word_match?: boolean;
+  word_match?: string;
+  confirm_button_text?: string;
   actions?: {
     on_click: {
       args: any[];
@@ -25,8 +28,11 @@ export interface ContextState {
   isLogin: boolean;
   isSignup: boolean;
   isVerify: boolean;
+  interiorStatusChange: boolean,
+  selectedInterior: any,
   isModalOpen: boolean;
   isProfileEdit: boolean;
+  editingProfile: any;
   order_id: string | null,
   isOrderModal: boolean;
   isFilterModal: boolean;
@@ -40,7 +46,10 @@ const initialState: ContextState = {
   isLogin: false,
   isSignup: false,
   isVerify: false,
+  interiorStatusChange: false,
+  selectedInterior: null,
   isProfileEdit: false,
+  editingProfile: null,
   isModalOpen: false,
   order_id: null,
   isOrderModal: false,
@@ -52,6 +61,9 @@ const initialState: ContextState = {
     message: '',
     info: '',
     is_loading: false,
+    use_word_match: false,
+    word_match: '',
+    confirm_button_text: '',
     actions: {
       on_click: {
         args: [],
@@ -85,6 +97,12 @@ const modalChecker = createSlice({
     setSignupState(state, action) {
       state.isSignup = action.payload;
     },
+    setInteriorStatusChangeState(state, action) {
+      state.interiorStatusChange = action.payload;
+    },
+    setSelectedInterior(state, action) {
+      state.selectedInterior = action.payload;
+    },
     setVerifyState(state, action) {
       state.isVerify = action.payload;
     },
@@ -98,6 +116,9 @@ const modalChecker = createSlice({
     setProfileEditState(state, action) {
       state.isProfileEdit = action.payload;
     },
+    setEditingProfile(state, action) {
+      state.editingProfile = action.payload;
+    },
     setOpenOrderModal(state, action) {
       const { isOpen, order_id } = action.payload
       state.isOrderModal = isOpen
@@ -108,6 +129,9 @@ const modalChecker = createSlice({
       if (action.payload.message) state.confirm_props.message = action.payload.message;
       if (action.payload.info) state.confirm_props.info = action.payload.info;
       if (action.payload.is_loading) state.confirm_props.is_loading = action.payload.is_loading;
+      if (action.payload.use_word_match) state.confirm_props.use_word_match = action.payload.use_word_match;
+      if (action.payload.word_match) state.confirm_props.word_match = action.payload.word_match;
+      if (action.payload.confirm_button_text) state.confirm_props.confirm_button_text = action.payload.confirm_button_text;
       if (action.payload.actions) state.confirm_props.actions = action.payload.actions;
       if (action.payload.checkbox) state.confirm_props.checkbox = action.payload.checkbox;
     },
@@ -131,6 +155,9 @@ export const {
   setLoginState,
   setSignupState,
   setProfileEditState,
+  setEditingProfile,
+  setInteriorStatusChangeState,
+  setSelectedInterior,
   setVerifyState,
   setOpenModal,
   setOpenOrderModal,

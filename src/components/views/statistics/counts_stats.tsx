@@ -45,15 +45,18 @@ export function CountsStats() {
         data={[
           {
             name: 'Пользователи',
-            count: regStats?.count
+            count: regStats?.count,
+            link: '/users'
           },
           {
             name: 'Бренды',
-            count: brandsStats?.count
+            count: brandsStats?.count,
+            link: '/brands'
           },
           {
             name: 'Модели',
             count: modelsStats?.count,
+            link: '/models',
             secondary_text: `Доступно: ${modelsStats?.available_count || ""} \nНе доступно: ${modelsStats?.unavailable_count || ""}`,
           },
           {
@@ -62,7 +65,8 @@ export function CountsStats() {
           },
           {
             name: 'Интерьеры',
-            count: interiorsStats?.count
+            count: interiorsStats?.count,
+            link: '/interiors',
           },
           {
             name: 'Бирки',

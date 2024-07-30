@@ -1,12 +1,14 @@
 import { Box, Grid, Skeleton, SxProps } from "@mui/material";
 import SimpleTypography from "../../typography";
-
+import { useRouter } from 'next/navigation'
+import Link from "next/link";
 
 interface Props {
   data: {
     name: string;
     count: string | number;
     secondary_text?: string;
+    link?: string;
   }[];
   sx?: SxProps;
   mainColor?: string;
@@ -18,6 +20,7 @@ interface Props {
 export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, mainColor }: Props) {
 
   const fakeData = Array.from({ length: 6 })
+  const router = useRouter()
 
   return (
     <Grid container
@@ -37,12 +40,19 @@ export default function CountsGrid({ data, sx, loading, fullWidth, fillWidth, ma
               sm={fullWidth ? 12 : fillWidth}
               key={ind}
               sx={{
+                position: 'relative',
                 p: '20px 24px',
                 bgcolor: '#fff',
                 boxShadow: '0px 3px 4px 0px #00000014',
                 borderRadius: '4px',
               }}
             >
+              <Link href={elem?.link || ''}
+                style={{
+                  position: 'absolute',
+                  top: 0, bottom: 0, right: 0, left: 0,
+                }}
+              />
               <Box
                 sx={{
                   width: '100%',

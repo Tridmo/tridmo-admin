@@ -20,6 +20,7 @@ import MultipleSelect from '../../../inputs/multiple_select';
 import { getOneBrand, selectOneBrand } from "../../../../data/get_one_brand";
 import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 import { setRouteCrumbs } from "../../../../data/route_crumbs";
+import { getAllBrands } from "../../../../data/get_all_brands";
 
 const availabilityData = [
   {
@@ -61,9 +62,8 @@ const labelStyle: CSSProperties = {
   margin: '0 0 6px 0',
 }
 
-export function AddBrandForm({ editing, ...props }: { editing?: boolean }) {
+export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, brand?: any }) {
   const stylesData = useSelector(selectAllStyles)
-  const brand = useSelector(selectOneBrand)
 
   const dispatch = useDispatch<any>()
   const router = useRouter()
@@ -206,12 +206,14 @@ export function AddBrandForm({ editing, ...props }: { editing?: boolean }) {
                     formData
                   );
 
+              dispatch(getAllBrands())
               toast.success(res?.data?.message);
               setStatus({ success: true });
               setSubmitting(false);
               resetForm()
 
-              // router.push(`/brands/${res?.data?.data?.brand?.slug}`)
+              router.refresh()
+              router.push(`/brands/${res?.data?.data?.brand?.slug}`)
 
             } catch (err: any) {
               setStatus({ success: false });

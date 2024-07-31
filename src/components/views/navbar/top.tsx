@@ -27,6 +27,7 @@ import Cookies from 'js-cookie'
 import { IMAGES_BASE_URL } from '../../../utils/image_src';
 import RouteCrumbs from './route_crumbs';
 import { ChatOutlined } from '@mui/icons-material';
+import { selectChatUnread } from '../../../data/chat';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -60,23 +61,14 @@ const DropDown = styled(Menu)(
 
 export default function NavbarTop() {
 
-  const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
-  const routeCrumbs = useSelector((state: any) => state?.route_crumbs)
-  const userData = useSelector(selectMyProfile)
-  const [searchClicked, setSearchClicked] = useState(false)
+  const chatUnread = useSelector(selectChatUnread)
   const [searchVal, setSearchVal] = useState("")
 
   const router = useRouter();
-  const pathname = usePathname();
-
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch<any>();
-
-  // useEffect(() => {
-  //     setIsAuthenticated(authState);
-  // }, [authState]);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -202,8 +194,28 @@ export default function NavbarTop() {
 
               <Link href={'/chat'}>
                 <IconButton
-                  sx={{ marginRight: "16px", }}
+                  sx={{ position: 'relative', marginRight: "16px", }}
                 >
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      padding: '4px 6px',
+                      borderRadius: '12px',
+                      bgcolor: '#7210BE',
+                      top: 0,
+                      right: 0,
+                    }}
+                  >
+                    <SimpleTypography
+                      text={String(Number(chatUnread?.private || 0) + Number(chatUnread?.rooms || 0)) || '0'}
+                      sx={{
+                        color: '#fff',
+                        lineHeight: '11px',
+                        fontWeight: 400,
+                        fontSize: '12px',
+                      }}
+                    />
+                  </Box>
                   <ChatOutlined htmlColor='#424242' />
                 </IconButton>
               </Link>

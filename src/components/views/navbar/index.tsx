@@ -29,6 +29,7 @@ import NavbarTop from './top';
 import RightBar from '../../right_bar';
 import { Collections } from '@mui/icons-material';
 import { CustomTooltip } from '../../tooltip';
+import { WyNotificationToasts } from '@weavy/uikit-react';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -171,6 +172,7 @@ export default function Navbar() {
       {/* <BasicModal /> */}
       <NavbarTop />
       <RightBar />
+      <WyNotificationToasts draggable appearance='internal' />
       <Box sx={{
         position: 'relative',
       }}>

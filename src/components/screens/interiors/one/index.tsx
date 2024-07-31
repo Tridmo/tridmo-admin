@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Avatar, Box, Button, Divider, Grid, ListItemAvatar, Menu, MenuItem, Paper, styled } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import SimpleTypography from '../../../typography';
@@ -13,7 +13,7 @@ import { sampleComments } from '@/data/samples/sample_comments';
 import { CommentSection } from '@/components/comment_section';
 import { getOneInterior, selectOneInterior } from '../../../../data/get_one_interior';
 import { selectMyProfile } from '../../../../data/me';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { IMAGES_BASE_URL } from '../../../../utils/image_src';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Link from 'next/link';
@@ -31,6 +31,7 @@ import { selectChatToken } from '../../../../data/get_chat_token';
 import { setSelectedConversation } from '../../../../data/chat';
 import { AppRegistration, DeleteForever, Edit, RateReview } from '@mui/icons-material';
 import { getAllInteriors } from '../../../../data/get_all_interiors';
+import { setRouteCrumbs } from '../../../../data/route_crumbs';
 
 const DropDown = styled(Menu)(
   ({ theme }: ThemeProps) => `
@@ -54,6 +55,7 @@ export default function OneInterior() {
   const dispatch = useDispatch<any>()
   const router = useRouter()
   const params = useParams<{ slug: string }>()
+  const pathname = usePathname()
 
   const isAuthenticated = useSelector((state: any) => state?.auth_slicer?.authState)
   const getInteriorStatus = useSelector((state: any) => state?.get_one_interior?.status)
@@ -84,6 +86,16 @@ export default function OneInterior() {
   //     setComments(formatComments(commentsData))
   //   }
   // }, [commentsData, getCommentsStatus])
+
+  useEffect(() => {
+    dispatch(setRouteCrumbs([{
+      title: 'Интерьеры',
+      route: '/interiors'
+    }, {
+      title: interior?.name,
+      route: pathname
+    }]))
+  }, [])
 
 
   useMemo(() => {

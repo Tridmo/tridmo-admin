@@ -44,7 +44,7 @@ const availabilityData = [
   },
 ]
 
-const supportedFileTypes = 'application/x-compressed, application/x-zip-compressed, application/x-rar-compressed, application/x-7z-compressed,, .zip, .rar, .7z'
+const supportedFileTypes = 'application/x-compressed, application/x-zip-compressed, application/x-rar-compressed, application/x-7z-compressed, .zip, .rar, .7z'
 const supportedImageTypes = 'image/png, image/jpg, image/jpeg, image/webp'
 const imagesCountLimit = 9;
 const maxFileSize = 100;

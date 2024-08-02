@@ -136,7 +136,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 address: Yup.string().optional(),
                 phone: Yup.number().optional(),
                 email: Yup.string().max(255).optional(),
-                description: Yup.string().max(255).optional(),
+                description: Yup.string().optional(),
                 username: Yup.string().optional(),
                 password: Yup.string().min(6).optional(),
                 styles: Yup.array().of(Yup.number()).min(1, 'Выберите хотя бы один стиль').max(3).optional(),
@@ -170,7 +170,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 if (_values.phone != brand?.phone) formData.append('phone', _values.phone)
                 if (_values.email != brand?.email) formData.append('email', _values.email)
                 if (_values.username != brand?.username) formData.append('username', _values.username)
-                if (_values.password != brand?.password) formData.append('password', _values.password)
+                if (_values.password) formData.append('password', _values.password)
                 if (_values.image != brand?.image) formData.append('image', _values.image)
                 if (_values.styles && _values.styles?.length) {
                   if (_values.styles?.length > 1)

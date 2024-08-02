@@ -109,11 +109,8 @@ export function validateFile(
 
   const size = Math.round(file.size / 1024 / 1024)
 
-  console.log(file)
-  console.log(file.type)
-
   if (allowedTypes && !allowedTypes?.includes(file.type)) {
-    return { error: `File type is not valid (${file.type})` }
+    if (!file.name.endsWith('.rar')) return { error: `File type is not valid (${file.type})` };
   }
   if (maxSize && size > maxSize) {
     return { error: `File is too large (${size}MB)` }

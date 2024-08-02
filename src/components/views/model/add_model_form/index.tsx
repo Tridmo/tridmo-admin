@@ -101,7 +101,7 @@ const labelStyle: CSSProperties = {
   margin: '0 0 6px 0',
 }
 
-export function AddModelForm({ editing = false, model, selectedBrand }: { editing?: boolean, model: any, selectedBrand?: any }) {
+export function AddModelForm({ editing = false, model, selectedBrand }: { editing?: boolean, model?: any, selectedBrand?: any }) {
   const stylesData = useSelector(selectAllStyles)
   const categoriesData = useSelector(selectModelCategories);
   const colorsData = useSelector(selectAllColors);

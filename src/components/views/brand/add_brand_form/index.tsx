@@ -68,6 +68,8 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
   const dispatch = useDispatch<any>()
   const router = useRouter()
 
+  console.log(brand);
+
   if (editing && brand) {
     useEffect(() => {
       dispatch(setRouteCrumbs(

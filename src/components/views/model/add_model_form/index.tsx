@@ -498,7 +498,7 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
                         {
                           modelPlatformsData?.platforms?.map(
                             (c, i) => (
-                              <MenuItem key={i} value={c.id}>{c.name}</MenuItem>
+                              <MenuItem key={i} value={c.id} selected={c.name == '3Ds max'}>{c.name}</MenuItem>
                             )
                           )
                         }
@@ -521,7 +521,7 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
                         {
                           renderPlatformsData?.platforms?.map(
                             (c, i) => (
-                              <MenuItem key={i} value={c.id}>{c.name}</MenuItem>
+                              <MenuItem key={i} value={c.id} selected={c.name == '3Ds max'}>{c.name}</MenuItem>
                             )
                           )
                         }

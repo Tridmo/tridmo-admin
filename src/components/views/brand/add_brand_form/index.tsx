@@ -135,7 +135,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 phone: Yup.number().optional(),
                 email: Yup.string().max(255).optional(),
                 description: Yup.string().max(255).optional(),
-                username: Yup.string().max(32).optional(),
+                username: Yup.string().optional(),
                 password: Yup.string().min(6).optional(),
                 styles: Yup.array().of(Yup.number()).min(1, 'Выберите хотя бы один стиль').max(3).optional(),
                 image: Yup.mixed().optional(),
@@ -145,7 +145,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 address: Yup.string().required('Адрес не указано'),
                 phone: Yup.number().required('Номер телефона не указано'),
                 email: Yup.string().max(255).required('Электронная почта не указано'),
-                description: Yup.string().max(255).required('Описание не указано'),
+                description: Yup.string().required('Описание не указано'),
                 username: Yup.string().max(32).required('Имя пользователя не указано'),
                 password: Yup.string().min(6).required('Пароль не указано'),
                 styles: Yup.array().of(Yup.number()).min(1, 'Выберите хотя бы один стиль').max(3).required('Стили не указано'),
@@ -161,15 +161,15 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
               const formData = new FormData()
 
               if (editing) {
-                if (_values.name) formData.append('name', _values.name)
-                if (_values.site_link) formData.append('site_link', _values.site_link)
-                if (_values.description) formData.append('description', _values.description)
-                if (_values.address) formData.append('address', _values.address)
-                if (_values.phone) formData.append('phone', _values.phone)
-                if (_values.email) formData.append('email', _values.email)
-                if (_values.username) formData.append('username', _values.username)
-                if (_values.password) formData.append('password', _values.password)
-                if (_values.image) formData.append('image', _values.image)
+                if (_values.name != brand?.name) formData.append('name', _values.name)
+                if (_values.site_link != brand?.site_link) formData.append('site_link', _values.site_link)
+                if (_values.description != brand?.description) formData.append('description', _values.description)
+                if (_values.address != brand?.address) formData.append('address', _values.address)
+                if (_values.phone != brand?.phone) formData.append('phone', _values.phone)
+                if (_values.email != brand?.email) formData.append('email', _values.email)
+                if (_values.username != brand?.username) formData.append('username', _values.username)
+                if (_values.password != brand?.password) formData.append('password', _values.password)
+                if (_values.image != brand?.image) formData.append('image', _values.image)
                 if (_values.styles && _values.styles?.length) {
                   if (_values.styles?.length > 1)
                     _values.styles.forEach(i => formData.append('styles', i));

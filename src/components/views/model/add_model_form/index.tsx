@@ -28,6 +28,7 @@ import { selectOneModel } from "../../../../data/model_slider";
 import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 import { selectOneBrand } from "../../../../data/get_one_brand";
 import { setRouteCrumbs } from "../../../../data/route_crumbs";
+import { CleaningServices } from "@mui/icons-material";
 
 const availabilityData = [
   {
@@ -116,25 +117,24 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
 
   const [categoryChildren, setCategoryChildren] = useState<any[]>([])
   const [brand, setBrand] = useState<any>(null)
+  const [clearInputs, setClearInputs] = useState<boolean>(false)
 
-  if (editing && brand) {
-    useEffect(() => {
-      if (model) {
-        dispatch(setRouteCrumbs(
-          [{
-            title: 'Модели',
-            route: '/models'
-          }, {
-            title: model?.name,
-            route: `/models/${model?.slug}`
-          }, {
-            title: 'Редактировать',
-            route: `/models/edit/${model?.slug}`
-          }]
-        ))
-      }
-    }, [model])
-  }
+  useEffect(() => {
+    if (model && editing) {
+      dispatch(setRouteCrumbs(
+        [{
+          title: 'Модели',
+          route: '/models'
+        }, {
+          title: model?.name,
+          route: `/models/${model?.slug}`
+        }, {
+          title: 'Редактировать',
+          route: `/models/edit/${model?.slug}`
+        }]
+      ))
+    }
+  }, [model, editing])
 
   function selectParentCategory(id) {
     const data: any[] = [...categoriesData]
@@ -154,6 +154,13 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
       setBrand(brandsData?.data?.brands?.find(x => x?.slug == selectedBrand))
     }
   }, [selectedBrand, brandsData])
+
+  useMemo(() => {
+    const x = setTimeout(() => {
+      setClearInputs(false)
+      clearTimeout(x)
+    }, 500)
+  }, [clearInputs])
 
   const initials = {
     name: editing && model?.name ? model?.name : '',
@@ -289,7 +296,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                 formData.append('width', _values.width)
                 formData.append('height', _values.height)
                 formData.append('length', _values.length)
-                formData.append('furniture_cost', _values.furniture_cost)
+                if (_values.furniture_cost) formData.append('furniture_cost', _values.furniture_cost)
                 formData.append('availability', _values.availability)
                 formData.append('description', _values.description)
                 formData.append('style_id', _values.style_id)
@@ -328,8 +335,11 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
               setStatus({ success: true });
               setSubmitting(false);
               resetForm()
+              setClearInputs(true)
 
-              // router.push(`/models/${res?.data?.data?.model?.slug}`)
+              if (editing && model) {
+                router.push(`/models/${model?.slug}`)
+              }
 
             } catch (err: any) {
               setStatus({ success: false });
@@ -345,6 +355,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
               handleChange,
               handleSubmit,
               setFieldValue,
+              resetForm,
               errors,
               isSubmitting,
               touched,
@@ -555,6 +566,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                       </SimpleSelect>
 
                       <MultipleSelect
+                        clear={clearInputs}
                         className='input_width'
                         variant='outlined'
                         paddingX={12}
@@ -590,7 +602,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                       sx={{ ...formControlSx }}
                     >
                       <ColorsSelect
-                        // className='input_width'
+                        clear={clearInputs}
                         error={Boolean(touched.colors && errors.colors)}
                         helperText={touched.colors && errors.colors}
                         name="colors"
@@ -746,6 +758,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                   >
                     <Box sx={{ ...formControlSx }}>
                       <FileInput
+                        clear={clearInputs}
                         labelElement={<label data-shrink='true' style={labelStyle}> Файл </label>}
                         error={Boolean(touched.file && errors.file)}
                         helperText={touched.file && errors.file}
@@ -765,6 +778,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
 
                     <Box sx={{ ...formControlSx }}>
                       <FileInput
+                        clear={clearInputs}
                         labelElement={<label data-shrink='true' style={labelStyle}> Обложка </label>}
                         error={Boolean(touched.cover && errors.cover)}
                         helperText={touched.cover && errors.cover}
@@ -777,14 +791,14 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                           setFieldValue('cover', files[0])
                         }}
                         initialPreviews={
-                          editing && model?.images ?
-                            model?.images?.filter(i => i?.is_main == true).map(i => `${IMAGES_BASE_URL}/${i?.image_src}`) : []
+                          editing && model?.cover ? [`${IMAGES_BASE_URL}/${model?.cover?.image_src}`] : []
                         }
                       />
                     </Box>
 
                     <Box sx={{ ...formControlSx }}>
                       <FileInput
+                        clear={clearInputs}
                         labelElement={<label data-shrink='true' style={labelStyle}> Изображений </label>}
                         error={Boolean(touched.images && errors.images)}
                         helperText={touched.images && errors.images}
@@ -808,7 +822,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                         }}
                         initialPreviews={
                           editing && model?.images ?
-                            model?.images?.filter(i => i?.is_main == false).map(i => `${IMAGES_BASE_URL}/${i?.image_src}`) : []
+                            model?.images?.map(i => `${IMAGES_BASE_URL}/${i?.image_src}`) : []
                         }
                       />
                     </Box>
@@ -817,6 +831,21 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
 
                 </Grid>
                 <Box sx={{ marginTop: '40px', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                  <Buttons
+                    name={'Очистить все'}
+                    childrenFirst={true}
+                    onClick={() => {
+                      setClearInputs(true)
+                      resetForm()
+                    }}
+                    disabled={isSubmitting}
+                    className="bookmark__btn"
+                    sx={{
+                      mr: '24px'
+                    }}
+                  >
+                    <CleaningServices sx={{ width: '20px', height: '20px', mr: '8px' }} />
+                  </Buttons>
                   <Buttons
                     name={editing ? "Сохранить" : "Загрузить"}
                     childrenFirst={true}

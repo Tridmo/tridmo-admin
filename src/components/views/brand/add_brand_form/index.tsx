@@ -31,6 +31,10 @@ const availabilityData = [
     value: 2,
     name: 'Не доступно'
   },
+  {
+    value: 3,
+    name: 'Для заказа'
+  },
 ]
 
 const supportedImageTypes = 'image/png, image/jpg, image/jpeg, image/webp'

@@ -20,7 +20,7 @@ export default function EditModel() {
         m={'32px 0'}
       >
         <Grid item width={'100%'}>
-          <AddModelForm editing model={model?.data?.model} />
+          <AddModelForm editing model={model} />
         </Grid>
       </Grid>
     </Box>

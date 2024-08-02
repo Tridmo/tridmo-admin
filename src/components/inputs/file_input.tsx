@@ -44,6 +44,7 @@ interface InputAdornmentsProps {
   accept?: string,
   className?: string,
   initialPreviews?: string[] | any[],
+  clear?: boolean;
 }
 
 interface CustomFile {
@@ -110,7 +111,7 @@ export function validateFile(
   const size = Math.round(file.size / 1024 / 1024)
 
   if (allowedTypes && !allowedTypes?.includes(file.type)) {
-    if (!file.name.endsWith('.rar')) return { error: `File type is not valid (${file.type})` };
+    return { error: `File type is not valid (${file.type})` };
   }
   if (maxSize && size > maxSize) {
     return { error: `File is too large (${size}MB)` }
@@ -226,6 +227,20 @@ export default function FileInput(props: InputAdornmentsProps) {
     }
   }, [])
 
+  React.useMemo(() => {
+    if (props?.clear) resetInput()
+  }, [props?.clear])
+
+  function resetInput() {
+    setPreviews([])
+    setUploadedFiles([])
+    setUploadsCount(0)
+    setInputIcon('')
+    setplaceHolderTxt(props?.placeholderText || 'Перетащите или щелкните файл для загрузки')
+    switchToFullBtn()
+    resetUploadsCount()
+  }
+
   function handleClick() {
     const fileInput = hiddenFileInput.current?.querySelector('input[type="file"]');
     if (fileInput) {
@@ -282,6 +297,12 @@ export default function FileInput(props: InputAdornmentsProps) {
       return false;
     }
 
+    if (file.name.endsWith('.rar')) {
+      const mimeType = "application/x-rar-compressed";
+      const blob = file.slice(0, file.size, mimeType);
+      file = new File([blob], file.name, { type: mimeType });
+    }
+
     const customFile = await readFile(file);
     const isImage = customFile.type.includes('image')
 
@@ -325,9 +346,6 @@ export default function FileInput(props: InputAdornmentsProps) {
     setError(null)
 
     const filesUploaded: File[] = event.target.files;
-
-    console.log(event.target.files);
-
 
     if (!filesUploaded || filesUploaded.length === 0) return
 

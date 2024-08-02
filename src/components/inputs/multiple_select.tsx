@@ -107,6 +107,7 @@ interface SimpleSelectProps {
   children?: React.ReactNode,
   labelFixed?: boolean;
   initialSelected?: any[];
+  clear?: boolean;
 }
 
 const ITEM_HEIGHT = 48;
@@ -137,8 +138,6 @@ export default function MultipleSelect(props: SimpleSelectProps) {
     '.MuiFormControl-root': muiFormControlRoot,
   }
 
-  const [current, setCurrent] = React.useState<string | undefined>(props?.placeholderText)
-
   const [selectedElems, setSelectedElems] = React.useState<any[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedElems>) => {
@@ -156,6 +155,12 @@ export default function MultipleSelect(props: SimpleSelectProps) {
   React.useMemo(() => {
     props.onChange(selectedElems.map(e => `${e.split('/')[0]}`))
   }, [selectedElems])
+
+  React.useMemo(() => {
+    if (!!props?.clear) {
+      setSelectedElems([])
+    }
+  }, [props?.clear])
 
   return (
     <SimpleSelectControl className={props?.className || ''} sx={{ m: 1, width: '100%', ...SX }} variant="filled">

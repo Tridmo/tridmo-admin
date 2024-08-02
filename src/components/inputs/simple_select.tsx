@@ -158,7 +158,7 @@ export default function SimpleSelect(props: SimpleSelectProps) {
               value={props?.placeholderText}
               onClick={() => setCurrent(props?.placeholderText)}
               disabled
-              selected
+              selected={!!props?.placeholderText}
             >{props.placeholderText}</MenuItem>
 
             : null

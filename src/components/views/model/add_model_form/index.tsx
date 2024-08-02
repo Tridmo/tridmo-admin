@@ -220,7 +220,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                   width: Yup.number().required('Ширина не указано'),
                   height: Yup.number().required('Высота не указано'),
                   length: Yup.number().required('Длина не указано'),
-                  furniture_cost: Yup.number().required('Цена не указано'),
+                  furniture_cost: Yup.number().optional(),
                   availability: Yup.string().max(255).required('Доступность не указано'),
                   description: Yup.string().max(255).required('Описание не указано'),
                   style_id: Yup.number().required('Cтиль не указано'),

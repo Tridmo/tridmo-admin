@@ -101,7 +101,7 @@ const labelStyle: CSSProperties = {
   margin: '0 0 6px 0',
 }
 
-export function AddModelForm({ editing = false, selectedBrand }: { editing?: boolean, selectedBrand?: any }) {
+export function AddModelForm({ editing = false, model, selectedBrand }: { editing?: boolean, model: any, selectedBrand?: any }) {
   const stylesData = useSelector(selectAllStyles)
   const categoriesData = useSelector(selectModelCategories);
   const colorsData = useSelector(selectAllColors);
@@ -109,7 +109,6 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
   const brandsData = useSelector(selectAllBrands);
   const modelPlatformsData = useSelector(selectModelPlatforms);
   const renderPlatformsData = useSelector(selectRenderPlatforms);
-  const model = (useSelector(selectOneModel))?.data?.model;
 
   const dispatch = useDispatch<any>()
   const router = useRouter()
@@ -118,7 +117,7 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
   const [categoryChildren, setCategoryChildren] = useState<any[]>([])
   const [brand, setBrand] = useState<any>(null)
 
-  if (editing) {
+  if (editing && brand) {
     useEffect(() => {
       if (model) {
         dispatch(setRouteCrumbs(
@@ -193,52 +192,52 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
 
           initialValues={initials}
 
-          // validationSchema={
-          //   Yup.object().shape(
-          //     editing ?
-          //       {
-          //         name: Yup.string().max(255).optional(),
-          //         width: Yup.number().optional(),
-          //         height: Yup.number().optional(),
-          //         length: Yup.number().optional(),
-          //         furniture_cost: Yup.number().optional(),
-          //         availability: Yup.string().max(255).optional(),
-          //         description: Yup.string().max(255).optional(),
-          //         style_id: Yup.number().optional(),
-          //         parent_category_id: Yup.number().optional(),
-          //         category_id: Yup.number().optional(),
-          //         brand_id: Yup.string().optional(),
-          //         model_platform_id: Yup.string().optional(),
-          //         render_platform_id: Yup.string().optional(),
-          //         colors: Yup.array().of(Yup.number()).min(1).optional(),
-          //         materials: Yup.array().of(Yup.number()).min(1).optional(),
+          validationSchema={
+            Yup.object().shape(
+              editing && model ?
+                {
+                  name: Yup.string().max(255).optional(),
+                  width: Yup.number().optional(),
+                  height: Yup.number().optional(),
+                  length: Yup.number().optional(),
+                  furniture_cost: Yup.number().optional(),
+                  availability: Yup.string().max(255).optional(),
+                  description: Yup.string().max(255).optional(),
+                  style_id: Yup.number().optional(),
+                  parent_category_id: Yup.number().optional(),
+                  category_id: Yup.number().optional(),
+                  brand_id: Yup.string().optional(),
+                  model_platform_id: Yup.string().optional(),
+                  render_platform_id: Yup.string().optional(),
+                  colors: Yup.array().of(Yup.number()).min(1).optional(),
+                  materials: Yup.array().of(Yup.number()).min(1).optional(),
 
-          //         file: Yup.mixed().optional(),
-          //         cover: Yup.mixed().optional(),
-          //         images: Yup.array().of(Yup.mixed()).optional()
-          //       } : {
-          //         name: Yup.string().max(255).required('Название не указано'),
-          //         width: Yup.number().required('Ширина не указано'),
-          //         height: Yup.number().required('Высота не указано'),
-          //         length: Yup.number().required('Длина не указано'),
-          //         furniture_cost: Yup.number().required('Цена не указано'),
-          //         availability: Yup.string().max(255).required('Доступность не указано'),
-          //         description: Yup.string().max(255).required('Описание не указано'),
-          //         style_id: Yup.number().required('Cтиль не указано'),
-          //         parent_category_id: Yup.number().required('Основная категория не указана'),
-          //         category_id: Yup.number().required('Категория не указано'),
-          //         brand_id: Yup.string().required('Категория не указано'),
-          //         model_platform_id: Yup.string().required('Платформа не указано'),
-          //         render_platform_id: Yup.string().required('Платформа не указано'),
-          //         colors: Yup.array().of(Yup.number()).min(1).required('Загрузите хотя бы один цвет'),
-          //         materials: Yup.array().of(Yup.number()).min(1).required('Загрузите хотя бы один материал'),
+                  file: Yup.mixed().optional(),
+                  cover: Yup.mixed().optional(),
+                  images: Yup.array().of(Yup.mixed()).optional()
+                } : {
+                  name: Yup.string().max(255).required('Название не указано'),
+                  width: Yup.number().required('Ширина не указано'),
+                  height: Yup.number().required('Высота не указано'),
+                  length: Yup.number().required('Длина не указано'),
+                  furniture_cost: Yup.number().required('Цена не указано'),
+                  availability: Yup.string().max(255).required('Доступность не указано'),
+                  description: Yup.string().max(255).required('Описание не указано'),
+                  style_id: Yup.number().required('Cтиль не указано'),
+                  parent_category_id: Yup.number().required('Основная категория не указана'),
+                  category_id: Yup.number().required('Категория не указано'),
+                  brand_id: Yup.string().required('Категория не указано'),
+                  model_platform_id: Yup.string().required('Платформа не указано'),
+                  render_platform_id: Yup.string().required('Платформа не указано'),
+                  colors: Yup.array().of(Yup.number()).min(1).required('Загрузите хотя бы один цвет'),
+                  materials: Yup.array().of(Yup.number()).min(1).required('Загрузите хотя бы один материал'),
 
-          //         file: Yup.mixed().required('Загрузите файл'),
-          //         cover: Yup.mixed().required('Загрузите изображение обложки'),
-          //         images: Yup.array().of(Yup.mixed()).required('Загрузите хотя бы одно изображение')
-          //       }
-          //   )
-          // }
+                  file: Yup.mixed().required('Загрузите файл'),
+                  cover: Yup.mixed().required('Загрузите изображение обложки'),
+                  images: Yup.array().of(Yup.mixed()).required('Загрузите хотя бы одно изображение')
+                }
+            )
+          }
           onSubmit={async (
             _values, { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
@@ -246,7 +245,7 @@ export function AddModelForm({ editing = false, selectedBrand }: { editing?: boo
             try {
               const formData = new FormData()
 
-              if (editing) {
+              if (editing && model) {
                 if (_values.name != model?.name) formData.append('name', _values.name)
                 if (_values.width != model?.width) formData.append('width', _values.width)
                 if (_values.height != model?.height) formData.append('height', _values.height)

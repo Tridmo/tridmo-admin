@@ -68,7 +68,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
   const dispatch = useDispatch<any>()
   const router = useRouter()
 
-  if (editing) {
+  if (editing && brand) {
     useEffect(() => {
       dispatch(setRouteCrumbs(
         [{
@@ -128,7 +128,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
 
           validationSchema={
             Yup.object().shape(
-              editing ? {
+              editing && brand ? {
                 name: Yup.string().max(255).optional(),
                 site_link: Yup.string().url('Введите ссылку').optional(),
                 address: Yup.string().optional(),
@@ -160,7 +160,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
 
               const formData = new FormData()
 
-              if (editing) {
+              if (editing && brand) {
                 if (_values.name != brand?.name) formData.append('name', _values.name)
                 if (_values.site_link != brand?.site_link) formData.append('site_link', _values.site_link)
                 if (_values.description != brand?.description) formData.append('description', _values.description)

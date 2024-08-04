@@ -29,6 +29,7 @@ import { IMAGES_BASE_URL } from "../../../../utils/image_src";
 import { selectOneBrand } from "../../../../data/get_one_brand";
 import { setRouteCrumbs } from "../../../../data/route_crumbs";
 import { CleaningServices } from "@mui/icons-material";
+import { compareArrays } from "../../../../utils";
 
 const availabilityData = [
   {
@@ -167,7 +168,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
     width: editing && model?.width ? model?.width : '',
     height: editing && model?.height ? model?.height : '',
     length: editing && model?.length ? model?.length : '',
-    furniture_cost: editing && model?.furniture_cost ? model?.furniture_cost : '',
+    furniture_cost: editing && model ? model?.furniture_cost || null : '',
     availability: editing && model?.availability ? model?.availability : '1',
     description: editing && model?.description ? model?.description : '',
     style_id: editing && model?.style_id ? model?.style_id : '',
@@ -207,7 +208,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                   width: Yup.number().optional(),
                   height: Yup.number().optional(),
                   length: Yup.number().optional(),
-                  furniture_cost: Yup.number().optional(),
+                  furniture_cost: Yup.number().nullable().optional(),
                   availability: Yup.string().max(255).optional(),
                   description: Yup.string().max(255).optional(),
                   style_id: Yup.number().optional(),
@@ -227,7 +228,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                   width: Yup.number().required('Ширина не указано'),
                   height: Yup.number().required('Высота не указано'),
                   length: Yup.number().required('Длина не указано'),
-                  furniture_cost: Yup.number().optional(),
+                  furniture_cost: Yup.number().nullable().optional(),
                   availability: Yup.string().max(255).required('Доступность не указано'),
                   description: Yup.string().max(255).required('Описание не указано'),
                   style_id: Yup.number().required('Cтиль не указано'),
@@ -252,6 +253,11 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
             try {
               const formData = new FormData()
 
+              // console.log();
+              // setStatus({ success: true });
+              // setSubmitting(false)
+              // return;
+
               if (editing && model) {
                 if (_values.name != model?.name) formData.append('name', _values.name)
                 if (_values.width != model?.width) formData.append('width', _values.width)
@@ -268,13 +274,17 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                 if (_values.file) formData.append('file', _values.file)
                 if (_values.cover) formData.append('cover', _values.cover)
 
-                if (_values.colors && _values.colors?.length) {
+                if (_values.colors && _values.colors?.length &&
+                  compareArrays(_values.colors, model?.colors?.map(c => c?.color?.id)) == false
+                ) {
                   if (_values.colors?.length > 1)
                     _values.colors.forEach(i => formData.append('colors', i));
                   else if (_values.colors?.length != 0)
                     formData.append('colors', JSON.stringify(_values.colors));
                 }
-                if (_values.materials && _values.materials?.length) {
+                if (_values.materials && _values.materials?.length &&
+                  compareArrays(_values.colors, model?.colors?.map(c => c?.color?.id)) == false
+                ) {
                   if (_values.materials?.length > 1)
                     _values.materials.forEach(i => formData.append('materials', i));
                   else if (_values.materials?.length != 0)
@@ -634,7 +644,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                         onChange={handleChange}
                         label="Цена мебели"
                         labelFixed
-                        value={values.furniture_cost}
+                        value={values.furniture_cost || null}
                       />
 
                       <SimpleSelect

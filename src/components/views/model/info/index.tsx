@@ -70,36 +70,23 @@ export default function ModelInfo() {
   const router = useRouter();
   const dispatch = useDispatch<any>();
   const simpleModel = useSelector(selectOneModel);
-  const currentUser = useSelector(selectMyProfile);
-  const isAuthenticated = useSelector(
-    (state: any) => state?.auth_slicer?.authState
-  );
-  const DownloadLink = useSelector((state: any) => state?.download_product);
-  const downloadStatus = useSelector(
-    (state: any) => state?.auth_slicer?.authState
-  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleDownloadAfterRes = async (
-    id: string,
-    is_free?: boolean,
-    product_id?: string
-  ) => {
-    await instance
-      .post(`products/download/${product_id}`)
-      .then((res) => router.push(res?.data?.data?.url));
-  };
-
   function DownloadHandler() {
-    instance.post(`models/download/${simpleModel?.id}`).then((res) => {
-      router.push(res?.data?.data?.url);
-    });
-    // if (isAuthenticated) {
-    // } else {
-    // dispatch(setLoginState(true));
-    // dispatch(setOpenModal(true));
-    // }
+    setIsSubmitting(true)
+    instance.post(`models/download/${simpleModel?.id}`)
+      .then(
+        (res) => {
+          router.push(res?.data?.data?.url)
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsSubmitting(false)
+      })
   }
 
   return (
@@ -341,7 +328,7 @@ export default function ModelInfo() {
               </TableCell>
               <TableCell sx={TcStyle}>
                 <SimpleTypography
-                  text={simpleModel?.furniture_cost}
+                  text={simpleModel?.furniture_cost || 'Не указан'}
                   className="table__text"
                 />
               </TableCell>
@@ -390,7 +377,6 @@ export default function ModelInfo() {
         <Grid item md={5.8} xs={12}>
           <Buttons
             onClick={DownloadHandler}
-            name={`Скачать`}
             startIcon={isSubmitting}
             endIcon={undefined}
             type="button"
@@ -400,7 +386,9 @@ export default function ModelInfo() {
                 ? "download__model--model"
                 : "download__model--disabled"
             }
-          />
+          >
+            Скачать
+          </Buttons>
         </Grid>
         <Grid />
       </Grid>

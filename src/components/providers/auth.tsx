@@ -12,7 +12,7 @@ import useHash from "../hooks/use_hash";
 
 import { resetMyProfile } from '../../data/get_profile'
 import { toast } from 'react-toastify'
-import { setVerifyState } from '../../data/modal_checker'
+import { setLoginState, setOpenModal, setVerifyState } from '../../data/modal_checker'
 import { getChatToken, selectChatToken } from "../../data/get_chat_token";
 import { tokenFactory } from "../../utils/chat";
 
@@ -22,12 +22,22 @@ export const AuthProvider = ({ children }) => {
   const update_cookie_status = useSelector((state: any) => state?.update_access_token?.status);
   const myProfile = useSelector(selectMyProfile)
   const myProfileStatus = useSelector((state: any) => state?.profile_me?.status)
+  const myProfileError = useSelector((state: any) => state?.profile_me?.error)
   const chatToken = useSelector(selectChatToken)
 
   const pathname = usePathname()
   const router = useRouter();
   const params = useParams();
   const hash = useHash();
+
+  const handleLogout = () => {
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
+    Cookies.remove('chatToken')
+    dispatch(setAuthState(false))
+    router.push(pathname)
+    router.refresh();
+  }
 
   useMemo(() => {
     if (hash) {
@@ -88,9 +98,17 @@ export const AuthProvider = ({ children }) => {
           dispatch(getChatToken())
           await tokenFactory()
         }
-        if (myProfileStatus === 'rejected') {
+        if (myProfileStatus === 'failed') {
+          if (myProfileError) {
+            if (myProfileError?.reason == 'token_expired') {
+              handleLogout()
+              dispatch(setLoginState(true))
+              dispatch(setOpenModal(true))
+            }
+          }
           dispatch(setAuthState(false));
         }
+
 
         dispatch(setAuthState(true));
       }

@@ -153,7 +153,10 @@ export default function MultipleSelect(props: SimpleSelectProps) {
   }, [props?.initialSelected])
 
   React.useMemo(() => {
-    props.onChange(selectedElems.map(e => `${e.split('/')[0]}`))
+    props.onChange(selectedElems.map(e => {
+      const id = e.split('/')[0]
+      return !isNaN(Number(id)) ? Number(id) : id
+    }))
   }, [selectedElems])
 
   React.useMemo(() => {

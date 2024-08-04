@@ -746,14 +746,14 @@ export default function Buttons({ childrenFirst, ...props }: ButtonsProps) {
       disabled={props?.disabled}
       type={props?.type}
     >
-      {childrenFirst && !props?.startIcon ? props?.children : null}
-      {
-        props?.startIcon &&
-          props?.className == 'confirm__btn'
-          ? props?.startIcon
-          : props?.name
-      }
-      {!childrenFirst && !props?.startIcon ? props?.children : null}
+      {childrenFirst && !props?.startIcon && props?.children}
+
+      {props?.startIcon && props?.className === 'confirm__btn'
+        ? props?.startIcon
+        : props?.name}
+
+      {!childrenFirst && !props?.startIcon && props?.children}
+
     </ButtonWrapper >
   );
 };

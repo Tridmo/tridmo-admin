@@ -91,22 +91,10 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
     }, [])
   }
 
-  interface DataInterface {
-    name: any,
-    site_link: any,
-    description: any,
-    address: any,
-    phone: any,
-    email: any,
-    styles: any[],
-    image: any,
-    username: any,
-    password: any,
-    submit: any
-  }
-  const initialData: DataInterface = {
+  const initialData = {
     name: editing && brand?.name ? brand?.name : '',
     site_link: editing && brand?.site_link ? brand?.site_link : '',
+    instagram: editing && brand?.instagram ? brand?.instagram : '',
     description: editing && brand?.description ? brand?.description : '',
     address: editing && brand?.address ? brand?.address : '',
     phone: editing && brand?.phone ? brand?.phone : '',
@@ -140,6 +128,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 address: Yup.string().optional(),
                 phone: Yup.number().optional(),
                 email: Yup.string().max(255).optional(),
+                instagram: Yup.string().max(255).optional(),
                 description: Yup.string().optional(),
                 username: Yup.string().optional(),
                 password: Yup.string().min(6).optional(),
@@ -151,6 +140,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 address: Yup.string().required('Адрес не указано'),
                 phone: Yup.number().required('Номер телефона не указано'),
                 email: Yup.string().max(255).required('Электронная почта не указано'),
+                instagram: Yup.string().max(255).required('Инстаграм не указано'),
                 description: Yup.string().required('Описание не указано'),
                 username: Yup.string().max(32).required('Имя пользователя не указано'),
                 password: Yup.string().min(6).required('Пароль не указано'),
@@ -169,6 +159,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
               if (editing && brand) {
                 if (_values.name != brand?.name) formData.append('name', _values.name)
                 if (_values.site_link != brand?.site_link) formData.append('site_link', _values.site_link)
+                if (_values.instagram != brand?.instagram) formData.append('instagram', _values.instagram)
                 if (_values.description != brand?.description) formData.append('description', _values.description)
                 if (_values.address != brand?.address) formData.append('address', _values.address)
                 if (_values.phone != brand?.phone) formData.append('phone', _values.phone)
@@ -186,6 +177,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
               else {
                 formData.append('name', _values.name)
                 formData.append('site_link', _values.site_link)
+                formData.append('instagram', _values.instagram)
                 formData.append('description', _values.description)
                 formData.append('address', _values.address)
                 formData.append('phone', _values.phone)
@@ -354,6 +346,23 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                         label="Ссылка на сайт"
                         labelFixed
                         placeholderText="https://"
+                      />
+                      <SimpleInp
+                        className='input_width'
+                        variant='outlined'
+                        paddingX={12}
+                        paddingY={12}
+                        error={Boolean(touched.instagram && errors.instagram)}
+                        helperText={touched.instagram && errors.instagram}
+                        name="instagram"
+                        type="text"
+                        autoComplete="off"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.instagram}
+                        label="Инстаграм"
+                        labelFixed
+                        placeholderText="username"
                       />
                       <SimpleInp
                         className='input_width'

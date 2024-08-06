@@ -10,7 +10,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "pub-5ae581681d8842d3920213d40f223944.r2.dev",
+        hostname: "images.demod.uz",
         port: "",
         pathname: "/**",
       },

@@ -24,7 +24,7 @@ import formatDate from '../../../utils/format_date'
 import SimpleInp from '../../inputs/simple_input'
 import SearchInput from '../../inputs/search'
 import SimpleSelect from '../../inputs/simple_select'
-import { getCategories, getInteriorCategories, getModelCategories, selectCategories, selectCategoriesWithModelCount } from '../../../data/categories'
+import { getCategories, selectCategoriesWithModelCount } from '../../../data/categories'
 import { selectAllBrands } from '../../../data/get_all_brands'
 import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
@@ -216,14 +216,14 @@ export default function CategoriesPage() {
   }, [])
 
   useEffect(() => {
-    if (all__categories_status == 'succeeded' && all__categories) {
+    if (all__categories) {
       typeButtons[0].count = all__categories?.length
       typeButtons[1].count = all__categories?.reduce((n, e) => n + (e?.type === 'model'), 0)
       typeButtons[2].count = all__categories?.reduce((n, e) => n + (e?.type === 'interior'), 0)
       setTopButtons(typeButtons)
       setCategories(all__categories)
     }
-  }, [all__categories_status])
+  }, [all__categories])
 
   // useEffect(() => {
   //     setCascadeDelete(checkbox_checked)

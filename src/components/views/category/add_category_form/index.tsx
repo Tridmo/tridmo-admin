@@ -25,17 +25,7 @@ import { selectRenderPlatforms } from '../../../../data/get_render_platforms';
 import ColorsSelect from '../../../inputs/color_select';
 import MultipleSelect from '../../../inputs/multiple_select';
 import { setRouteCrumbs } from "../../../../data/route_crumbs";
-
-const typeData = [
-  {
-    value: 'model',
-    name: 'Для моделей'
-  },
-  {
-    value: 'interior',
-    name: 'Для интерьеров'
-  },
-]
+import { categorySections, categoryTypes } from "../../../../types/variables";
 
 
 const formControlSx: SxProps = {
@@ -45,7 +35,7 @@ const formControlSx: SxProps = {
   justifyContent: 'space-between',
 
   '& > .input_width': {
-    maxWidth: '240px'
+    maxWidth: '400px'
   },
 }
 
@@ -58,16 +48,15 @@ const labelStyle: CSSProperties = {
   margin: '0 0 6px 0',
 }
 
-export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
+export function AddCategoryForm({ editing = false, category }: { editing?: boolean, category?: any }) {
 
   const dispatch = useDispatch<any>()
   const router = useRouter()
 
   const parentCategoriesData = useSelector(selectModelCategories)
-  const category = useSelector(selectOneCategory)
-
 
   const [selectedType, setSelectedType] = useState<'model' | 'interior' | string>(editing && category?.type ? category?.type : 'model')
+  const [selectedTypeSections, setSelectedTypeSections] = useState<any[]>(categoryTypes[selectedType])
   const [parentCategories, setParentCategories] = useState<any[]>(editing && selectedType != 'interior' ? parentCategoriesData : [])
 
   if (editing) {
@@ -90,12 +79,14 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
   interface DataInterface {
     name: any,
     type: any,
+    section: any,
     parent_id: any,
     submit: any
   }
   const initialData: DataInterface = {
     name: editing && category?.name ? category?.name : '',
     type: editing && category?.type ? category?.type : '',
+    section: editing && category?.section ? category?.section : '',
     parent_id: editing && category?.parent_id ? category?.parent_id : '',
     submit: null
   }
@@ -131,6 +122,7 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
             Yup.object().shape({
               name: Yup.string().max(255).required('Название не указано'),
               type: Yup.string().oneOf(['model', 'interior']).required('Тип не указан'),
+              section: Yup.string().oneOf(['main', 'architecture']).required('Раздел не указан'),
               parent_id: Yup.number().optional(),
             })
           }
@@ -143,6 +135,7 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
 
               formData.append('name', _values.name)
               formData.append('type', _values.type)
+              formData.append('section', _values.section)
               if (_values.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
 
               const res = await instance.post(
@@ -221,6 +214,7 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
                         labelFixed
                         placeholderText="Введите название"
                       />
+
                       <SimpleSelect
                         className='input_width'
                         variant='outlined'
@@ -233,6 +227,7 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
                         onChange={(e) => {
                           handleChange(e)
                           setSelectedType(e.target.value)
+                          setSelectedTypeSections(categorySections[e.target.value])
                           if (e.target.value == 'interior') {
                             setParentCategories([])
                             setFieldValue('parent_id', undefined)
@@ -246,13 +241,42 @@ export function AddCategoryForm({ editing = false }: { editing?: boolean }) {
                         value={values.type}
                       >
                         {
-                          typeData?.map(
+                          categoryTypes?.map(
                             (c, i) => (
                               <MenuItem key={i} value={c.value}>{c.name}</MenuItem>
                             )
                           )
                         }
                       </SimpleSelect>
+                    </Box>
+                    <Box
+                      sx={{ ...formControlSx }}
+                    >
+                      <SimpleSelect
+                        className='input_width'
+                        variant='outlined'
+                        paddingX={12}
+                        paddingY={10}
+                        error={Boolean(touched.section && errors.section)}
+                        helperText={touched.section && errors.section}
+                        name="section"
+                        onBlur={handleBlur}
+                        onChange={(e) => {
+                          handleChange(e)
+                        }}
+                        label="Раздел"
+                        labelFixed
+                        value={values.section}
+                      >
+                        {
+                          selectedTypeSections?.map(
+                            (c, i) => (
+                              <MenuItem key={i} value={c.value}>{c.name}</MenuItem>
+                            )
+                          )
+                        }
+                      </SimpleSelect>
+
                       <SimpleSelect
                         className='input_width'
                         variant='outlined'

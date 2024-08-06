@@ -6,9 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sampleUser } from '@/data/samples';
 import { AddCategoryForm } from '../../../views/category/add_category_form';
 import { setRouteCrumbs } from '../../../../data/route_crumbs';
+import { selectOneCategory } from '../../../../data/categories';
 
 
 export default function EditCategory() {
+
+  const category = useSelector(selectOneCategory)
 
   return (
     <Box className='products__container' sx={{ maxWidth: "1268px", width: "100%", margin: "0 auto !important", alignItems: "center", }}>
@@ -21,7 +24,7 @@ export default function EditCategory() {
         m={'32px 0'}
       >
         <Grid item width={'100%'}>
-          <AddCategoryForm editing />
+          <AddCategoryForm editing category={category} />
         </Grid>
       </Grid>
     </Box>

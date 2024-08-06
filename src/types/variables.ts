@@ -31,3 +31,33 @@ export const modelStatuses = {
   2: 'Не доступно',
   3: 'Под заказ',
 }
+
+export const categoryTypes = [
+  {
+    value: 'model',
+    name: 'Для моделей'
+  },
+  {
+    value: 'interior',
+    name: 'Для интерьеров'
+  },
+]
+
+export const categorySections = {
+  model: [
+    {
+      value: 'main',
+      name: 'Главная'
+    }
+  ],
+  interior: [
+    {
+      value: 'main',
+      name: 'Главная'
+    },
+    {
+      value: 'architecture',
+      name: 'Архитектура'
+    },
+  ]
+} 

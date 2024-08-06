@@ -219,6 +219,7 @@ const categories = createSlice({
 });
 export const { setOneSelectedCategory } = categories.actions;
 export const selectCategories = (state: any) => state?.categories?.data[0]?.data
+export const selectCategoriesStatus = (state: any) => state?.categories?.status
 export const selectOneCategory = (state: any) => state?.categories?.one_data[0]?.data
 export const selectCategoriesWithModelCount = (state: any) => state?.categories?.data_with_model_count[0]?.data
 export const selectCategoriesByUserDownloads = (state: any) => state?.categories?.user_downloads_data[0]?.data

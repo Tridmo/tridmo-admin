@@ -102,22 +102,28 @@ const listSx: SxProps = {
 const widthControl = {
 
   '&:nth-of-type(1)': {
-    minWidth: '517px',
+    minWidth: '40%',
+    maxWidth: '40%',
   },
   '&:nth-of-type(2)': {
-    minWidth: '180px',
+    minWidth: '12%',
+    maxWidth: '12%',
   },
   '&:nth-of-type(3)': {
-    minWidth: '180px',
+    minWidth: '22%',
+    maxWidth: '22%',
   },
   '&:nth-of-type(4)': {
-    minWidth: '170px',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
   '&:nth-of-type(5)': {
-    minWidth: '100px',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
   '&:nth-of-type(6)': {
-    minWidth: '50px',
+    minWidth: '60px',
+    maxWidth: '60px',
   },
 }
 
@@ -681,148 +687,180 @@ export default function ModelsPage() {
                         sx={liSx}
                       >
 
-                        <ListItemText onClick={() => navigateTo(`/models/${model?.slug}`)}
-                          // title='Нажмите, чтобы открыть'
+                        <ListItemText
                           sx={{
                             ...widthControl, ...itemAsLink,
-                            '& > span:first-of-type': {
+                          }}
+                        >
+                          <Link href={`/models/${model?.slug}`}
+                            style={{
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'flex-start'
-                            }
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              ...modelImageWrapperSx,
-                              '&:hover:after': {
-                                opacity: '1'
-                              },
-                              '&::after': {
-                                backgroundImage: `url(${IMAGES_BASE_URL}/${model?.cover[0]?.image_src})`,
-                                transition: 'opacity 0.3s ease',
-                                zIndex: 3000,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                content: '""',
-                                display: 'flex',
-                                pointerEvents: 'none',
-                                opacity: '0',
-                                border: '1px solid #B8B8B8',
-                                borderRadius: '4px',
-                                width: '320px',
-                                height: '320px',
-                                position: 'absolute',
-                                top: '-160',
-                                left: '100%',
-                              }
                             }}
                           >
-                            <Image
-                              src={model?.cover ? (
-                                model?.cover[0]?.image_src ? (
-                                  `${IMAGES_BASE_URL}/${model?.cover[0]?.image_src}`
-                                ) : ''
-                              ) : ''}
-                              alt='Landing image'
-                              width={36}
-                              height={36}
-                              style={modelImageSx}
-                            />
-                          </Box>
-
-
-                          <ListItemText onClick={() => navigateTo(`/models/${model?.slug}`)} className='brand_name' sx={{ marginLeft: '24px', }} >
-                            <SimpleTypography
-                              text={model?.name}
+                            <Box
                               sx={{
-                                fontSize: '16px',
+                                ...modelImageWrapperSx,
+                                '&:hover:after': {
+                                  opacity: '1'
+                                },
+                                '&::after': {
+                                  backgroundImage: `url(${IMAGES_BASE_URL}/${model?.cover[0]?.image_src})`,
+                                  transition: 'opacity 0.3s ease',
+                                  zIndex: 3000,
+                                  backgroundRepeat: 'no-repeat',
+                                  backgroundSize: 'cover',
+                                  content: '""',
+                                  display: 'flex',
+                                  pointerEvents: 'none',
+                                  opacity: '0',
+                                  border: '1px solid #B8B8B8',
+                                  borderRadius: '4px',
+                                  width: '320px',
+                                  height: '320px',
+                                  position: 'absolute',
+                                  top: '-160',
+                                  left: '100%',
+                                }
+                              }}
+                            >
+                              <Image
+                                src={model?.cover ? (
+                                  model?.cover[0]?.image_src ? (
+                                    `${IMAGES_BASE_URL}/${model?.cover[0]?.image_src}`
+                                  ) : ''
+                                ) : ''}
+                                alt='Landing image'
+                                width={36}
+                                height={36}
+                                style={modelImageSx}
+                              />
+                            </Box>
+
+
+                            <ListItemText className='brand_name' sx={{ marginLeft: '24px', }} >
+                              <SimpleTypography
+                                text={model?.name}
+                                sx={{
+                                  fontSize: '16px',
+                                  fontWeight: 400,
+                                  lineHeight: '26px',
+                                  letterSpacing: '-0.02em',
+                                  textAlign: 'start',
+                                  color: '#141414'
+                                }}
+                              />
+                              <SimpleTypography
+                                text={`#${model?.id}`}
+                                sx={{
+                                  fontSize: '12px',
+                                  fontWeight: 400,
+                                  lineHeight: '24px',
+                                  letterSpacing: '-0.01em',
+                                  textAlign: 'start',
+                                  color: '#848484'
+                                }}
+                              />
+                            </ListItemText>
+                          </Link>
+                        </ListItemText>
+
+                        <ListItemText title='Нажмите, чтобы открыть'
+                          sx={{ ...widthControl, ...itemAsLink }}
+                        >
+                          <Link href={`/brands/${model?.brand?.slug}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'flex-start'
+                            }}
+                          >
+                            <SimpleTypography
+                              text={model?.brand?.name}
+                              sx={{
+                                fontSize: '14px',
                                 fontWeight: 400,
                                 lineHeight: '26px',
                                 letterSpacing: '-0.02em',
                                 textAlign: 'start',
-                                color: '#141414'
                               }}
                             />
+                          </Link>
+                        </ListItemText>
+
+                        <ListItemText
+                          sx={{ ...widthControl, ...itemAsLink }}
+                        >
+                          <Link href={`/brands/${model?.slug}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'flex-start'
+                            }}
+                          >
                             <SimpleTypography
-                              text={`#${model?.id}`}
+                              text={model?.category?.name || 'Category'}
                               sx={{
-                                fontSize: '12px',
+                                fontSize: '14px',
                                 fontWeight: 400,
-                                lineHeight: '24px',
-                                letterSpacing: '-0.01em',
+                                lineHeight: '26px',
+                                letterSpacing: '-0.02em',
                                 textAlign: 'start',
-                                color: '#848484'
                               }}
                             />
-                          </ListItemText>
+                          </Link>
                         </ListItemText>
 
-                        <ListItemText title='Нажмите, чтобы открыть'
-                          onClick={() => navigateTo(`/models/${model?.slug}`)}
+                        <ListItemText
                           sx={{ ...widthControl, ...itemAsLink }}
                         >
-                          <SimpleTypography
-                            text={model?.brand?.name}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'start',
+                          <Link href={`/brands/${model?.slug}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'flex-start'
                             }}
-                          />
-                        </ListItemText>
-
-                        <ListItemText title='Нажмите, чтобы открыть'
-                          onClick={() => navigateTo(`/models/${model?.slug}`)}
-                          sx={{ ...widthControl, ...itemAsLink }}
-                        >
-                          <SimpleTypography
-                            text={model?.category?.name || 'Category'}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'start',
-                            }}
-                          />
-                        </ListItemText>
-
-                        <ListItemText title='Нажмите, чтобы открыть'
-                          onClick={() => navigateTo(`/models/${model?.slug}`)}
-                          sx={{ ...widthControl, ...itemAsLink }}
-                        >
-                          <SimpleTypography
-                            text={formatDate(model?.created_at, true)}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'start',
-                            }}
-                          />
+                          >
+                            <SimpleTypography
+                              text={formatDate(model?.created_at, true)}
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '26px',
+                                letterSpacing: '-0.02em',
+                                textAlign: 'start',
+                              }}
+                            />
+                          </Link>
                         </ListItemText>
 
                         <ListItemText
                           sx={{ ...widthControl }}
                         >
-                          <SimpleTypography
-                            text={model?.downloads_count || 0}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'center',
+                          <Link href={`/brands/${model?.slug}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
                             }}
-                          />
+                          >
+                            <SimpleTypography
+                              text={model?.downloads_count || 0}
+                              sx={{
+                                fontSize: '14px',
+                                fontWeight: 400,
+                                lineHeight: '26px',
+                                letterSpacing: '-0.02em',
+                                textAlign: 'center',
+                              }}
+                            />
+                          </Link>
                         </ListItemText>
 
                         <ListItemText sx={{
                           ...widthControl,
+                          ml: 'auto',
                           '& span': {
                             width: '100%',
                             display: 'flex',

@@ -11,6 +11,7 @@ type TypographyProps = {
   className?: string,
   children?: any,
   paragraph?: any,
+  onClick?: React.ButtonHTMLAttributes<HTMLSpanElement>["onClick"];
 };
 
 const TypographyWrapper = styled(Typography)(
@@ -408,6 +409,10 @@ const TypographyWrapper = styled(Typography)(
       }
 
       &.MuiTypography-brand__box--text{
+        width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         text-align:start;
         font-size: 14px;
         line-height: 17px;
@@ -924,6 +929,7 @@ const SimpleTypography = (props: TypographyProps) => {
   return (
     // <Button className={`${classes.styles} MuiButton-text-${props.color} MuiButton-bg-${props.color}`}>{props?.name}</Button>
     <TypographyWrapper
+      onClick={props?.onClick ? props?.onClick : () => { }}
       sx={{ whiteSpace: 'pre-line', ...props?.sx }}
       className={`MuiTypography-${props?.className}`}
       variant={props?.variant}

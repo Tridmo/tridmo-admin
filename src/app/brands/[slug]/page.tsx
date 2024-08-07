@@ -51,7 +51,7 @@ export default function UserProfile() {
   React.useEffect(() => {
     if (profile) {
       if (brand) {
-        dispatch(getBrandModels({ brand_id: brand?.id }))
+        dispatch(getBrandModels({ brand: brand?.id }))
         dispatch(getBrandCategories(brand?.id))
       }
     }

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { CSSProperties, Suspense, useEffect, useState } from 'react'
+import React, { CSSProperties, Suspense, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Box, useMediaQuery, SxProps, List, ListItem, ListItemText, ListItemAvatar, Divider, Skeleton, Input, TextField, FormControl, MenuItem, styled, Menu } from '@mui/material'
 import SimpleCard from '../../simple_card'
@@ -24,7 +24,7 @@ import formatDate from '../../../utils/format_date'
 import SimpleInp from '../../inputs/simple_input'
 import SearchInput from '../../inputs/search'
 import SimpleSelect from '../../inputs/simple_select'
-import { getCategories, selectCategoriesWithModelCount } from '../../../data/categories'
+import { getCategories, getCategoriesWithModelCount, selectCategoriesWithModelCount } from '../../../data/categories'
 import { selectAllBrands } from '../../../data/get_all_brands'
 import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
@@ -203,8 +203,7 @@ export default function CategoriesPage() {
   const [topButtons, setTopButtons] = useState<any[]>(typeButtons)
   const [selectedCategory, setSelectedCategory] = useState<any>(null)
   const [selectedMenuCategory, setSelectedMenuCategory] = useState<any>(null)
-  // const [typeModelSelected, setTypeModelSelected] = useState<boolean>(false)
-  // const [typeInteiriorSelected, setTypeInteiriorSelected] = useState<boolean>(false)
+  const [selectedType, setSelectedType] = useState<'all' | 'model' | 'interior'>('all')
 
   useEffect(() => {
     dispatch(setRouteCrumbs(
@@ -215,19 +214,16 @@ export default function CategoriesPage() {
     ))
   }, [])
 
-  useEffect(() => {
+  useMemo(() => {
     if (all__categories) {
-      typeButtons[0].count = all__categories?.length
-      typeButtons[1].count = all__categories?.reduce((n, e) => n + (e?.type === 'model'), 0)
-      typeButtons[2].count = all__categories?.reduce((n, e) => n + (e?.type === 'interior'), 0)
-      setTopButtons(typeButtons)
+      const btns = [...typeButtons]
+      btns[0].count = all__categories?.length
+      btns[1].count = all__categories?.reduce((n, e) => n + (e?.type === 'model'), 0)
+      btns[2].count = all__categories?.reduce((n, e) => n + (e?.type === 'interior'), 0)
+      setTopButtons(btns)
       setCategories(all__categories)
     }
-  }, [all__categories])
-
-  // useEffect(() => {
-  //     setCascadeDelete(checkbox_checked)
-  // }, [checkbox_checked])
+  }, [all__categories, all__categories_status])
 
   function navigateTo(link: string) {
     router.push(link)
@@ -235,29 +231,35 @@ export default function CategoriesPage() {
 
   function handleAllClick(event: any, index: number) {
     setCategories(all__categories)
-    typeButtons[index].active = true
-    typeButtons.forEach((e, i) => {
-      if (index != i) typeButtons[i].active = false
+    setSelectedType('all')
+    const arr = [...typeButtons]
+    arr[index].active = true
+    arr.forEach((e, i) => {
+      if (index != i) arr[i].active = false
     })
-    setTopButtons(typeButtons)
+    setTopButtons(arr)
   };
   function handleModelClick(event: any, index: number) {
     const typeModel = all__categories.filter((e) => e?.type === 'model')
     setCategories(typeModel)
-    typeButtons[index].active = true
-    typeButtons.forEach((e, i) => {
-      if (index != i) typeButtons[i].active = false
+    setSelectedType('model')
+    const arr = [...typeButtons]
+    arr[index].active = true
+    arr.forEach((e, i) => {
+      if (index != i) arr[i].active = false
     })
-    setTopButtons(typeButtons)
+    setTopButtons(arr)
   };
   function handleInteriorClick(event: any, index: number) {
-    const typeModel = all__categories.filter((e) => e?.type === 'interior')
-    setCategories(typeModel)
-    typeButtons[index].active = true
-    typeButtons.forEach((e, i) => {
-      if (index != i) typeButtons[i].active = false
+    const typeInterior = all__categories.filter((e) => e?.type === 'interior')
+    setCategories(typeInterior)
+    setSelectedType('interior')
+    const arr = [...typeButtons]
+    arr[index].active = true
+    arr.forEach((e, i) => {
+      if (index != i) arr[i].active = false
     })
-    setTopButtons(typeButtons)
+    setTopButtons(arr)
   };
 
   function handleClick(event: any, model: any) {
@@ -306,7 +308,7 @@ export default function CategoriesPage() {
               .then(res => {
                 if (res?.data?.success) {
                   toast.success(res?.data?.message)
-                  dispatch(getCategories())
+                  dispatch(getCategoriesWithModelCount())
                   dispatch(setConfirmState(false))
                   dispatch(setOpenModal(false))
                   dispatch(resetConfirmProps())
@@ -502,7 +504,7 @@ export default function CategoriesPage() {
                 sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
               />
               <SimpleTypography
-                text='Модели'
+                text={selectedType == 'all' ? 'Модели / Интерьеры' : selectedType == 'model' ? 'Модели' : selectedType == 'interior' ? 'Интерьеры' : ''}
                 sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
               />
               <SimpleTypography
@@ -513,9 +515,7 @@ export default function CategoriesPage() {
             {
               all__categories_status == 'succeeded' ?
                 (
-                  categories &&
-                    categories?.length != 0
-
+                  categories && categories?.length != 0
                     ? categories?.map((category, index: any) =>
 
                       <ListItem key={index} alignItems="center"

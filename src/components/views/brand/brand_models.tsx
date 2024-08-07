@@ -35,7 +35,7 @@ import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmPro
 import { setTimeout } from 'timers'
 import { selectRouteCrubms, setRouteCrumbs } from '../../../data/route_crumbs'
 import { RouteCrumb } from '../../../types/interfaces'
-import { selectBrandModels } from '../../../data/get_brand_models'
+import { getBrandModels, selectBrandModels } from '../../../data/get_brand_models'
 import { selectOneBrand } from '../../../data/get_one_brand'
 
 const fake = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -104,22 +104,29 @@ const listSx: SxProps = {
 const widthControl = {
 
   '&:nth-of-type(1)': {
-    minWidth: '417px',
+    minWidth: '40%',
+    maxWidth: '40%',
   },
   '&:nth-of-type(2)': {
-    minWidth: '180px',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
   '&:nth-of-type(3)': {
-    minWidth: '180px',
+    minWidth: '20%',
+    maxWidth: '20%',
   },
   '&:nth-of-type(4)': {
-    minWidth: '170px',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
   '&:nth-of-type(5)': {
-    minWidth: '100px',
+    minWidth: '12%',
+    maxWidth: '12%',
   },
   '&:nth-of-type(6)': {
-    minWidth: '50px',
+    marginLeft: 'auto',
+    minWidth: '60px',
+    maxWidth: '60px',
   },
 }
 
@@ -181,15 +188,18 @@ export default function BrandModels() {
   }
 
   useMemo(() => {
-    instance.get(`/models/count/?top=true&brand_id=${brand?.id}`).then(res => {
-      setAllModelsCount(res?.data?.data?.count)
-      setTopModelsCount(res?.data?.data?.top)
-    })
+    if (all__models) {
+      instance.get(`/models/counts/?brand_id=${brand?.id}`).then(res => {
+        setAllModelsCount(res?.data?.data?.counts?.count)
+      })
+      instance.get(`/models/counts/?top=true&brand_id=${brand?.id}`).then(res => {
+        setTopModelsCount(res?.data?.data?.counts?.top)
+      })
+    }
   }, [all__models, all__models_status])
 
   function handleAllClick(event) {
-    console.log(getModelNameFilter, 'state.model_name');
-    dispatch(getAllModels({
+    dispatch(getBrandModels({
       categories: getModelCategoryFilter,
       brand: brand?.id,
       top: undefined,
@@ -203,7 +213,7 @@ export default function BrandModels() {
   };
 
   function handleTopClick(event) {
-    dispatch(getAllModels({
+    dispatch(getBrandModels({
       categories: getModelCategoryFilter,
       brand: brand?.id,
       top: true,
@@ -229,7 +239,7 @@ export default function BrandModels() {
   function handleCategoryChange(e) {
     setCategoryId(Number(e.target.value))
     const filter = e.target.value == -1 ? [] : [e.target.value];
-    dispatch(getAllModels({
+    dispatch(getBrandModels({
       categories: filter,
       brand: brand?.id,
       top: getModelTopFilter,
@@ -242,7 +252,7 @@ export default function BrandModels() {
   }
 
   function handleSearch(searchValue) {
-    dispatch(getAllModels({
+    dispatch(getBrandModels({
       brand: brand?.id,
       categories: getModelCategoryFilter,
       name: searchValue,
@@ -260,7 +270,15 @@ export default function BrandModels() {
     }).then(res => {
       if (res?.data?.success) {
         toast.success(res?.data?.message)
-        dispatch(getAllModels({}))
+        dispatch(getBrandModels({
+          brand: brand?.id,
+          categories: getModelCategoryFilter,
+          name: getModelNameFilter,
+          top: getModelTopFilter,
+          page: getModelPageFilter,
+          orderBy: getModelOrderBy,
+          order: getModelOrder,
+        }))
       }
       else {
         toast.success(res?.data?.message)
@@ -284,7 +302,15 @@ export default function BrandModels() {
               .then(res => {
                 if (res?.data?.success) {
                   toast.success(res?.data?.message)
-                  dispatch(getAllModels({}))
+                  dispatch(getBrandModels({
+                    brand: brand?.id,
+                    categories: getModelCategoryFilter,
+                    name: getModelNameFilter,
+                    top: getModelTopFilter,
+                    page: getModelPageFilter,
+                    orderBy: getModelOrderBy,
+                    order: getModelOrder,
+                  }))
                   dispatch(setConfirmState(false))
                   dispatch(setOpenModal(false))
                   dispatch(resetConfirmProps())
@@ -476,10 +502,6 @@ export default function BrandModels() {
                     />
                   </Box>
                 </Buttons>
-                {/* {
-                                    topButtons?.map((b, i) => (
-                                    ))
-                                } */}
               </ListItem>
 
               <ListItem alignItems="center"
@@ -582,8 +604,8 @@ export default function BrandModels() {
               </ListItem>
               {
                 all__models_status == 'succeeded' ?
-                  all__models && all__models?.length != 0
-                    ? all__models?.map((model, index: any) =>
+                  all__models && all__models?.data?.models?.length
+                    ? all__models?.data?.models?.map((model, index: any) =>
 
                       <ListItem key={index} alignItems="center"
                         sx={liSx}
@@ -875,19 +897,23 @@ export default function BrandModels() {
               }
             </List>
           }
-          <Grid container sx={{ width: '100%', margin: "0 auto", padding: "17px 0 32px 0" }}>
-            <Grid
-              item
-              xs={12}
-              sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
-            >
-              <Pagination
-                dataSource='brand_models'
-                count={all__models?.data?.pagination?.pages}
-                page={parseInt(all__models?.data?.pagination?.current) + 1}
-              />
+          {
+            !!all__models &&
+            <Grid container sx={{ width: '100%', margin: "0 auto", padding: "17px 0 32px 0" }}>
+              <Grid
+                item
+                xs={12}
+                sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
+              >
+                <Pagination
+                  dataSource='brand_models'
+                  dataId={brand?.id}
+                  count={all__models?.data?.pagination?.pages}
+                  page={parseInt(all__models?.data?.pagination?.current) + 1}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          }
         </>
 
       </Grid>

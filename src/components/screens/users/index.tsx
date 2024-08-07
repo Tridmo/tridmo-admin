@@ -30,16 +30,19 @@ import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
 import { toast } from 'react-toastify'
 import { getTopModels, selectTopModels } from '../../../data/get_top_models'
-import { setCategoryFilter, setModelBrandFilter, setModelNameFilter, setModelTopFilter, setUserNameFilter } from '../../../data/handle_filters'
+import { setCategoryFilter, setModelBrandFilter, setModelNameFilter, setModelTopFilter, setUserNameFilter, setUserOrder, setUserOrderBy } from '../../../data/handle_filters'
 import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from '../../../data/modal_checker'
 import { setTimeout } from 'timers'
 import { selectRouteCrubms, setRouteCrumbs } from '../../../data/route_crumbs'
 import { RouteCrumb } from '../../../types/interfaces'
-import { getAllDesigners, selectAllDesigners } from '../../../data/get_all_designers'
+import { getAllDesigners, selectAllDesigners, selectAllDesignersPagination } from '../../../data/get_all_designers'
+import { order, usersOrderBy } from '../../../types/filters'
+import { OrderIndicator } from '../../order_indicator'
 
 const fake = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const liHeaderTextSx = {
+  cursor: 'pointer',
   fontSize: '11px',
   fontWeight: 700,
   lineHeight: '16px',
@@ -161,20 +164,30 @@ export default function UsersPage() {
   const router = useRouter();
   const dispatch = useDispatch<any>();
   const users_status = useSelector((state: any) => state?.get_all_designers?.status)
-  const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
-  const getModelOrderBy = useSelector((state: any) => state?.handle_filters?.model_orderby)
-  const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
+  const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
+  const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.users_orderby)
+  const getUsersOrder = useSelector((state: any) => state?.handle_filters?.users_order)
+  const getUsersPage = useSelector((state: any) => state?.handle_filters?.users_page)
 
   const matches = useMediaQuery('(max-width:600px)');
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const users = useSelector(selectAllDesigners)
-  const route_crumbs = useSelector(selectRouteCrubms)
+  const pagination = useSelector(selectAllDesignersPagination)
 
   const [activeTopButton, setActiveTopButton] = useState<0 | 1>(0)
   const [usersCount, setUsersCount] = useState<number>(0)
   const [selectedModel, setSelectedModel] = useState<any>(null)
+  const [orderBy, setOrderBy] = useState<usersOrderBy>('created_at');
+  const [orders, setOrders] = useState<{ [K in usersOrderBy]: order }>({
+    full_name: 'asc',
+    created_at: 'desc',
+    designs_count: 'asc',
+    tags_count: 'asc',
+    downloads_count: 'asc',
+  })
+
 
   useEffect(() => {
     dispatch(setRouteCrumbs([{
@@ -184,7 +197,7 @@ export default function UsersPage() {
   }, [])
 
   useMemo(() => {
-    setUsersCount(users?.data?.pagination?.data_count || 0)
+    setUsersCount(pagination?.data_count || 0)
   }, [users, users_status])
 
   function navigateTo(link: string) {
@@ -204,10 +217,26 @@ export default function UsersPage() {
   function handleSearch(searchValue) {
     dispatch(getAllDesigners({
       key: searchValue,
-      orderBy: getModelOrderBy,
-      order: getModelOrder,
+      orderBy: getUsersOrderBy,
+      order: getUsersOrder,
     }))
     dispatch(setUserNameFilter(searchValue))
+  }
+
+  function getWithOrder(by: usersOrderBy) {
+    const o = orderBy == by && orders[orderBy] == 'desc' ? 'asc' : 'desc'
+    Object.keys(orders).map(key => orders[key] = o == 'desc' ? 'asc' : 'desc')
+    orders[by] = o
+    setOrders(orders)
+    setOrderBy(by)
+    dispatch(getAllDesigners({
+      orderBy: by,
+      order: o,
+      key: getUsersNameFilter,
+      page: getUsersPage,
+    }))
+    dispatch(setUserOrderBy(by))
+    dispatch(setUserOrder(o))
   }
 
   return (
@@ -336,8 +365,11 @@ export default function UsersPage() {
               >
                 <SimpleTypography
                   text='Ф.И.О'
+                  onClick={() => getWithOrder('full_name')}
                   sx={{ ...liHeaderTextSx, ...widthControl }}
-                />
+                >
+                  {orderBy == 'full_name' && <OrderIndicator order={orders.full_name} />}
+                </SimpleTypography>
                 <SimpleTypography
                   text=''
                   sx={{ ...liHeaderTextSx, ...widthControl }}
@@ -348,20 +380,32 @@ export default function UsersPage() {
                 />
                 <SimpleTypography
                   text='Дата'
+                  onClick={() => getWithOrder('created_at')}
                   sx={{ ...liHeaderTextSx, ...widthControl }}
-                />
+                >
+                  {orderBy == 'created_at' && <OrderIndicator order={orders.created_at} />}
+                </SimpleTypography>
                 <SimpleTypography
                   text='Интерьеры'
+                  onClick={() => getWithOrder('designs_count')}
                   sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                />
+                >
+                  {orderBy == 'designs_count' && <OrderIndicator order={orders.designs_count} />}
+                </SimpleTypography>
                 <SimpleTypography
                   text='Бирки'
+                  onClick={() => getWithOrder('tags_count')}
                   sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                />
+                >
+                  {orderBy == 'tags_count' && <OrderIndicator order={orders.tags_count} />}
+                </SimpleTypography>
                 <SimpleTypography
                   text='Загрузки'
+                  onClick={() => getWithOrder('downloads_count')}
                   sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                />
+                >
+                  {orderBy == 'downloads_count' && <OrderIndicator order={orders.downloads_count} />}
+                </SimpleTypography>
               </ListItem>
               {
                 users_status == 'succeeded' ?
@@ -599,6 +643,13 @@ export default function UsersPage() {
                                 height={20}
                               />
                             </ListItemText>
+                            <ListItemText sx={{ ...widthControl }} >
+                              <Skeleton
+                                variant="rectangular"
+                                width={56}
+                                height={20}
+                              />
+                            </ListItemText>
                             <ListItemText sx={{ ...widthControl }}>
                               <Skeleton
                                 variant="rectangular"
@@ -656,9 +707,9 @@ export default function UsersPage() {
               sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
             >
               <Pagination
-                dataSource='designers'
-                count={users?.data?.pagination?.pages}
-                page={parseInt(users?.data?.pagination?.current) + 1}
+                dataSource='users'
+                count={pagination?.pages}
+                page={parseInt(pagination?.current) + 1}
               />
             </Grid>
           </Grid>

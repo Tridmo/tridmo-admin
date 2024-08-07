@@ -237,8 +237,8 @@ export default function Navbar() {
                     padding: "0"
                   }}>
                   {
-                    navbarItems.map(item => (
-                      <CustomTooltip title={item?.text} placement='right'>
+                    navbarItems.map((item, i) => (
+                      <CustomTooltip key={i} title={item?.text} placement='right'>
                         <Link
                           key={item.id}
                           href={item.link}

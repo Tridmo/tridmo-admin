@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../utils/axios'
+import { designersLimit } from '../types/filters';
 
 const initialState = {
   data: [],
@@ -19,11 +20,17 @@ export const getAllDesigners = createAsyncThunk('/users/designers',
     send__route +=
       wrapper?.limit
         ? (send__route?.includes("/?") ? `&limit=${wrapper?.limit}` : `/?limit=${wrapper?.limit}`)
-        : "";
+        : (send__route?.includes("/?") ? `&limit=${designersLimit}` : `/?limit=${designersLimit}`)
 
     send__route +=
       wrapper?.orderBy
         ? (send__route?.includes("/?") ? `&orderBy=${wrapper?.orderBy}` : `/?orderBy=${wrapper?.orderBy}`)
+        : "";
+
+
+    send__route +=
+      wrapper?.order
+        ? (send__route?.includes("/?") ? `&order=${wrapper?.order}` : `/?order=${wrapper?.order}`)
         : "";
 
     send__route += !send__route.includes("/?") && wrapper?.page ? `/?page=${wrapper.page}` : wrapper?.page ? `&page=${wrapper.page}` : "";
@@ -66,5 +73,6 @@ const get_all_designers = createSlice({
 export const { resetAllDesigners } = get_all_designers.actions;
 export const reducer = get_all_designers.reducer;
 export const selectAllDesigners = (state: any) => state?.get_all_designers?.data[0]?.data?.users
+export const selectAllDesignersPagination = (state: any) => state?.get_all_designers?.data[0]?.data?.pagination
 export const selectAllDesignersStatus = (state: any) => state?.get_all_designers?.status
 export default get_all_designers;

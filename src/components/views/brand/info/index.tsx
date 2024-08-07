@@ -26,6 +26,29 @@ export default function BrandInfo() {
   const dispatch = useDispatch<any>();
   const brand = useSelector(selectOneBrand);
 
+  function getSocialLink(urls: string[], target: string, connector: string = '/') {
+    const has = urls.find(url => target.startsWith(url))
+    return target ? (
+      !!has
+        ? target
+        : `${urls[0]}${connector}${target}`
+    ) : urls[0]
+  }
+
+  function getSocialLinkUsername(urls: string[], target: string) {
+    const has = urls.find(url => target.startsWith(url))
+    return target ? (
+      !!has
+        ? target.split(has)[1]
+        : target
+    ) : ''
+  }
+
+  function getUrlDomen(url: string) {
+    let domen = url.replace('http://', '').replace('https://', '')
+    return domen;
+  }
+
   return (
 
 
@@ -175,7 +198,28 @@ export default function BrandInfo() {
                   <SimpleTypography className='brand__name' text="Веб-сайт" />
                   <SimpleTypography
                     className='brand__box--text'
-                    text={brand?.name}
+                    text={getUrlDomen(brand?.site_link || '')}
+                  />
+                </Box>
+              </Buttons>
+            </a>
+          </Grid>
+          <Grid item>
+            <a target="_blank"
+              href={getSocialLink(['https://instagram.com/', 'https://www.instagram.com/'], brand?.instagram)}
+            >
+              <Buttons className='brand__box' name="">
+                <Image
+                  width={19}
+                  height={23}
+                  alt="web"
+                  src={"/icons/web.svg"}
+                />
+                <Box sx={{ marginLeft: "11px" }}>
+                  <SimpleTypography className='brand__name' text="Инстаграм" />
+                  <SimpleTypography
+                    className='brand__box--text'
+                    text={getSocialLinkUsername(['https://instagram.com/', 'https://www.instagram.com/'], brand?.instagram)}
                   />
                 </Box>
               </Buttons>

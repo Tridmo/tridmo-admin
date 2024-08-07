@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { brandOrderBy, modelOrderBy, order } from '../types/filters';
+import { brandOrderBy, modelOrderBy, order, usersOrderBy } from '../types/filters';
 const initialState = {
   topListItemLimit: 3,
   topListTopic: {
@@ -113,7 +113,7 @@ const handle_filters = createSlice({
     setUserNameFilter: (state: any, action: PayloadAction<string>) => {
       state.users_name = action.payload;
     },
-    setUserOrderBy: (state: any, action: PayloadAction<modelOrderBy>) => {
+    setUserOrderBy: (state: any, action: PayloadAction<usersOrderBy>) => {
       state.users_orderby = action.payload;
     },
     setUserOrder: (state: any, action: PayloadAction<order>) => {
@@ -315,6 +315,7 @@ const handle_filters = createSlice({
         p:
         'models_page' |
         'interiors_page' |
+        'users_page' |
         'designer_downloads_page' |
         'designer_interiors_page' |
         'model_interiors_page' |

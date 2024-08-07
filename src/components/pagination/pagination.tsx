@@ -115,6 +115,7 @@ interface PaginationProps {
   'brand_models' |
   'brands' |
   'designers' |
+  'users' |
   'designer_downloads' |
   'designer_interiors' |
   'model_interiors';
@@ -140,7 +141,12 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
 
   // ---- brand-models filters selector ----- //
-  const getBrandModelsCategory = useSelector((state: any) => state?.handle_filters?.brand_models_category)
+  const getBrandModelCategoryFilter = useSelector((state: any) => state?.handle_filters?.brand_models_categories)
+  const getBrandModelTopFilter = useSelector((state: any) => state?.handle_filters?.brand_models_top)
+  const getBrandModelNameFilter = useSelector((state: any) => state?.handle_filters?.brand_models_name)
+  const getBrandModelOrderBy = useSelector((state: any) => state?.handle_filters?.brand_models_orderby)
+  const getBrandModelOrder = useSelector((state: any) => state?.handle_filters?.brand_models_order)
+
 
   // ---- user-downloaded-models filters selector ----- //
   const get_downloaded_model_brand = useSelector((state: any) => state?.handle_filters?.downloaded_model_brand)
@@ -168,6 +174,10 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const getInteriorsStatusFilter = useSelector((state: any) => state?.handle_filters?.interiors_status)
   const getInteriorsOrderBy = useSelector((state: any) => state?.handle_filters?.interiors_orderby)
   const getInteriorsOrder = useSelector((state: any) => state?.handle_filters?.interiors_order)
+
+  const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
+  const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.users_orderby)
+  const getUsersOrder = useSelector((state: any) => state?.handle_filters?.users_order)
 
 
   const handleChange = (e: any, page: any) => {
@@ -198,11 +208,17 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
       }))
     }
     if (dataSource == 'brand_models') {
+      console.log(count);
+
       dispatch(setPageFilter({ p: 'brand_models_page', n: page }))
       dispatch(getBrandModels({
-        brand_id: dataId,
+        brand: dataId,
         page: page,
-        ...(!!getBrandModelsCategory ? { categories: getBrandModelsCategory } : {})
+        categories: getModelCategoryFilter,
+        name: getBrandModelNameFilter,
+        top: getModelTopFilter,
+        orderBy: getModelOrderBy,
+        order: getModelOrder,
       }))
     }
     if (dataSource == 'brands') {
@@ -211,7 +227,19 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
     }
     if (dataSource == 'designers') {
       dispatch(setPageFilter({ p: 'designers_page', n: page }))
-      dispatch(getAllDesigners({ page }))
+      dispatch(getAllDesigners({
+        key: getUsersNameFilter,
+        orderBy: getUsersOrderBy,
+        order: getUsersOrder,
+      }))
+    }
+    if (dataSource == 'users') {
+      dispatch(setPageFilter({ p: 'users_page', n: page }))
+      dispatch(getAllDesigners({
+        key: getUsersNameFilter,
+        orderBy: getUsersOrderBy,
+        order: getUsersOrder,
+      }))
     }
     if (dataSource == 'designer_downloads') {
       dispatch(setPageFilter({ p: 'designer_downloads_page', n: page }))

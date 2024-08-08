@@ -3,7 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { styled } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState, setSignupState, setVerifyState, setOpenModal } from '@/data/modal_checker';
+import { setLoginState, setSignupState, setVerifyState, setOpenModal, ConfirmContextProps, setConfirmProps, setConfirmState, resetConfirmProps, resetConfirmData } from '@/data/modal_checker';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -96,6 +96,32 @@ export default function NavbarTop() {
     dispatch(switch_on(true))
   }
 
+  function handleClickLogout() {
+    const modalContent: ConfirmContextProps = {
+      message: `Вы уверены, что хотите выйти из аккаунта?`,
+      actions: {
+        on_click: {
+          args: [],
+          func: async () => {
+            dispatch(setConfirmProps({ is_loading: true }))
+            handleLogout()
+            handleClose();
+            router.refresh()
+            router.push('/login')
+            dispatch(setConfirmState(false))
+            dispatch(setOpenModal(false))
+            dispatch(resetConfirmProps())
+            dispatch(resetConfirmData())
+          }
+        }
+      }
+    }
+    dispatch(resetConfirmProps())
+    dispatch(setConfirmProps(modalContent))
+    dispatch(setConfirmState(true))
+    dispatch(setOpenModal(true))
+  }
+
   return (
     <>
       {/* <BasicModal /> */}
@@ -114,7 +140,7 @@ export default function NavbarTop() {
         >
 
           <MenuItem
-            onClick={handleLogout}
+            onClick={handleClickLogout}
             sx={{ padding: "6px 12px" }}
           >
             <Image

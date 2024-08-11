@@ -7,7 +7,7 @@ import { setPageFilter } from '../../data/handle_filters'
 import { getAllInteriors } from '../../data/get_all_interiors';
 import { getBrandModels } from '../../data/get_brand_models';
 import { getAllBrands } from '../../data/get_all_brands';
-import { getAllDesigners, getModelDownloaders } from '../../data/get_all_designers';
+import { getAllDesigners, getDownloaders, getModelDownloaders } from '../../data/get_all_designers';
 import { getAuthorInteriors } from '../../data/get_author_interiors';
 import { current } from '@reduxjs/toolkit';
 import { getDesignerDownloads } from '../../data/get_designer_downloads';
@@ -114,6 +114,7 @@ interface PaginationProps {
   'interiors' |
   'brand_models' |
   'brands' |
+  'downloads' |
   'designers' |
   'users' |
   'designer_downloads' |
@@ -184,6 +185,14 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const getDownloadersNameFilter = useSelector((state: any) => state?.handle_filters?.model_downloaders_name)
   const getDownloadersOrderBy = useSelector((state: any) => state?.handle_filters?.model_downloaders_orderby)
   const getDownloadersOrder = useSelector((state: any) => state?.handle_filters?.model_downloaders_order)
+
+
+
+  // ---- downloads filters selector ----- //
+  const getDownloadsUserNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_name)
+  const getDownloadsModelNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_model_name)
+  const getDownloadsOrderBy = useSelector((state: any) => state?.handle_filters?.downloaders_orderby)
+  const getDownloadsOrder = useSelector((state: any) => state?.handle_filters?.downloaders_order)
 
 
   const handleChange = (e: any, page: any) => {
@@ -287,6 +296,16 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
         key: getDownloadersNameFilter,
         orderBy: getDownloadersOrderBy,
         order: getDownloadersOrder,
+      }))
+    }
+    if (dataSource == 'downloads') {
+      dispatch(setPageFilter({ p: 'downloaders_page', n: page }))
+      dispatch(getDownloaders({
+        page: page,
+        key: getDownloadsUserNameFilter,
+        model_name: getDownloadsModelNameFilter,
+        orderBy: getDownloadsOrderBy,
+        order: getDownloadsOrder,
       }))
     }
   }

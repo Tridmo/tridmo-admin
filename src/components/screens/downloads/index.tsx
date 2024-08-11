@@ -104,12 +104,12 @@ const listSx: SxProps = {
 const widthControl = {
 
   '&:nth-of-type(1)': {
-    minWidth: '40%',
-    maxWidth: '40%',
+    minWidth: '45%',
+    maxWidth: '45%',
   },
   '&:nth-of-type(2)': {
-    minWidth: '40%',
-    maxWidth: '40%',
+    minWidth: '45%',
+    maxWidth: '45%',
   },
   '&:nth-of-type(3)': {
     minWidth: '10%',
@@ -694,7 +694,7 @@ export default function DownloadsPage() {
               sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
             >
               <Pagination
-                dataSource='designers'
+                dataSource='downloads'
                 count={users?.pagination?.pages}
                 page={parseInt(users?.pagination?.current) + 1}
               />

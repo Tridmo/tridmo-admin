@@ -167,7 +167,7 @@ export default function BrandInfo() {
               </Buttons>
             </Link>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Link href={`mailto:${brand?.email}`}>
               <Buttons className='brand__box' name="">
                 <Image
@@ -182,7 +182,7 @@ export default function BrandInfo() {
                 </Box>
               </Buttons>
             </Link>
-          </Grid>
+          </Grid> */}
           <Grid item>
             <a target="_blank"
               href={brand?.site_link}

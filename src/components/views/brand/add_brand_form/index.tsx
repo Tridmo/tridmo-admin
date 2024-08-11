@@ -98,7 +98,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
     description: editing && brand?.description ? brand?.description : '',
     address: editing && brand?.address ? brand?.address : '',
     phone: editing && brand?.phone ? brand?.phone : '',
-    email: editing && brand?.email ? brand?.email : '',
+    // email: editing && brand?.email ? brand?.email : '',
     styles: [],
     image: '',
     username: '',
@@ -127,7 +127,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 site_link: Yup.string().url('Введите ссылку').optional(),
                 address: Yup.string().optional(),
                 phone: Yup.number().optional(),
-                email: Yup.string().max(255).optional(),
+                // email: Yup.string().max(255).optional(),
                 instagram: Yup.string().max(255).optional(),
                 description: Yup.string().optional(),
                 username: Yup.string().optional(),
@@ -139,7 +139,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 site_link: Yup.string().url('Введите ссылку').required('Ссылка на сайт не указано'),
                 address: Yup.string().required('Адрес не указано'),
                 phone: Yup.number().required('Номер телефона не указано'),
-                email: Yup.string().max(255).required('Электронная почта не указано'),
+                // email: Yup.string().max(255).required('Электронная почта не указано'),
                 instagram: Yup.string().max(255).required('Инстаграм не указано'),
                 description: Yup.string().required('Описание не указано'),
                 username: Yup.string().max(32).required('Имя пользователя не указано'),
@@ -163,7 +163,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 if (_values.description != brand?.description) formData.append('description', _values.description)
                 if (_values.address != brand?.address) formData.append('address', _values.address)
                 if (_values.phone != brand?.phone) formData.append('phone', _values.phone)
-                if (_values.email != brand?.email) formData.append('email', _values.email)
+                // if (_values.email != brand?.email) formData.append('email', _values.email)
                 if (_values.username != brand?.username) formData.append('username', _values.username)
                 if (_values.password) formData.append('password', _values.password)
                 if (_values.image != brand?.image) formData.append('image', _values.image)
@@ -181,7 +181,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                 formData.append('description', _values.description)
                 formData.append('address', _values.address)
                 formData.append('phone', _values.phone)
-                formData.append('email', _values.email)
+                // formData.append('email', _values.email)
                 formData.append('username', _values.username)
                 formData.append('password', _values.password)
                 formData.append('image', _values.image)
@@ -381,7 +381,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                         labelFixed
                         placeholderText="Введите номер телефона"
                       />
-                      <SimpleInp
+                      {/* <SimpleInp
                         className='input_width'
                         variant='outlined'
                         paddingX={12}
@@ -397,7 +397,7 @@ export function AddBrandForm({ editing, brand, ...props }: { editing?: boolean, 
                         label="Электронная почта"
                         labelFixed
                         placeholderText="example@example.com"
-                      />
+                      /> */}
                       <SimpleInp
                         className='input_width'
                         variant='outlined'

@@ -282,7 +282,8 @@ export default function ModelDownloadersList({ title }: Props) {
                               opacity: '1'
                             },
                             '&::after': {
-                              backgroundImage: `url(${IMAGES_BASE_URL}/${user?.image_src})`,
+                              bgcolor: '#fff',
+                              backgroundImage: user?.image_src ? `url(${IMAGES_BASE_URL}/${user?.image_src})` : `url(/img/avatar.png)`,
                               transition: 'opacity 0.3s ease',
                               zIndex: 3000,
                               backgroundRepeat: 'no-repeat',
@@ -302,7 +303,7 @@ export default function ModelDownloadersList({ title }: Props) {
                           }}
                         >
                           <Image
-                            src={`${IMAGES_BASE_URL}/${user?.image_src}`}
+                            src={user?.image_src ? `${IMAGES_BASE_URL}/${user?.image_src}` : '/img/avatar.png'}
                             alt='Landing image'
                             width={36}
                             height={36}

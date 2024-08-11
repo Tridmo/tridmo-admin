@@ -13,6 +13,7 @@ import ModelDownloadsChartComponent from '../../../views/statistics/models/one_m
 import ModelTagsChartComponent from '../../../views/statistics/models/one_model_tags_chart';
 import ModelInteriorsList from '../../../views/model/model_interiors_list';
 import ModelDownloadersList from '../../../views/model/model_downloaders_list';
+import ModelDownloadsAndTagsChartComponent from '../../../views/statistics/models/one_model_downloads_and_tags.chart';
 
 
 export default function OneModel() {
@@ -55,15 +56,11 @@ export default function OneModel() {
 
           <Grid container gap={2} mb={'64px'}>
             <Grid item xs={12} lg={12} sm={12}>
-              <ModelDownloadsChartComponent />
+              <ModelDownloadsAndTagsChartComponent />
             </Grid>
 
             <Grid item xs={12} lg={12} sm={12}>
               <ModelDownloadersList />
-            </Grid>
-
-            <Grid item xs={12} lg={12} sm={12}>
-              <ModelTagsChartComponent />
             </Grid>
 
             <Grid item xs={12} lg={12} sm={12}>

@@ -251,15 +251,15 @@ export default function ModelInfo() {
               </TableCell>
               <TableCell sx={TcStyle}>
                 <SimpleTypography
-                  text={`X: ${simpleModel?.width} см`}
+                  text={`Ширина: ${simpleModel?.width} см`}
                   className="table__text"
                 />
                 <SimpleTypography
-                  text={`Y: ${simpleModel?.height} см`}
+                  text={`Длина: ${simpleModel?.length} см`}
                   className="table__text"
                 />
                 <SimpleTypography
-                  text={`Z: ${simpleModel?.length} см`}
+                  text={`Высота: ${simpleModel?.height} см`}
                   className="table__text"
                 />
               </TableCell>

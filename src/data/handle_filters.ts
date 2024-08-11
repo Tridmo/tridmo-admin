@@ -19,6 +19,11 @@ const initialState = {
   downloaded_model_orderby: '',
   downloaded_model_order: 'desc',
 
+  model_downloaders_name: '',
+  model_downloaders_orderby: '',
+  model_downloaders_order: '',
+  model_downloaders_page: 1,
+
   brand_models_top: undefined,
   brand_models_name: '',
   brand_models_categories: [],
@@ -309,6 +314,19 @@ const handle_filters = createSlice({
       state.model_interiors_order = action.payload;
     },
 
+    set_model_downloaders_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.model_downloaders_name = params.model_downloaders_name;
+    },
+    set_model_downloaders_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.model_downloaders_orderby = params.model_downloaders_orderby;
+    },
+    set_model_downloaders_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.model_downloaders_order = params.model_downloaders_order;
+    },
+
     setPageFilter: (
       state: any,
       action: PayloadAction<{
@@ -321,6 +339,7 @@ const handle_filters = createSlice({
         'model_interiors_page' |
         'brand_models_page' |
         'designers_page' |
+        'model_downloaders_page' |
         'brands_page';
         n: number;
       }>
@@ -385,6 +404,10 @@ export const {
   set_downloaded_model_orderby,
   set_downloaded_model_order,
   set_downloaded_model_page,
+
+  set_model_downloaders_name,
+  set_model_downloaders_orderby,
+  set_model_downloaders_order,
 
   set_author_interiors_categories,
   set_author_interiors_orderby,

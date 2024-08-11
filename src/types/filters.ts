@@ -13,3 +13,4 @@ export const myInteriorsLimit = 12;
 export const savedModelsLimit = 12;
 export const brandModelsLimit = 30;
 export const notificationsLimit = 16;
+export const modelDownloadersLimit = 20;

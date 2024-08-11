@@ -20,6 +20,7 @@ import { getModelTagsStats } from '../../../data/statistics/get_tags_stats';
 import { getModelInteriors } from '../../../data/get_model_interiors';
 import { getModelTagsCategories } from '../../../data/categories';
 import { selectMyProfile } from '../../../data/me';
+import { getModelDownloaders } from '../../../data/get_all_designers';
 
 const LoaderStyle = {
   // width: "100px !important",
@@ -68,6 +69,7 @@ export default function OneProduct() {
         dispatch(getModelTagsStats({ month, year, model_id: model?.id }))
         dispatch(getModelInteriors({ model_id: model?.id }))
         dispatch(getModelTagsCategories(model?.id))
+        dispatch(getModelDownloaders({ model_id: model?.id }))
       }
     }
   }, [profile, model, getOneModel__status])

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { sampleBrand } from '@/data/samples';
 import { selectOneBrand } from '../../../../data/get_one_brand';
 import { IMAGES_BASE_URL } from '../../../../utils/image_src';
+import { Instagram } from '@mui/icons-material';
 
 
 export default function BrandInfo() {
@@ -209,12 +210,11 @@ export default function BrandInfo() {
               href={getSocialLink(['https://instagram.com/', 'https://www.instagram.com/'], brand?.instagram)}
             >
               <Buttons className='brand__box' name="">
-                <Image
-                  width={19}
-                  height={23}
-                  alt="web"
-                  src={"/icons/web.svg"}
-                />
+                <Instagram sx={{
+                  width: '23px',
+                  height: '23px',
+                  color: '#424242'
+                }} />
                 <Box sx={{ marginLeft: "11px" }}>
                   <SimpleTypography className='brand__name' text="Инстаграм" />
                   <SimpleTypography

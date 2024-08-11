@@ -7,7 +7,7 @@ import { setPageFilter } from '../../data/handle_filters'
 import { getAllInteriors } from '../../data/get_all_interiors';
 import { getBrandModels } from '../../data/get_brand_models';
 import { getAllBrands } from '../../data/get_all_brands';
-import { getAllDesigners } from '../../data/get_all_designers';
+import { getAllDesigners, getModelDownloaders } from '../../data/get_all_designers';
 import { getAuthorInteriors } from '../../data/get_author_interiors';
 import { current } from '@reduxjs/toolkit';
 import { getDesignerDownloads } from '../../data/get_designer_downloads';
@@ -118,6 +118,7 @@ interface PaginationProps {
   'users' |
   'designer_downloads' |
   'designer_interiors' |
+  'model_downloaders' |
   'model_interiors';
 
   dataId?: any;
@@ -178,6 +179,11 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
   const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
   const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.users_orderby)
   const getUsersOrder = useSelector((state: any) => state?.handle_filters?.users_order)
+
+  // ---- model-downloaders filters selector ----- //
+  const getDownloadersNameFilter = useSelector((state: any) => state?.handle_filters?.model_downloaders_name)
+  const getDownloadersOrderBy = useSelector((state: any) => state?.handle_filters?.model_downloaders_orderby)
+  const getDownloadersOrder = useSelector((state: any) => state?.handle_filters?.model_downloaders_order)
 
 
   const handleChange = (e: any, page: any) => {
@@ -271,6 +277,16 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
         categories: get_model_interiors_categories,
         orderBy: get_model_interiors_orderby,
         order: get_model_interiors_order,
+      }))
+    }
+    if (dataSource == 'model_downloaders') {
+      dispatch(setPageFilter({ p: 'model_downloaders_page', n: page }))
+      dispatch(getModelDownloaders({
+        model_id: dataId,
+        page: page,
+        key: getDownloadersNameFilter,
+        orderBy: getDownloadersOrderBy,
+        order: getDownloadersOrder,
       }))
     }
   }

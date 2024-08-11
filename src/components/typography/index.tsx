@@ -4,16 +4,6 @@ import { ThemeProps } from '@/types/theme';
 import { SxProps, Typography, styled } from '@mui/material';
 import React from 'react'
 
-type TypographyProps = {
-  text: string,
-  sx?: SxProps,
-  variant?: any,
-  className?: string,
-  children?: any,
-  paragraph?: any,
-  onClick?: React.ButtonHTMLAttributes<HTMLSpanElement>["onClick"];
-};
-
 const TypographyWrapper = styled(Typography)(
   // text-transform: capitalize;
   ({ theme }: ThemeProps) => `
@@ -925,10 +915,22 @@ const TypographyWrapper = styled(Typography)(
 `
 );
 
+type TypographyProps = {
+  text: string,
+  sx?: SxProps,
+  variant?: any,
+  className?: string,
+  children?: any,
+  paragraph?: any,
+  hoverTitle?: string,
+  onClick?: React.ButtonHTMLAttributes<HTMLSpanElement>["onClick"];
+};
+
 const SimpleTypography = (props: TypographyProps) => {
   return (
     // <Button className={`${classes.styles} MuiButton-text-${props.color} MuiButton-bg-${props.color}`}>{props?.name}</Button>
     <TypographyWrapper
+      title={props?.hoverTitle}
       onClick={props?.onClick ? props?.onClick : () => { }}
       sx={{ whiteSpace: 'pre-line', ...props?.sx }}
       className={`MuiTypography-${props?.className}`}

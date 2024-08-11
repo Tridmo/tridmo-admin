@@ -21,6 +21,7 @@ import { useSelector } from '../../../../store';
 import { useDispatch } from 'react-redux';
 import { getModelDownloadsStats, selectModelDownloadsStats, selectModelDownloadsStatsStatus } from '../../../../data/statistics/get_downloads_stats';
 import { selectOneModel } from '../../../../data/get_one_model';
+import { lineChartOptions } from '../../../../types/charts.config';
 
 ChartJS.register(
   CategoryScale,
@@ -53,10 +54,7 @@ export default function ModelDownloadsChartComponent() {
     dispatch(getModelDownloadsStats({ year, month: selectedMonth, model_id: model?.id }))
   }
 
-  const options = {
-    scales: { y: { ticks: { stepSize: 1 } } },
-    maintainAspectRatio: false,
-  };
+  const options = lineChartOptions;
 
   return (
     <Box

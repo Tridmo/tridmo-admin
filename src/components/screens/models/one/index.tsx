@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import ModelDownloadsChartComponent from '../../../views/statistics/models/one_model_download_chart';
 import ModelTagsChartComponent from '../../../views/statistics/models/one_model_tags_chart';
 import ModelInteriorsList from '../../../views/model/model_interiors_list';
+import ModelDownloadersList from '../../../views/model/model_downloaders_list';
 
 
 export default function OneModel() {
@@ -55,6 +56,10 @@ export default function OneModel() {
           <Grid container gap={2} mb={'64px'}>
             <Grid item xs={12} lg={12} sm={12}>
               <ModelDownloadsChartComponent />
+            </Grid>
+
+            <Grid item xs={12} lg={12} sm={12}>
+              <ModelDownloadersList />
             </Grid>
 
             <Grid item xs={12} lg={12} sm={12}>

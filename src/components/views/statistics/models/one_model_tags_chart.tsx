@@ -21,6 +21,7 @@ import { useSelector } from '../../../../store';
 import { useDispatch } from 'react-redux';
 import { selectOneModel } from '../../../../data/get_one_model';
 import { getModelTagsStats, selectModelTagsStats, selectModelTagsStatsStatus } from '../../../../data/statistics/get_tags_stats';
+import { lineChartOptions } from '../../../../types/charts.config';
 
 ChartJS.register(
   CategoryScale,
@@ -53,10 +54,7 @@ export default function ModelTagsChartComponent() {
     dispatch(getModelTagsStats({ year, month: selectedMonth, model_id: model?.id }))
   }
 
-  const options = {
-    scales: { y: { ticks: { stepSize: 1 } } },
-    maintainAspectRatio: false,
-  };
+  const options = lineChartOptions;
 
   return (
     <Box

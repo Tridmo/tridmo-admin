@@ -24,6 +24,12 @@ const initialState = {
   model_downloaders_order: '',
   model_downloaders_page: 1,
 
+  downloaders_name: '',
+  downloaders_model_name: '',
+  downloaders_orderby: '',
+  downloaders_order: '',
+  downloaders_page: 1,
+
   brand_models_top: undefined,
   brand_models_name: '',
   brand_models_categories: [],
@@ -216,15 +222,15 @@ const handle_filters = createSlice({
     },
     setLimitFilter: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.limit = params.limit;
+      state.limit = action.payload;
     },
     setOrderByFilter: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.orderBy = params.by;
+      state.orderBy = action.payload;
     },
     setIs_free: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.is_free = params.is_free;
+      state.is_free = action.payload;
     },
 
     set_downloaded_model_brand: (state: any, action: PayloadAction<any>) => {
@@ -316,15 +322,32 @@ const handle_filters = createSlice({
 
     set_model_downloaders_name: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.model_downloaders_name = params.model_downloaders_name;
+      state.model_downloaders_name = action.payload;
     },
     set_model_downloaders_orderby: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.model_downloaders_orderby = params.model_downloaders_orderby;
+      state.model_downloaders_orderby = action.payload;
     },
     set_model_downloaders_order: (state: any, action: PayloadAction<any>) => {
       const { ...params } = action.payload;
-      state.model_downloaders_order = params.model_downloaders_order;
+      state.model_downloaders_order = action.payload;
+    },
+
+    set_downloaders_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaders_name = action.payload;
+    },
+    set_downloaders_model_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaders_model_name = action.payload;
+    },
+    set_downloaders_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaders_orderby = action.payload;
+    },
+    set_downloaders_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.downloaders_order = action.payload;
     },
 
     setPageFilter: (
@@ -340,6 +363,7 @@ const handle_filters = createSlice({
         'brand_models_page' |
         'designers_page' |
         'model_downloaders_page' |
+        'downloaders_page' |
         'brands_page';
         n: number;
       }>
@@ -408,6 +432,11 @@ export const {
   set_model_downloaders_name,
   set_model_downloaders_orderby,
   set_model_downloaders_order,
+
+  set_downloaders_name,
+  set_downloaders_model_name,
+  set_downloaders_orderby,
+  set_downloaders_order,
 
   set_author_interiors_categories,
   set_author_interiors_orderby,

@@ -47,11 +47,12 @@ export const getAllDesigners = createAsyncThunk('/users/designers',
 export const getDownloaders = createAsyncThunk('/users/downloaders',
   async (wrapper?: {
     brand_id?: string;
+    model_name?: string;
     orderBy?: usersOrderBy | string;
     order?: order;
     [x: string]: any;
   }) => {
-    let send__route = `/users/?role_id=3`
+    let send__route = `/users/?role_id=3&as_download=true`
 
     send__route +=
       wrapper?.key
@@ -61,6 +62,11 @@ export const getDownloaders = createAsyncThunk('/users/downloaders',
     send__route +=
       wrapper?.brand_id
         ? (send__route?.includes("/?") ? `&downloads_from_brand=${wrapper?.brand_id}` : `/?downloads_from_brand=${wrapper?.brand_id}`)
+        : "";
+
+    send__route +=
+      wrapper?.model_name
+        ? (send__route?.includes("/?") ? `&model_name=${wrapper?.model_name}` : `/?model_name=${wrapper?.model_name}`)
         : "";
 
     send__route +=
@@ -199,7 +205,7 @@ export const selectAllDesignersStatus = (state: any) => state?.get_all_designers
 export const selectModelDownloaders = (state: any) => state?.get_all_designers?.model_downloaders_data?.[0]?.data
 export const selectModelDownloadersStatus = (state: any) => state?.get_all_designers?.model_downloaders_status
 
-export const selectDownloaders = (state: any) => state?.get_all_designers?.downloaders_data?.[0]?.data?.users
+export const selectDownloaders = (state: any) => state?.get_all_designers?.downloaders_data?.[0]?.data
 export const selectDownloadersStatus = (state: any) => state?.get_all_designers?.downloaders_status
 
 export default get_all_designers;

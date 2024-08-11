@@ -85,16 +85,16 @@ function navItemsData(pathname: string) {
         </svg>
       ),
     },
-    // {
-    //   id: 2,
-    //   text: "Загрузки",
-    //   link: "/downloads",
-    //   active: pathname == '/' || pathname.startsWith('/downloads'),
-    //   icon_src: '/icons/layers.svg',
-    //   icon: (
-    //     <Downloading />
-    //   ),
-    // },
+    {
+      id: 2,
+      text: "Загрузки",
+      link: "/downloads",
+      active: pathname == '/' || pathname.startsWith('/downloads'),
+      icon_src: '/icons/layers.svg',
+      icon: (
+        <Downloading />
+      ),
+    },
     {
       id: 2,
       text: "Интерьеры",

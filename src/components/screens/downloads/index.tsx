@@ -30,12 +30,12 @@ import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
 import { toast } from 'react-toastify'
 import { getTopModels, selectTopModels } from '../../../data/get_top_models'
-import { setCategoryFilter, setModelBrandFilter, setModelNameFilter, setModelTopFilter, setUserNameFilter } from '../../../data/handle_filters'
+import { set_downloaders_model_name, set_downloaders_name, setCategoryFilter, setModelBrandFilter, setModelNameFilter, setModelTopFilter, setUserNameFilter } from '../../../data/handle_filters'
 import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal } from '../../../data/modal_checker'
 import { setTimeout } from 'timers'
 import { selectRouteCrubms, setRouteCrumbs } from '../../../data/route_crumbs'
 import { RouteCrumb } from '../../../types/interfaces'
-import { getAllDesigners, selectAllDesigners, selectDownloaders } from '../../../data/get_all_designers'
+import { getAllDesigners, getDownloaders, selectAllDesigners, selectDownloaders } from '../../../data/get_all_designers'
 import { selectMyProfile } from '../../../data/me'
 
 const fake = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -160,10 +160,11 @@ export default function DownloadsPage() {
 
   const profile = useSelector(selectMyProfile)
 
-  const users_status = useSelector((state: any) => state?.get_all_designers?.status)
-  const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.users_name)
-  const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.users_orderby)
-  const getUsersOrder = useSelector((state: any) => state?.handle_filters?.users_order)
+  const users_status = useSelector((state: any) => state?.get_all_designers?.downloaders_status)
+  const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_name)
+  const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_model_name)
+  const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.downloaders_orderby)
+  const getUsersOrder = useSelector((state: any) => state?.handle_filters?.downloaders_order)
 
   const matches = useMediaQuery('(max-width:600px)');
   const [anchorEl, setAnchorEl] = useState(null);
@@ -178,13 +179,13 @@ export default function DownloadsPage() {
 
   useEffect(() => {
     dispatch(setRouteCrumbs([{
-      title: 'Пользователи',
-      route: '/users'
+      title: 'Загрузки',
+      route: '/downloads'
     }]))
   }, [])
 
   useMemo(() => {
-    setUsersCount(users?.data?.pagination?.data_count || 0)
+    setUsersCount(users?.pagination?.data_count || 0)
   }, [users, users_status])
 
   function navigateTo(link: string) {
@@ -201,14 +202,24 @@ export default function DownloadsPage() {
     setAnchorEl(null);
   };
 
-  function handleSearch(searchValue) {
-    dispatch(getAllDesigners({
-      brand_id: profile?.brand?.id,
+  function handleUserSearch(searchValue) {
+    dispatch(getDownloaders({
       key: searchValue,
+      model_name: getModelNameFilter,
       orderBy: getUsersOrderBy,
       order: getUsersOrder,
     }))
-    dispatch(setUserNameFilter(searchValue))
+    dispatch(set_downloaders_name(searchValue))
+  }
+
+  function handleModelSearch(searchValue) {
+    dispatch(getDownloaders({
+      key: getUsersNameFilter,
+      model_name: searchValue,
+      orderBy: getUsersOrderBy,
+      order: getUsersOrder,
+    }))
+    dispatch(set_downloaders_model_name(searchValue))
   }
 
   return (
@@ -253,7 +264,7 @@ export default function DownloadsPage() {
             <List
               sx={listSx}
             >
-              <ListItem alignItems="center"
+              {/* <ListItem alignItems="center"
                 key={-3}
                 sx={{
                   ...liHeaderSx,
@@ -305,20 +316,34 @@ export default function DownloadsPage() {
                     />
                   </Box>
                 </Buttons>
-              </ListItem>
+              </ListItem> */}
               <ListItem alignItems="center"
                 key={-2}
                 sx={liHeaderSx}
               >
                 <form style={{ width: '100%' }}>
                   <Grid width={'100%'} container justifyContent={'space-between'}>
-                    <Grid item>
-                      <FormControl>
+                    <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
+                      <FormControl sx={{ mr: '8px' }}>
                         <SearchInput
-                          placeHolder='Поиск'
+                          placeHolder='Поиск по пользователю'
                           startIcon
                           value={getUsersNameFilter}
-                          search={(s) => handleSearch(s)}
+                          search={(s) => handleUserSearch(s)}
+                          sx={{
+                            borderColor: '#B8B8B8',
+                            padding: '6px 12px',
+                            backgroundColor: '#fff',
+                            width: 'auto'
+                          }}
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <SearchInput
+                          placeHolder='Поиск по модели'
+                          startIcon
+                          value={getModelNameFilter}
+                          search={(s) => handleModelSearch(s)}
                           sx={{
                             borderColor: '#B8B8B8',
                             padding: '6px 12px',
@@ -363,8 +388,8 @@ export default function DownloadsPage() {
               </ListItem>
               {
                 users_status == 'succeeded' ?
-                  users && users?.length != 0
-                    ? users?.map((user, index: any) =>
+                  users && users?.users?.length != 0
+                    ? users?.users?.map((user, index: any) =>
 
                       <ListItem key={index} alignItems="center"
                         sx={liSx}
@@ -670,8 +695,8 @@ export default function DownloadsPage() {
             >
               <Pagination
                 dataSource='designers'
-                count={users?.data?.pagination?.pages}
-                page={parseInt(users?.data?.pagination?.current) + 1}
+                count={users?.pagination?.pages}
+                page={parseInt(users?.pagination?.current) + 1}
               />
             </Grid>
           </Grid>

@@ -32,7 +32,7 @@ export default function SearchInput(props: InputProps) {
     if (props?.search && searchInit) {
       const delayDebounceFn = setTimeout(() => {
         props?.search ? props?.search(searchTerm) : null
-      }, props?.searchDelay || 1000)
+      }, 10)
 
       return () => clearTimeout(delayDebounceFn)
     }
@@ -73,8 +73,11 @@ export default function SearchInput(props: InputProps) {
         sx={{ flex: 1, padding: 0, fontSize: '16px' }}
         placeholder={props?.placeHolder}
         onChange={(e) => {
-          setSearchInit(true)
-          setSearchTerm(e.target.value)
+          clearTimeout('setTermTimeout')
+          const setTermTimeout = setTimeout(() => {
+            setSearchInit(true)
+            setSearchTerm(e.target.value)
+          }, props?.searchDelay || 1000)
         }}
         inputProps={{
           'style': { padding: '0', fontSize: '16px' }

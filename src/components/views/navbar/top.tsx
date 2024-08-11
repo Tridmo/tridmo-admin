@@ -28,6 +28,7 @@ import { IMAGES_BASE_URL } from '../../../utils/image_src';
 import RouteCrumbs from './route_crumbs';
 import { ChatOutlined } from '@mui/icons-material';
 import { selectChatUnread } from '../../../data/chat';
+import { selectNotificationCounts, selectNotificationCountsStatus } from '../../../data/get_notifications';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -63,6 +64,8 @@ export default function NavbarTop() {
 
   const chatUnread = useSelector(selectChatUnread)
   const [searchVal, setSearchVal] = useState("")
+  const notificationCountsStatus = useSelector(selectNotificationCountsStatus);
+  const notificationCounts = useSelector(selectNotificationCounts);
 
   const router = useRouter();
 
@@ -210,6 +213,30 @@ export default function NavbarTop() {
                 aria-label="menu"
                 sx={{ marginRight: "16px", backgroundColor: false ? 'rgba(0, 0, 0, 0.04)' : 'transparent' }}
               >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    padding: '4px 6px',
+                    borderRadius: '12px',
+                    bgcolor: '#7210BE',
+                    top: 0,
+                    right: 0,
+                  }}
+                >
+                  <SimpleTypography
+                    text={
+                      notificationCountsStatus === 'succeeded' ?
+                        notificationCounts?.data?.unread_count || '0'
+                        : '0'
+                    }
+                    sx={{
+                      color: '#fff',
+                      lineHeight: '11px',
+                      fontWeight: 400,
+                      fontSize: '12px',
+                    }}
+                  />
+                </Box>
                 <Image
                   src="/icons/bell-icon.svg"
                   alt='Bell'

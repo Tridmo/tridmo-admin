@@ -7,6 +7,7 @@ import store from "@/store";
 import ThemeProviderWrapper from '@/theme/ThemeProvider';
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { NavigationEvents } from './navigation_events';
 
 const WeavyProvider = dynamic(() => import('./weavy'), { ssr: false });
 
@@ -23,6 +24,7 @@ export default function Providers({
         <AuthProvider>
           <ThemeProviderWrapper>
             <WeavyProvider>
+              <NavigationEvents />
               {children}
             </WeavyProvider>
           </ThemeProviderWrapper>

@@ -11,61 +11,15 @@ import { setAuthState } from '../../data/login'
 import { setVerifyState } from '../../data/modal_checker'
 import useHash from '../hooks/use_hash'
 import { setAuthToken } from '../../utils/axios'
+import { getNotificationCounts } from '../../data/get_notifications'
 const NavigationContext = createContext({})
 
 export function NavigationEvents() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
   const dispatch = useDispatch<any>();
-  const router = useRouter();
-  const params = useParams();
-  const hash = useHash();
 
-  useMemo(() => {
-    if (hash) {
-      const hashParams = new URLSearchParams(hash.slice(1))
-
-      const accessToken = hashParams.get('access_token')
-      const refreshToken = hashParams.get('refresh_token')
-      const expiresAt = hashParams.get('expires_at');
-      const expiresIn = hashParams.get('expires_in');
-
-
-      if (accessToken && refreshToken && expiresAt) {
-        Cookies.set(
-          'accessToken',
-          accessToken,
-          { expires: new Date(parseInt(expiresAt) * 1000), path: '/', sameSite: 'Lax', secure: true },
-        )
-
-        Cookies.set(
-          'refreshToken',
-          refreshToken,
-          { path: '/', sameSite: 'Lax', secure: true }
-        )
-
-        setTimeout(() => {
-          dispatch(resetMyProfile())
-          router.replace('/');
-          toast.success("Электронная почта успешно подтверждена");
-          dispatch(setAuthState(true))
-          dispatch(setVerifyState(false))
-        }, 0)
-      }
-      else {
-        setTimeout(() => {
-          toast.error("Не удалось подтвердить электронную почту! Пожалуйста, попробуйте еще раз");
-          router.push('/');
-        }, 0)
-      }
-    }
-    if (pathname && pathname.includes("unauthorized_client")) {
-      setTimeout(() => {
-        toast.error("Не удалось подтвердить электронную почту! Пожалуйста, попробуйте еще раз");
-        router.push('/');
-      }, 0)
-    }
-  }, [router, dispatch, params, hash])
+  useEffect(() => {
+    dispatch(getNotificationCounts())
+  }, [])
 
   return (
     <NavigationContext.Provider value={{}} />

@@ -251,11 +251,11 @@ export default function ModelInfo() {
               </TableCell>
               <TableCell sx={TcStyle}>
                 <SimpleTypography
-                  text={`Ширина: ${simpleModel?.width} см`}
+                  text={`Длина: ${simpleModel?.length} см`}
                   className="table__text"
                 />
                 <SimpleTypography
-                  text={`Длина: ${simpleModel?.length} см`}
+                  text={`Ширина: ${simpleModel?.width} см`}
                   className="table__text"
                 />
                 <SimpleTypography

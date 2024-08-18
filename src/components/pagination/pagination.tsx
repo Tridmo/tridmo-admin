@@ -224,8 +224,6 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
       }))
     }
     if (dataSource == 'brand_models') {
-      console.log(count);
-
       dispatch(setPageFilter({ p: 'brand_models_page', n: page }))
       dispatch(getBrandModels({
         brand: dataId,
@@ -244,6 +242,7 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
     if (dataSource == 'designers') {
       dispatch(setPageFilter({ p: 'designers_page', n: page }))
       dispatch(getAllDesigners({
+        page: page,
         key: getUsersNameFilter,
         orderBy: getUsersOrderBy,
         order: getUsersOrder,
@@ -252,6 +251,7 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
     if (dataSource == 'users') {
       dispatch(setPageFilter({ p: 'users_page', n: page }))
       dispatch(getAllDesigners({
+        page: page,
         key: getUsersNameFilter,
         orderBy: getUsersOrderBy,
         order: getUsersOrder,

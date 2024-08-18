@@ -12,6 +12,7 @@ import { getAuthorInteriors } from '../../data/get_author_interiors';
 import { current } from '@reduxjs/toolkit';
 import { getDesignerDownloads } from '../../data/get_designer_downloads';
 import { getModelInteriors } from '../../data/get_model_interiors';
+import { getAllDownloads } from '../../data/get_all_downloads';
 
 const SimplePagination = styled(Pagination)(
   ({ theme }: ThemeProps) =>
@@ -300,9 +301,9 @@ export default function BasicPagination({ dataSource, dataId, count, page, ...pr
     }
     if (dataSource == 'downloads') {
       dispatch(setPageFilter({ p: 'downloaders_page', n: page }))
-      dispatch(getDownloaders({
+      dispatch(getAllDownloads({
         page: page,
-        key: getDownloadsUserNameFilter,
+        user_name: getDownloadsUserNameFilter,
         model_name: getDownloadsModelNameFilter,
         orderBy: getDownloadsOrderBy,
         order: getDownloadsOrder,

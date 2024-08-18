@@ -37,6 +37,7 @@ import { selectRouteCrubms, setRouteCrumbs } from '../../../data/route_crumbs'
 import { RouteCrumb } from '../../../types/interfaces'
 import { getAllDesigners, getDownloaders, selectAllDesigners, selectDownloaders } from '../../../data/get_all_designers'
 import { selectMyProfile } from '../../../data/me'
+import { getAllDownloads, selectAllDownloads, selectAllDownloads_status } from '../../../data/get_all_downloads'
 
 const fake = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -100,6 +101,32 @@ const listSx: SxProps = {
   padding: '0',
 }
 
+const imageViewerStyle: CSSProperties = {
+  backgroundColor: '#fff',
+  transition: 'opacity 0.3s ease',
+  zIndex: 3000,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  content: '""',
+  display: 'flex',
+  pointerEvents: 'none',
+  opacity: '0',
+  border: '1px solid #B8B8B8',
+  borderRadius: '4px',
+  width: '320px',
+  height: '320px',
+  position: 'absolute',
+  top: '-160',
+  left: '100%',
+}
+
+const linkStyle: CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  right: 0,
+  left: 0,
+}
 
 const widthControl = {
 
@@ -115,18 +142,6 @@ const widthControl = {
     minWidth: '10%',
     maxWidth: '10%',
   },
-  // '&:nth-of-type(4)': {
-  //   minWidth: '100px',
-  //   maxWidth: '100px',
-  // },
-  // '&:nth-of-type(5)': {
-  //   minWidth: '100px',
-  //   maxWidth: '100px',
-  // },
-  // '&:nth-of-type(6)': {
-  //   minWidth: '100px',
-  //   maxWidth: '100px',
-  // },
 }
 
 const itemAsLink = {
@@ -160,7 +175,7 @@ export default function DownloadsPage() {
 
   const profile = useSelector(selectMyProfile)
 
-  const users_status = useSelector((state: any) => state?.get_all_designers?.downloaders_status)
+  const downloads_status = useSelector(selectAllDownloads_status)
   const getUsersNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_name)
   const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.downloaders_model_name)
   const getUsersOrderBy = useSelector((state: any) => state?.handle_filters?.downloaders_orderby)
@@ -170,7 +185,7 @@ export default function DownloadsPage() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const users = useSelector(selectDownloaders)
+  const downloads = useSelector(selectAllDownloads)
   const route_crumbs = useSelector(selectRouteCrubms)
 
   const [activeTopButton, setActiveTopButton] = useState<0 | 1>(0)
@@ -185,8 +200,8 @@ export default function DownloadsPage() {
   }, [])
 
   useMemo(() => {
-    setUsersCount(users?.pagination?.data_count || 0)
-  }, [users, users_status])
+    setUsersCount(downloads?.pagination?.data_count || 0)
+  }, [downloads, downloads_status])
 
   function navigateTo(link: string) {
     router.push(link)
@@ -203,8 +218,8 @@ export default function DownloadsPage() {
   };
 
   function handleUserSearch(searchValue) {
-    dispatch(getDownloaders({
-      key: searchValue,
+    dispatch(getAllDownloads({
+      user_name: searchValue,
       model_name: getModelNameFilter,
       orderBy: getUsersOrderBy,
       order: getUsersOrder,
@@ -213,8 +228,8 @@ export default function DownloadsPage() {
   }
 
   function handleModelSearch(searchValue) {
-    dispatch(getDownloaders({
-      key: getUsersNameFilter,
+    dispatch(getAllDownloads({
+      user_name: getUsersNameFilter,
       model_name: searchValue,
       orderBy: getUsersOrderBy,
       order: getUsersOrder,
@@ -264,59 +279,6 @@ export default function DownloadsPage() {
             <List
               sx={listSx}
             >
-              {/* <ListItem alignItems="center"
-                key={-3}
-                sx={{
-                  ...liHeaderSx,
-                  padding: '0',
-                  height: '56px'
-                }}
-              >
-                <Buttons
-                  name='Все'
-                  type='button'
-                  sx={{
-                    color: activeTopButton == 0 ? '#7210BE' : '#646464',
-                    borderRadius: 0,
-                    borderBottom: `2px solid ${activeTopButton == 0 ? '#7210BE' : 'transparent'}`,
-                    height: '60px',
-                    paddingX: '24px',
-                    '&:hover': {
-                      background: 'transparent',
-                      color: '#7210BE'
-                    },
-                    '&:hover div': {
-                      backgroundColor: '#F3E5FF'
-                    },
-                    '&:hover div p': {
-                      color: '#7210BE'
-                    }
-                  }}
-                >
-                  <Box
-                    sx={{
-                      padding: '1px 6px 2px 6px',
-                      backgroundColor: activeTopButton == 0 ? '#F3E5FF' : '#F8F8F8',
-                      borderRadius: '9px',
-                      marginLeft: '6px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'all 0.4s ease',
-                    }}
-                  >
-                    <SimpleTypography
-                      sx={{
-                        color: activeTopButton == 0 ? '#7210BE' : '#A0A0A0',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        lineHeight: '16px',
-                      }}
-                      text={`${usersCount}`}
-                    />
-                  </Box>
-                </Buttons>
-              </ListItem> */}
               <ListItem alignItems="center"
                 key={-2}
                 sx={liHeaderSx}
@@ -373,39 +335,29 @@ export default function DownloadsPage() {
                   text='Дата'
                   sx={{ ...liHeaderTextSx, ...widthControl }}
                 />
-                {/* <SimpleTypography
-                  text='Интерьеры'
-                  sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                />
-                <SimpleTypography
-                  text='Бирки'
-                  sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                />
-                <SimpleTypography
-                  text='Загрузки'
-                  sx={{ ...liHeaderTextSx, ...widthControl, textAlign: 'center' }}
-                /> */}
               </ListItem>
               {
-                users_status == 'succeeded' ?
-                  users && users?.users?.length != 0
-                    ? users?.users?.map((user, index: any) =>
+                downloads_status == 'succeeded' ?
+                  downloads && downloads?.downloads?.length != 0
+                    ? downloads?.downloads?.map((download, index: any) =>
 
                       <ListItem key={index} alignItems="center"
                         sx={liSx}
                       >
 
-                        <ListItemText onClick={() => navigateTo(`/users/${user?.username}`)}
-                          // title='Нажмите, чтобы открыть'
+                        <ListItemText
                           sx={{
                             ...widthControl, ...itemAsLink,
+                            position: 'relative',
                             '& > span:first-of-type': {
+                              width: '100%',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'flex-start'
                             }
                           }}
                         >
+                          <Link style={linkStyle} href={`/users/${download?.user?.username}`} />
                           <Box
                             sx={{
                               ...modelImageWrapperSx,
@@ -413,28 +365,13 @@ export default function DownloadsPage() {
                                 opacity: '1'
                               },
                               '&::after': {
-                                backgroundImage: user?.image_src ? `url(${IMAGES_BASE_URL}/${user?.image_src})` : `url('/img/avatar.png')`,
-                                bgcolor: '#fff',
-                                transition: 'opacity 0.3s ease',
-                                zIndex: 3000,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                content: '""',
-                                display: 'flex',
-                                pointerEvents: 'none',
-                                opacity: '0',
-                                border: '1px solid #B8B8B8',
-                                borderRadius: '4px',
-                                width: '320px',
-                                height: '320px',
-                                position: 'absolute',
-                                top: '-160',
-                                left: '100%',
+                                backgroundImage: download?.user?.image_src ? `url(${IMAGES_BASE_URL}/${download?.user?.image_src})` : `url('/img/avatar.png')`,
+                                ...imageViewerStyle
                               }
                             }}
                           >
                             <Image
-                              src={user?.image_src ? `${IMAGES_BASE_URL}/${user?.image_src}` : `/img/avatar.png`}
+                              src={download?.user?.image_src ? `${IMAGES_BASE_URL}/${download?.user?.image_src}` : `/img/avatar.png`}
                               alt='image'
                               width={36}
                               height={36}
@@ -443,9 +380,10 @@ export default function DownloadsPage() {
                           </Box>
 
 
-                          <ListItemText onClick={() => navigateTo(`/users/${user?.username}`)} className='brand_name' sx={{ marginLeft: '24px', }} >
+                          <ListItemText className='brand_name' sx={{ marginLeft: '24px', }} >
                             <SimpleTypography
-                              text={user.full_name}
+                              className='ellipsis__title'
+                              text={download?.user.full_name}
                               sx={{
                                 fontSize: '16px',
                                 fontWeight: 400,
@@ -456,7 +394,8 @@ export default function DownloadsPage() {
                               }}
                             />
                             <SimpleTypography
-                              text={`@${user?.username}`}
+                              className='ellipsis__title'
+                              text={`@${download?.user?.username}`}
                               sx={{
                                 fontSize: '12px',
                                 fontWeight: 400,
@@ -469,16 +408,19 @@ export default function DownloadsPage() {
                           </ListItemText>
                         </ListItemText>
 
-                        <ListItemText onClick={() => navigateTo(`/models/${user?.model_slug}`)}
+                        <ListItemText
                           sx={{
                             ...widthControl, ...itemAsLink,
+                            position: 'relative',
                             '& > span:first-of-type': {
+                              width: '100%',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'flex-start'
                             }
                           }}
                         >
+                          <Link style={linkStyle} href={`/models/${download?.model?.slug}`} />
                           <Box
                             sx={{
                               ...modelImageWrapperSx,
@@ -486,28 +428,13 @@ export default function DownloadsPage() {
                                 opacity: '1'
                               },
                               '&::after': {
-                                backgroundImage: user?.model_cover ? `url(${IMAGES_BASE_URL}/${user?.model_cover})` : `url(/img/cube.jpg)`,
-                                bgcolor: '#fff',
-                                transition: 'opacity 0.3s ease',
-                                zIndex: 3000,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                content: '""',
-                                display: 'flex',
-                                pointerEvents: 'none',
-                                opacity: '0',
-                                border: '1px solid #B8B8B8',
-                                borderRadius: '4px',
-                                width: '320px',
-                                height: '320px',
-                                position: 'absolute',
-                                top: '-160',
-                                left: '100%',
+                                backgroundImage: download?.model?.cover ? `url(${IMAGES_BASE_URL}/${download?.model?.cover})` : `url(/img/cube.jpg)`,
+                                ...imageViewerStyle
                               }
                             }}
                           >
                             <Image
-                              src={user?.model_cover ? `${IMAGES_BASE_URL}/${user?.model_cover}` : `/img/cube.jpg`}
+                              src={download?.model?.cover ? `${IMAGES_BASE_URL}/${download?.model?.cover}` : `/img/cube.jpg`}
                               alt='image'
                               width={36}
                               height={36}
@@ -516,9 +443,10 @@ export default function DownloadsPage() {
                           </Box>
 
 
-                          <ListItemText onClick={() => navigateTo(`/models/${user?.model_slug}`)} className='brand_name' sx={{ marginLeft: '24px', }} >
+                          <ListItemText className='brand_name' sx={{ marginLeft: '24px', }} >
                             <SimpleTypography
-                              text={user.model_name}
+                              className='ellipsis__title'
+                              text={download?.model?.name}
                               sx={{
                                 fontSize: '16px',
                                 fontWeight: 400,
@@ -529,7 +457,8 @@ export default function DownloadsPage() {
                               }}
                             />
                             <SimpleTypography
-                              text={`#${user?.model_id}`}
+                              className='ellipsis__title'
+                              text={`${download?.model?.brand?.name}`}
                               sx={{
                                 fontSize: '12px',
                                 fontWeight: 400,
@@ -542,12 +471,11 @@ export default function DownloadsPage() {
                           </ListItemText>
                         </ListItemText>
 
-                        <ListItemText title='Нажмите, чтобы открыть'
-                          onClick={() => navigateTo(`/models/${user?.username}`)}
+                        <ListItemText
                           sx={{ ...widthControl, ...itemAsLink }}
                         >
                           <SimpleTypography
-                            text={formatDate(user?.downloaded_at, true)}
+                            text={formatDate(download?.created_at, true)}
                             sx={{
                               fontSize: '14px',
                               fontWeight: 400,
@@ -557,51 +485,6 @@ export default function DownloadsPage() {
                             }}
                           />
                         </ListItemText>
-
-                        {/* <ListItemText
-                          sx={{ ...widthControl }}
-                        >
-                          <SimpleTypography
-                            text={user?.designs_count || 0}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'center',
-                            }}
-                          />
-                        </ListItemText>
-
-                        <ListItemText
-                          sx={{ ...widthControl }}
-                        >
-                          <SimpleTypography
-                            text={user?.tags_count || 0}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'center',
-                            }}
-                          />
-                        </ListItemText>
-
-                        <ListItemText
-                          sx={{ ...widthControl }}
-                        >
-                          <SimpleTypography
-                            text={user?.downloads_count || 0}
-                            sx={{
-                              fontSize: '14px',
-                              fontWeight: 400,
-                              lineHeight: '26px',
-                              letterSpacing: '-0.02em',
-                              textAlign: 'center',
-                            }}
-                          />
-                        </ListItemText> */}
 
                       </ListItem>
 
@@ -695,8 +578,8 @@ export default function DownloadsPage() {
             >
               <Pagination
                 dataSource='downloads'
-                count={users?.pagination?.pages}
-                page={parseInt(users?.pagination?.current) + 1}
+                count={downloads?.pagination?.pages}
+                page={parseInt(downloads?.pagination?.current) + 1}
               />
             </Grid>
           </Grid>

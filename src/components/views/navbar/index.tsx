@@ -27,7 +27,7 @@ import Cookies from 'js-cookie'
 import { IMAGES_BASE_URL } from '../../../utils/image_src';
 import NavbarTop from './top';
 import RightBar from '../../right_bar';
-import { Collections, Downloading } from '@mui/icons-material';
+import { Collections, Downloading, Sell } from '@mui/icons-material';
 import { CustomTooltip } from '../../tooltip';
 import { WyNotificationToasts } from '@weavy/uikit-react';
 
@@ -90,9 +90,19 @@ function navItemsData(pathname: string) {
       text: "Загрузки",
       link: "/downloads",
       active: pathname == '/' || pathname.startsWith('/downloads'),
-      icon_src: '/icons/layers.svg',
+      icon_src: '/icons/downloading.svg',
       icon: (
         <Downloading />
+      ),
+    },
+    {
+      id: 2,
+      text: "Бирки",
+      link: "/tags",
+      active: pathname == '/' || pathname.startsWith('/tags'),
+      icon_src: '/icons/tag.svg',
+      icon: (
+        <Sell />
       ),
     },
     {

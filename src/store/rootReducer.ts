@@ -43,6 +43,7 @@ import { reducer as chat } from '../data/chat';
 import { reducer as get_chat_token } from '../data/get_chat_token';
 import { reducer as get_notifications } from '../data/get_notifications';
 import { reducer as toggle_cart } from '../data/toggle_cart';
+import { reducer as get_all_tags } from '../data/get_all_tags';
 
 
 
@@ -91,6 +92,7 @@ const rootReducer = combineReducers({
   get_chat_token: get_chat_token,
   get_notifications: get_notifications,
   toggle_cart: toggle_cart,
+  get_all_tags: get_all_tags,
 });
 
 export default rootReducer;

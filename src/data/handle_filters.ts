@@ -30,6 +30,13 @@ const initialState = {
   downloaders_order: '',
   downloaders_page: 1,
 
+  tags_user_name: '',
+  tags_model_name: '',
+  tags_interior_name: '',
+  tags_orderby: '',
+  tags_order: '',
+  tags_page: 1,
+
   brand_models_top: undefined,
   brand_models_name: '',
   brand_models_categories: [],
@@ -350,6 +357,27 @@ const handle_filters = createSlice({
       state.downloaders_order = action.payload;
     },
 
+    set_tags_user_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.tags_user_name = action.payload;
+    },
+    set_tags_model_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.tags_model_name = action.payload;
+    },
+    set_tags_interior_name: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.tags_interior_name = action.payload;
+    },
+    set_tags_orderby: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.tags_orderby = action.payload;
+    },
+    set_tags_order: (state: any, action: PayloadAction<any>) => {
+      const { ...params } = action.payload;
+      state.tags_order = action.payload;
+    },
+
     setPageFilter: (
       state: any,
       action: PayloadAction<{
@@ -364,6 +392,7 @@ const handle_filters = createSlice({
         'designers_page' |
         'model_downloaders_page' |
         'downloaders_page' |
+        'tags_page' |
         'brands_page';
         n: number;
       }>
@@ -459,6 +488,13 @@ export const {
   set_brand_models_categories,
   set_brand_models_orderby,
   set_brand_models_order,
+
+  set_tags_user_name,
+  set_tags_model_name,
+  set_tags_interior_name,
+  set_tags_orderby,
+  set_tags_order,
+
 
 } = handle_filters.actions;
 export const reducer = handle_filters.reducer;

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllModels, selectAllModels } from '@/data/get_all_models';
 import ModelsPage from '@/components/screens/models';
-import { getCategories } from '../../data/categories';
+import { getCategories, getModelChildCategories, selectModelChildCategories, selectModelChildCategories_status } from '../../data/categories';
 import { getAllBrands } from '../../data/get_all_brands';
 import { selectMyProfile } from '../../data/me';
 
@@ -32,13 +32,13 @@ export default function Models() {
   const getModelNameFilter = useSelector((state: any) => state?.handle_filters?.model_name)
   const getModelOrderBy = useSelector((state: any) => state?.handle_filters?.model_orderby)
   const getModelOrder = useSelector((state: any) => state?.handle_filters?.model_order)
-  const getCategoriesStatus = useSelector((state: any) => state?.categories?.status);
+  const getCategoriesStatus = useSelector(selectModelChildCategories_status);
   const getBrandsStatus = useSelector((state: any) => state?.get_all_brands?.status);
 
   const profile = useSelector(selectMyProfile)
 
   React.useEffect(() => {
-    if (getCategoriesStatus == 'idle') dispatch(getCategories())
+    if (getCategoriesStatus == 'idle') dispatch(getModelChildCategories())
     if (getBrandsStatus == 'idle') dispatch(getAllBrands({}))
   }, [getCategoriesStatus, getBrandsStatus])
 

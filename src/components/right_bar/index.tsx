@@ -59,9 +59,6 @@ const RightBar: React.FC = () => {
     dispatch(switch_on(false))
   }
 
-  console.log(get_cart_status);
-
-
   if (get_cart_status) {
     return (
       <Grid container aria-hidden={true}>

@@ -24,7 +24,7 @@ import formatDate from '../../../utils/format_date'
 import SimpleInp from '../../inputs/simple_input'
 import SearchInput from '../../inputs/search'
 import SimpleSelect from '../../inputs/simple_select'
-import { selectCategories, selectModelCategories } from '../../../data/categories'
+import { selectCategories, selectModelCategories, selectModelChildCategories } from '../../../data/categories'
 import { selectAllBrands } from '../../../data/get_all_brands'
 import { ThemeProps } from '../../../types/theme'
 import instance from '../../../utils/axios'
@@ -176,7 +176,7 @@ export default function ModelsPage() {
   const open = Boolean(anchorEl);
 
   const all__models = useSelector(selectAllModels)
-  const categories = useSelector(selectModelCategories)
+  const categories = useSelector(selectModelChildCategories)
   const all__brands = useSelector(selectAllBrands)
   const route_crumbs = useSelector(selectRouteCrubms)
 
@@ -224,7 +224,6 @@ export default function ModelsPage() {
   // }
 
   function handleAllClick(event) {
-    console.log(getModelNameFilter, 'state.model_name');
     dispatch(getAllModels({
       categories: getModelCategoryFilter,
       colors: getModelColorFilter,
@@ -898,7 +897,7 @@ export default function ModelsPage() {
                             className="options_menu__btn"
                             sx={{ ml: '12px', minWidth: '20px', width: '20px', height: '20px' }}
                           >
-                            <Image
+                            <img
                               alt="icon"
                               src='/icons/options-dots-vertical.svg'
                               width={20}

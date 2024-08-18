@@ -8,11 +8,13 @@ const initialState = {
   user_downloads_data: [],
   user_interiors_data: [],
   model_data: [],
+  model_child_data: [],
   model_tags_data: [],
   data_with_model_count: [],
   status: 'idle',
   with_model_count_status: 'idle',
   model_status: 'idle',
+  model_child_status: 'idle',
   model_tags_status: 'idle',
   interior_status: 'idle',
   user_downloads_status: 'idle',
@@ -43,6 +45,10 @@ export const getCategoriesByUserInteriors = createAsyncThunk('/catgories/user/in
 })
 export const getModelCategories = createAsyncThunk('/model/categories', async () => {
   const response = await api.get(`/categories/main/?type=model`)
+  return response.data
+})
+export const getModelChildCategories = createAsyncThunk('/model/categories/child', async () => {
+  const response = await api.get(`/categories/nomain/?type=model`)
   return response.data
 })
 export const getInteriorCategories = createAsyncThunk('/interior/categories', async () => {
@@ -168,6 +174,22 @@ const categories = createSlice({
         state.error = action.error.message
       })
 
+      .addCase(getModelChildCategories.pending, (state?: any, action?: any) => {
+        state.model_child_status = 'loading'
+      })
+      .addCase(getModelChildCategories.fulfilled, (state?: any, action?: any) => {
+        state.progress = 20
+        state.model_child_status = 'succeeded'
+        // Add any fetched posts to the array;
+        state.model_child_data = [];
+        state.model_child_data = state.model_child_data.concat(action.payload)
+        state.progress = 100
+      })
+      .addCase(getModelChildCategories.rejected, (state?: any, action?: any) => {
+        state.model_child_status = 'failed'
+        state.error = action.error.message
+      })
+
       .addCase(getInteriorCategories.pending, (state?: any, action?: any) => {
         state.interior_status = 'loading'
       })
@@ -218,16 +240,18 @@ const categories = createSlice({
   }
 });
 export const { setOneSelectedCategory } = categories.actions;
-export const selectCategories = (state: any) => state?.categories?.data[0]?.data
+export const selectCategories = (state: any) => state?.categories?.data?.[0]?.data
 export const selectCategoriesStatus = (state: any) => state?.categories?.status
-export const selectOneCategory = (state: any) => state?.categories?.one_data[0]?.data
-export const selectCategoriesWithModelCount = (state: any) => state?.categories?.data_with_model_count[0]?.data
-export const selectCategoriesByUserDownloads = (state: any) => state?.categories?.user_downloads_data[0]?.data
-export const selectCategoriesByUserInteriors = (state: any) => state?.categories?.user_interiors_data[0]?.data
-export const selectModelCategories = (state: any) => state?.categories?.model_data[0]?.data
-export const selectInteriorCategories = (state: any) => state?.categories?.interior_data[0]?.data
-export const selectBrandCategories = (state: any) => state?.categories?.brand_data[0]?.data
-export const selectModelTagsCategories = (state: any) => state?.categories?.model_tags_data[0]?.data
+export const selectOneCategory = (state: any) => state?.categories?.one_data?.[0]?.data
+export const selectCategoriesWithModelCount = (state: any) => state?.categories?.data_with_model_count?.[0]?.data
+export const selectCategoriesByUserDownloads = (state: any) => state?.categories?.user_downloads_data?.[0]?.data
+export const selectCategoriesByUserInteriors = (state: any) => state?.categories?.user_interiors_data?.[0]?.data
+export const selectModelCategories = (state: any) => state?.categories?.model_data?.[0]?.data
+export const selectModelChildCategories = (state: any) => state?.categories?.model_child_data?.[0]?.data
+export const selectModelChildCategories_status = (state: any) => state?.categories?.model_child_status
+export const selectInteriorCategories = (state: any) => state?.categories?.interior_data?.[0]?.data
+export const selectBrandCategories = (state: any) => state?.categories?.brand_data?.[0]?.data
+export const selectModelTagsCategories = (state: any) => state?.categories?.model_tags_data?.[0]?.data
 
 export const reducer = categories.reducer;
 export default categories

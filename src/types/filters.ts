@@ -1,6 +1,7 @@
 export type order = 'asc' | 'desc';
 export type interiorsOrderBy = 'name' | 'views' | 'likes' | 'tags_count' | 'created_at' | 'status';
 export type modelOrderBy = 'name' | 'downloads_count' | 'furniture_cost' | 'brand_id';
+export type tagsOrderBy = 'model_name' | 'user_name' | 'interior_name' | 'created_at';
 export type usersOrderBy = 'full_name' | 'downloads_count' | 'designs_count' | 'tags_count' | 'created_at';
 export type brandOrderBy = 'name' | 'models_count';
 
@@ -14,3 +15,4 @@ export const savedModelsLimit = 12;
 export const brandModelsLimit = 30;
 export const notificationsLimit = 16;
 export const modelDownloadersLimit = 20;
+export const tagsLimit = 30;

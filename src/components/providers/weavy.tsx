@@ -3,7 +3,7 @@
 import { WyContext } from '@weavy/uikit-react'
 import { CHAT_SERVER_URL } from '../../utils/env_vars'
 import { tokenFactory } from '../../utils/chat'
-import { createContext, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppTypeGuid } from '../../types/weavy';
@@ -11,6 +11,8 @@ import { getChatUnread, setSelectedConversation } from '../../data/chat';
 import { selectMyProfile } from '../../data/me';
 import Cookies from 'js-cookie';
 import { setChatToken } from '../../utils/axios';
+import * as ruRU from '../../chat_locales/locales/ru-RU'
+import { LocaleModule } from '@lit/localize';
 
 export default function WeavyProvider({ children }) {
 
@@ -20,6 +22,7 @@ export default function WeavyProvider({ children }) {
   const profile = useSelector(selectMyProfile);
   const chatUnreadStatus = useSelector((state: any) => state?.chat?.unread_status);
 
+  const locales = useMemo(() => [["ru-RU", ruRU]] as [string, LocaleModule | Promise<LocaleModule> | (() => Promise<LocaleModule>)][], [ruRU]);
 
   useEffect(() => {
     const handleWyLink = (e) => {
@@ -60,9 +63,7 @@ export default function WeavyProvider({ children }) {
         <WyContext
           url={CHAT_SERVER_URL}
           tokenFactory={tokenFactory}
-          locales={[
-            ["ru-RU", import("../../chat_locales/locales/ru-RU")] // Async pre-loading, started instantly.
-          ]}
+          locales={locales}
           locale='ru-RU'
           notificationEvents
           notificationToasts

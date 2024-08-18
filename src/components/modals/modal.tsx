@@ -24,8 +24,6 @@ export default function BasicModal(props: { styles?: SxProps }) {
   const isInteriorStatusChangeOpen = useSelector((state: any) => state?.modal_checker?.interiorStatusChange);
   const isModalOpen = useSelector((state: any) => state?.modal_checker?.isModalOpen);
 
-  console.log(isInteriorStatusChangeOpen);
-
   const style: SxProps = {
     zIndex: 9001,
     minWidth: '440px',

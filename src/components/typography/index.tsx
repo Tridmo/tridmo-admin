@@ -19,6 +19,13 @@ const TypographyWrapper = styled(Typography)(
         margin-bottom:12px;
       }
 
+      &.MuiTypography-ellipsis__title {
+        width: 98%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
       &.MuiTypography-card__title {
         width:60%;
         overflow: hidden;

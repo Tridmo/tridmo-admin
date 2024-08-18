@@ -61,7 +61,8 @@ export function CountsStats() {
           },
           {
             name: 'Загрузки',
-            count: downloadsStats?.count
+            count: downloadsStats?.count,
+            link: '/downloads'
           },
           {
             name: 'Интерьеры',
@@ -70,7 +71,8 @@ export function CountsStats() {
           },
           {
             name: 'Бирки',
-            count: tagsStats?.count
+            count: tagsStats?.count,
+            link: '/tags'
           },
         ]}
       />

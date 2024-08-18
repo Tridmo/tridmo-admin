@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-export default function Users() {
+export default function Downloads() {
 
   const dispatch = useDispatch<any>()
 

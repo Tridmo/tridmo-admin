@@ -400,7 +400,7 @@ export default function CategoriesList() {
         sx={listSx}
       >
         <ListItem
-          key={-3}
+          key={-4}
           sx={{ ...liHeaderSx, alignItems: 'center', justifyContent: 'space-between' }}
         >
           <SimpleTypography

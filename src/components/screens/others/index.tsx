@@ -17,8 +17,8 @@ export default function OthersPage() {
   useEffect(() => {
     dispatch(setRouteCrumbs(
       [{
-        title: 'Категории',
-        route: '/categories'
+        title: 'Другие компоненты',
+        route: '/others'
       }]
     ))
   }, [])

@@ -282,7 +282,7 @@ export default function Navbar() {
                               '&:hover': {
                                 backgroundColor: '#F3E5FF'
                               },
-                              '&:hover svg path': {
+                              '&:hover svg path, &:hover svg circle': {
                                 fill: '#7210BE'
                               }
                             }}

@@ -26,6 +26,10 @@ import { useRouter } from 'next/navigation';
 import { getAllInteriors } from '../../data/get_all_interiors';
 import { interiorStatuses } from '../../types/variables';
 import { getDesignerProfile } from '../../data/get_designer';
+import { StyleForm } from '../views/styles/style_form';
+import { CategoryForm } from '../views/categories/category_form';
+import { MaterialForm } from '../views/materials/material_form';
+import { ColorForm } from '../views/colors/color_form';
 //Login context
 interface LoginContextProps {
   // setAlertMessage: any
@@ -1248,5 +1252,48 @@ export const EditProfileContext = (props: LoginContextProps) => {
           </form>)}
       </Formik>
     </>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+export const StyleFormContext = (props: LoginContextProps) => {
+  const styleFormState = useSelector((state: any) => state?.modal_checker?.isStyleForm)
+
+  return (
+    <StyleForm editing={styleFormState?.editing} style={styleFormState?.style} />
+  );
+}
+
+export const CategoryFormContext = (props: LoginContextProps) => {
+  const categoryFormState = useSelector((state: any) => state?.modal_checker?.isCategoryForm)
+
+  return (
+    <CategoryForm editing={categoryFormState?.editing} category={categoryFormState?.category} />
+  );
+}
+
+export const MaterialFormContext = (props: LoginContextProps) => {
+  const materialFormState = useSelector((state: any) => state?.modal_checker?.isMaterialForm)
+
+  return (
+    <MaterialForm editing={materialFormState?.editing} material={materialFormState?.material} />
+  );
+}
+
+export const ColorFormContext = (props: LoginContextProps) => {
+  const colorFormState = useSelector((state: any) => state?.modal_checker?.isColorForm)
+
+  return (
+    <ColorForm editing={colorFormState?.editing} color={colorFormState?.color} />
   );
 }

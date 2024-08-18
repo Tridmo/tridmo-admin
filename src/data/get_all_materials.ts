@@ -8,7 +8,7 @@ const initialState = {
   progress: 0,
 };
 export const getAllMaterials = createAsyncThunk('/materials', async () => {
-  const response = await api.get(`/materials`)
+  const response = await api.get(`/materials/?orderBy=id`)
   return response.data
 })
 
@@ -45,4 +45,5 @@ const get_all_materials = createSlice({
 export const { resetAllMaterials } = get_all_materials.actions;
 export const reducer = get_all_materials.reducer;
 export const selectAllMaterials = (state: any) => state?.get_all_materials?.data[0]
+export const selectAllMaterials_status = (state: any) => state?.get_all_materials?.status
 export default get_all_materials;

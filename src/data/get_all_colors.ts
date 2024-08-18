@@ -8,7 +8,7 @@ const initialState = {
   progress: 0,
 };
 export const getAllColors = createAsyncThunk('/colors', async () => {
-  const response = await api.get(`colors`)
+  const response = await api.get(`colors/?orderBy=id`)
   return response.data
 })
 
@@ -44,5 +44,6 @@ const get_all_colors = createSlice({
 
 export const { resetAllColors } = get_all_colors.actions;
 export const reducer = get_all_colors.reducer;
-export const selectAllColors = (state: any) => state?.get_all_colors?.data
+export const selectAllColors = (state: any) => state?.get_all_colors?.data?.[0]
+export const selectAllColors_status = (state: any) => state?.get_all_colors?.status
 export default get_all_colors;

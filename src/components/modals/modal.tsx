@@ -4,9 +4,9 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal, keyframes, SxProps } from '@mui/material';
 import Image from 'next/image'
 import { Grid } from '@mui/material';
-import { SignUpContext, LoginContext, VerificationContext, EditProfileContext, ConfirmContext, ChangeInteriorStatusContext } from './context'
+import { SignUpContext, LoginContext, VerificationContext, EditProfileContext, ConfirmContext, ChangeInteriorStatusContext, StyleFormContext, CategoryFormContext, MaterialFormContext, ColorFormContext } from './context'
 import { useDispatch, useSelector } from '../../store';
-import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, setConfirmState, setInteriorStatusChangeState } from '../../data/modal_checker';
+import { setLoginState, setSignupState, setVerifyState, setOpenModal, setProfileEditState, setConfirmState, setInteriorStatusChangeState, setStyleFormState, setCategoryFormState, setMaterialFormState, setColorFormState } from '../../data/modal_checker';
 import AlertWrapper from '../alert';
 import LoadingBar from 'react-top-loading-bar';
 import EditProfile from './edit_profile';
@@ -21,13 +21,17 @@ export default function BasicModal(props: { styles?: SxProps }) {
   const isSignupOpen = useSelector((state: any) => state?.modal_checker?.isSignup);
   const isVerifyOpen = useSelector((state: any) => state?.modal_checker?.isVerify);
   const isProfileEditOpen = useSelector((state: any) => state?.modal_checker?.isProfileEdit);
+  const isStyleFormOpen = useSelector((state: any) => state?.modal_checker?.isStyleForm?.open);
+  const isCategoryFormOpen = useSelector((state: any) => state?.modal_checker?.isCategoryForm?.open);
+  const isMaterialFormOpen = useSelector((state: any) => state?.modal_checker?.isMaterialForm?.open);
+  const isColorFormOpen = useSelector((state: any) => state?.modal_checker?.isColorForm?.open);
   const isInteriorStatusChangeOpen = useSelector((state: any) => state?.modal_checker?.interiorStatusChange);
   const isModalOpen = useSelector((state: any) => state?.modal_checker?.isModalOpen);
 
   const style: SxProps = {
     zIndex: 9001,
     minWidth: '440px',
-    maxWidth: isProfileEditOpen ? '676px' : '440px',
+    width: isProfileEditOpen || isCategoryFormOpen ? '676px' : '440px',
     overflow: "hidden",
     position: 'absolute',
     top: '50%',
@@ -41,6 +45,7 @@ export default function BasicModal(props: { styles?: SxProps }) {
     ...props?.styles
   };
 
+
   //declare dispatcher
   const dispatch = useDispatch();
 
@@ -51,6 +56,10 @@ export default function BasicModal(props: { styles?: SxProps }) {
     dispatch(setVerifyState(false))
     dispatch(setProfileEditState(false))
     dispatch(setInteriorStatusChangeState(false))
+    dispatch(setStyleFormState({ open: false, editing: false, style: null }))
+    dispatch(setCategoryFormState({ open: false, editing: false, category: null }))
+    dispatch(setMaterialFormState({ open: false, editing: false, material: null }))
+    dispatch(setColorFormState({ open: false, editing: false, color: null }))
     dispatch(setOpenModal(false))
   };
   const modalSlider = keyframes`
@@ -80,11 +89,6 @@ export default function BasicModal(props: { styles?: SxProps }) {
         aria-describedby="modal-modal-description"
       >
         <Box className='login__modals--wrap' sx={style}>
-          {/* <Box className='login__modal--close' sx={{ width: "100%" }}>
-            <Button onClick={handleClose} sx={{ width: "100%", marginBottom: "50px", display: "flex", justifyContent: "flex-end" }}>
-              <Image width={16} height={16} src="/img/icon/x-icon.svg" alt="close-icon" />
-            </Button>
-          </Box> */}
 
           {
             isInteriorStatusChangeOpen ?
@@ -107,10 +111,20 @@ export default function BasicModal(props: { styles?: SxProps }) {
                       />
                       :
                       isProfileEditOpen ?
-                        <EditProfileContext
-                          setProgress={(val: any) => { setProgress(val) }}
-                        />
-                        : null
+                        <EditProfileContext />
+                        :
+                        isStyleFormOpen ?
+                          <StyleFormContext />
+                          :
+                          isCategoryFormOpen ?
+                            <CategoryFormContext />
+                            :
+                            isMaterialFormOpen ?
+                              <MaterialFormContext />
+                              :
+                              isColorFormOpen ?
+                                <ColorFormContext />
+                                : null
           }
         </Box>
       </Modal>

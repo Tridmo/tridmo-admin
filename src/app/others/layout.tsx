@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from "@/components/views/navbar"
 
-export default function CategoriesLayout({
+export default function OthersLayout({
   children,
 }: {
   children: React.ReactNode

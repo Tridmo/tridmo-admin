@@ -32,6 +32,10 @@ export interface ContextState {
   selectedInterior: any,
   isModalOpen: boolean;
   isProfileEdit: boolean;
+  isStyleForm: { open: boolean, editing?: boolean, style?: any };
+  isCategoryForm: { open: boolean, editing?: boolean, category?: any };
+  isMaterialForm: { open: boolean, editing?: boolean, material?: any };
+  isColorForm: { open: boolean, editing?: boolean, color?: any };
   editingProfile: any;
   order_id: string | null,
   isOrderModal: boolean;
@@ -49,6 +53,10 @@ const initialState: ContextState = {
   interiorStatusChange: false,
   selectedInterior: null,
   isProfileEdit: false,
+  isStyleForm: { open: false, editing: false, style: null },
+  isCategoryForm: { open: false, editing: false, category: null },
+  isMaterialForm: { open: false, editing: false, material: null },
+  isColorForm: { open: false, editing: false, color: null },
   editingProfile: null,
   isModalOpen: false,
   order_id: null,
@@ -119,6 +127,18 @@ const modalChecker = createSlice({
     setEditingProfile(state, action) {
       state.editingProfile = action.payload;
     },
+    setStyleFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; style?: any }>) {
+      state.isStyleForm = action.payload;
+    },
+    setCategoryFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; category?: any }>) {
+      state.isCategoryForm = action.payload;
+    },
+    setMaterialFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; material?: any }>) {
+      state.isMaterialForm = action.payload;
+    },
+    setColorFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; color?: any }>) {
+      state.isColorForm = action.payload;
+    },
     setOpenOrderModal(state, action) {
       const { isOpen, order_id } = action.payload
       state.isOrderModal = isOpen
@@ -151,6 +171,10 @@ const modalChecker = createSlice({
 });
 
 export const {
+  setStyleFormState,
+  setCategoryFormState,
+  setMaterialFormState,
+  setColorFormState,
   setConfirmState,
   setLoginState,
   setSignupState,

@@ -38,7 +38,7 @@ function ColorsFilter() {
     if (ColorsStatus === "succeeded") {
       if (router) {
         let arr = new Array();
-        AllColors[0]?.data?.forEach((color: colorProps) => {
+        AllColors?.data?.forEach((color: colorProps) => {
           if (getModelColorFilter?.includes(color.id) || getModelColorFilter?.includes((color.id)?.toString()) || getModelColorFilter == color?.id) {
             arr.push({
               id: color?.id,

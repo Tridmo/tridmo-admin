@@ -8,7 +8,7 @@ const initialState = {
   progress: 0,
 };
 export const getAllStyles = createAsyncThunk('/styles', async () => {
-  const response = await api.get(`/styles`)
+  const response = await api.get(`/styles/?orderBy=id`)
   return response.data
 })
 
@@ -38,4 +38,5 @@ const get_all_styles = createSlice({
 
 export const reducer = get_all_styles.reducer;
 export const selectAllStyles = (state: any) => state?.get_all_styles?.data[0]
+export const selectAllStyles_status = (state: any) => state?.get_all_styles?.status
 export default get_all_styles;

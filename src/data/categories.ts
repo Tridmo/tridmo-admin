@@ -24,7 +24,7 @@ const initialState = {
   error: null,
 };
 export const getCategories = createAsyncThunk('/catgories', async () => {
-  const response = await api.get(`/categories/main/?orderBy=name&order=asc`)
+  const response = await api.get(`/categories/main/?orderBy=id&order=asc`)
   return response.data
 })
 export const getOneCategory = createAsyncThunk('/catgories/:id', async (id: any) => {
@@ -32,35 +32,35 @@ export const getOneCategory = createAsyncThunk('/catgories/:id', async (id: any)
   return response.data
 })
 export const getCategoriesWithModelCount = createAsyncThunk('/catgories/?models_count=true', async () => {
-  const response = await api.get(`/categories/main/?models_count=true&orderBy=name&order=asc`)
+  const response = await api.get(`/categories/main/?models_count=true&orderBy=id&order=asc`)
   return response.data
 })
 export const getCategoriesByUserDownloads = createAsyncThunk('/catgories/user/downloads/:username', async (username: string) => {
-  const response = await api.get(`/categories/user/downloads/${username}/?orderBy=name&order=asc`)
+  const response = await api.get(`/categories/user/downloads/${username}/?orderBy=id&order=asc`)
   return response.data
 })
 export const getCategoriesByUserInteriors = createAsyncThunk('/catgories/user/interiors/:username', async (username: string) => {
-  const response = await api.get(`/categories/user/interiors/${username}/?orderBy=name&order=asc`)
+  const response = await api.get(`/categories/user/interiors/${username}/?orderBy=id&order=asc`)
   return response.data
 })
 export const getModelCategories = createAsyncThunk('/model/categories', async () => {
-  const response = await api.get(`/categories/main/?type=model`)
+  const response = await api.get(`/categories/main/?type=model&orderBy=id`)
   return response.data
 })
 export const getModelChildCategories = createAsyncThunk('/model/categories/child', async () => {
-  const response = await api.get(`/categories/nomain/?type=model`)
+  const response = await api.get(`/categories/nomain/?type=model&orderBy=id`)
   return response.data
 })
 export const getInteriorCategories = createAsyncThunk('/interior/categories', async () => {
-  const response = await api.get(`/categories/main/?type=interior`)
+  const response = await api.get(`/categories/main/?type=interior&orderBy=id`)
   return response.data
 })
 export const getBrandCategories = createAsyncThunk('/brand/categories', async (brand_id: string) => {
-  const response = await api.get(`/categories/brand/${brand_id}`)
+  const response = await api.get(`/categories/brand/${brand_id}/?orderBy=id`)
   return response.data
 })
 export const getModelTagsCategories = createAsyncThunk('/model_tags/categories', async (model_id: string) => {
-  const response = await api.get(`/categories/model_tags/${model_id}`)
+  const response = await api.get(`/categories/model_tags/${model_id}/?orderBy=id`)
   return response.data
 })
 
@@ -247,6 +247,7 @@ export const selectCategoriesWithModelCount = (state: any) => state?.categories?
 export const selectCategoriesByUserDownloads = (state: any) => state?.categories?.user_downloads_data?.[0]?.data
 export const selectCategoriesByUserInteriors = (state: any) => state?.categories?.user_interiors_data?.[0]?.data
 export const selectModelCategories = (state: any) => state?.categories?.model_data?.[0]?.data
+export const selectModelCategories_status = (state: any) => state?.categories?.model_status
 export const selectModelChildCategories = (state: any) => state?.categories?.model_child_data?.[0]?.data
 export const selectModelChildCategories_status = (state: any) => state?.categories?.model_child_status
 export const selectInteriorCategories = (state: any) => state?.categories?.interior_data?.[0]?.data

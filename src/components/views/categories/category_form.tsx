@@ -15,17 +15,18 @@ import { CSSProperties, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import { getCategories, getModelCategories, getInteriorCategories, selectCategories, selectInteriorCategories, selectModelCategories, selectOneCategory, getCategoriesWithModelCount } from '../../../../data/categories';
+import { getCategories, getModelCategories, getInteriorCategories, selectCategories, selectInteriorCategories, selectModelCategories, selectOneCategory, getCategoriesWithModelCount, selectModelCategories_status } from '../../../data/categories';
 import { useRouter } from 'next/navigation';
-import { selectAllColors } from '../../../../data/get_all_colors';
-import { selectAllMaterials } from '../../../../data/get_all_materials';
-import { selectAllBrands } from '../../../../data/get_all_brands';
-import { selectModelPlatforms } from '../../../../data/get_model_platforms';
-import { selectRenderPlatforms } from '../../../../data/get_render_platforms';
-import ColorsSelect from '../../../inputs/color_select';
-import MultipleSelect from '../../../inputs/multiple_select';
-import { setRouteCrumbs } from "../../../../data/route_crumbs";
-import { categorySections, categoryTypes } from "../../../../types/variables";
+import { selectAllColors } from '../../../data/get_all_colors';
+import { selectAllMaterials } from '../../../data/get_all_materials';
+import { selectAllBrands } from '../../../data/get_all_brands';
+import { selectModelPlatforms } from '../../../data/get_model_platforms';
+import { selectRenderPlatforms } from '../../../data/get_render_platforms';
+import ColorsSelect from '../../inputs/color_select';
+import MultipleSelect from '../../inputs/multiple_select';
+import { setRouteCrumbs } from "../../../data/route_crumbs";
+import { categorySections, categoryTypes } from "../../../types/variables";
+import { setCategoryFormState, setOpenModal } from "../../../data/modal_checker";
 
 
 const formControlSx: SxProps = {
@@ -35,7 +36,7 @@ const formControlSx: SxProps = {
   justifyContent: 'space-between',
 
   '& > .input_width': {
-    maxWidth: '400px'
+    maxWidth: '300px'
   },
 }
 
@@ -48,32 +49,24 @@ const labelStyle: CSSProperties = {
   margin: '0 0 6px 0',
 }
 
-export function AddCategoryForm({ editing = false, category }: { editing?: boolean, category?: any }) {
-
+export function CategoryForm({ editing = false, category }: { editing?: boolean, category?: any }) {
   const dispatch = useDispatch<any>()
   const router = useRouter()
-
   const parentCategoriesData = useSelector(selectModelCategories)
-
+  const parentCategories_status = useSelector(selectModelCategories_status)
   const [selectedType, setSelectedType] = useState<'model' | 'interior' | string>(editing && category?.type ? category?.type : 'model')
   const [selectedTypeSections, setSelectedTypeSections] = useState<any[]>(categoryTypes[selectedType])
   const [parentCategories, setParentCategories] = useState<any[]>(editing && selectedType != 'interior' ? parentCategoriesData : [])
 
-  if (editing) {
-    useEffect(() => {
-      dispatch(setRouteCrumbs(
-        [{
-          title: 'Категории',
-          route: '/categories'
-        }, {
-          title: category?.name,
-          route: `/categories`
-        }, {
-          title: 'Редактировать',
-          route: `/categories/edit/${category?.id}`
-        }]
-      ))
-    }, [])
+  useEffect(() => {
+    if (parentCategories_status == 'idle') {
+      dispatch(getModelCategories())
+    }
+  }, [parentCategories_status])
+
+  function handleCloseModal() {
+    dispatch(setOpenModal(false))
+    dispatch(setCategoryFormState({ open: false, editing: false, category: null }))
   }
 
   interface DataInterface {
@@ -96,8 +89,6 @@ export function AddCategoryForm({ editing = false, category }: { editing?: boole
       sx={{
         width: '100%',
         backgroundColor: '#fff',
-        border: '1px solid #E0E0E0',
-        padding: '28px'
       }}
     >
       <Box sx={{ marginBottom: '40px' }}>
@@ -133,20 +124,34 @@ export function AddCategoryForm({ editing = false, category }: { editing?: boole
 
               const formData = new FormData()
 
-              formData.append('name', _values.name)
-              formData.append('type', _values.type)
-              formData.append('section', _values.section)
-              if (_values.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
+              if (editing && category) {
+                if (_values.name && _values.name != category?.name) formData.append('name', _values.name)
+                if (_values.type && _values.type != category?.type) formData.append('type', _values.type)
+                if (_values.section && _values.section != category?.section) formData.append('section', _values.section)
+                if (_values.parent_id && _values.parent_id != category?.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
+              } else {
+                formData.append('name', _values.name)
+                formData.append('type', _values.type)
+                formData.append('section', _values.section)
+                if (_values.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
+              }
 
-              const res = await instance.post(
-                `/categories`,
-                formData
-              );
+              const res =
+                editing && category ?
+                  await instance.put(
+                    `/categories/${category?.id}`,
+                    formData
+                  )
+                  : await instance.post(
+                    `/categories`,
+                    formData
+                  );
 
               toast.success(res?.data?.message);
               setStatus({ success: true });
               setSubmitting(false);
               resetForm()
+              handleCloseModal()
 
               dispatch(getCategoriesWithModelCount())
 
@@ -228,7 +233,7 @@ export function AddCategoryForm({ editing = false, category }: { editing?: boole
                           setSelectedTypeSections(categorySections[e.target.value])
                           if (e.target.value == 'interior') {
                             setParentCategories([])
-                            setFieldValue('parent_id', undefined)
+                            setFieldValue('parent_id', "")
                           }
                           else {
                             setParentCategories([...parentCategoriesData])
@@ -302,18 +307,21 @@ export function AddCategoryForm({ editing = false, category }: { editing?: boole
                   </Grid>
 
                 </Grid>
-                <Box sx={{ marginTop: '40px', width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                <Box sx={{ marginTop: '40px', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                   <Buttons
-                    name="Загрузить"
+                    name="Отмена"
+                    disabled={Boolean(errors.submit) || isSubmitting}
+                    className="bookmark__btn"
+                    onClick={handleCloseModal}
+                  />
+                  <Buttons
+                    name={editing ? "Сохранить" : "Добавить"}
                     childrenFirst={true}
                     type='submit'
                     startIcon={isSubmitting}
                     disabled={Boolean(errors.submit) || isSubmitting}
                     loadingColor='#fff'
                     className="upload__btn"
-                    sx={{
-                      paddingX: '88px !important'
-                    }}
                   >
                     <Image
                       alt="upload icon"

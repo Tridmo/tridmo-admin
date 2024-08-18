@@ -27,7 +27,7 @@ import Cookies from 'js-cookie'
 import { IMAGES_BASE_URL } from '../../../utils/image_src';
 import NavbarTop from './top';
 import RightBar from '../../right_bar';
-import { Collections, Downloading, Sell } from '@mui/icons-material';
+import { Category, Collections, Diamond, Downloading, Sell } from '@mui/icons-material';
 import { CustomTooltip } from '../../tooltip';
 import { WyNotificationToasts } from '@weavy/uikit-react';
 
@@ -134,21 +134,17 @@ function navItemsData(pathname: string) {
       active: pathname.startsWith('/brands'),
       icon_src: '/icons/list.svg',
       icon: (
-        <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6.33333 0.667318H21.5V3.00065H6.33333V0.667318ZM0.5 0.0839844H4V3.58398H0.5V0.0839844ZM0.5 8.25065H4V11.7507H0.5V8.25065ZM0.5 16.4173H4V19.9173H0.5V16.4173ZM6.33333 8.83399H21.5V11.1673H6.33333V8.83399ZM6.33333 17.0007H21.5V19.334H6.33333V17.0007Z" fill="#B8B8B8" />
-        </svg>
+        <Diamond />
       ),
     },
     {
       id: 5,
-      text: "Категории",
-      link: "/categories",
-      active: pathname.startsWith('/categories'),
+      text: "Другие",
+      link: "/others",
+      active: pathname.startsWith('/others'),
       icon_src: '/icons/list-settings.svg',
       icon: (
-        <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.333496 16.9993H8.50016V19.3327H0.333496V16.9993ZM0.333496 8.83268H10.8335V11.166H0.333496V8.83268ZM0.333496 0.666016H23.6668V2.99935H0.333496V0.666016ZM22.1198 11.1952L23.4685 10.739L24.6352 12.7597L23.5665 13.6988C23.701 14.3366 23.701 14.9954 23.5665 15.6332L24.6352 16.5724L23.4685 18.593L22.1198 18.1369C21.6415 18.5685 21.0722 18.901 20.4457 19.1052L20.1668 20.4993H17.8335L17.5535 19.104C16.9343 18.9017 16.3644 18.5718 15.8805 18.1357L14.5318 18.593L13.3652 16.5724L14.4338 15.6332C14.2993 14.9954 14.2993 14.3366 14.4338 13.6988L13.3652 12.7597L14.5318 10.739L15.8805 11.1952C16.3588 10.7635 16.9282 10.431 17.5547 10.2268L17.8335 8.83268H20.1668L20.4468 10.228C21.0722 10.431 21.6415 10.7647 22.1198 11.1964V11.1952ZM19.0002 16.9993C19.619 16.9993 20.2125 16.7535 20.6501 16.3159C21.0877 15.8783 21.3335 15.2849 21.3335 14.666C21.3335 14.0472 21.0877 13.4537 20.6501 13.0161C20.2125 12.5785 19.619 12.3327 19.0002 12.3327C18.3813 12.3327 17.7878 12.5785 17.3502 13.0161C16.9127 13.4537 16.6668 14.0472 16.6668 14.666C16.6668 15.2849 16.9127 15.8783 17.3502 16.3159C17.7878 16.7535 18.3813 16.9993 19.0002 16.9993Z" fill="#B8B8B8" />
-        </svg>
+        <Category />
       ),
     },
   ]
@@ -294,7 +290,7 @@ export default function Navbar() {
                             <Box sx={{
                               width: '28px',
                               height: '28px',
-                              '& svg path': {
+                              '& svg path, & svg circle': {
                                 transition: 'all 0.4s ease',
                                 fill: item.active ? '#7210BE' : '#B8B8B8',
                               }

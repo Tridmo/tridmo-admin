@@ -85,8 +85,8 @@ const widthControl = {
     maxWidth: '5%',
   },
   '&:nth-of-type(2)': {
-    minWidth: '40%',
-    maxWidth: '40%',
+    minWidth: '45%',
+    maxWidth: '45%',
   },
   '&:nth-of-type(3)': {
     minWidth: '40%',
@@ -95,7 +95,7 @@ const widthControl = {
   '&:nth-of-type(4)': {
     minWidth: '10%',
     maxWidth: '10%',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   }
 }
 

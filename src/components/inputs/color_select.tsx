@@ -56,7 +56,7 @@ export default function ColorsSelect(props: InputProps) {
   React.useEffect(() => {
     if (ColorsStatus === "succeeded") {
       let arr = new Array();
-      AllColors[0]?.data?.forEach((color: colorProps) => {
+      AllColors?.data?.forEach((color: colorProps) => {
         arr.push({
           id: color?.id,
           created_at: color?.created_at,

@@ -71,4 +71,5 @@ const get_all_brands = createSlice({
 export const { resetAllBrands } = get_all_brands.actions;
 export const reducer = get_all_brands.reducer;
 export const selectAllBrands = (state: any) => state?.get_all_brands?.data[0]
+export const selectAllBrands_status = (state: any) => state?.get_all_brands?.status
 export default get_all_brands;

@@ -38,4 +38,5 @@ const get_model_platforms = createSlice({
 
 export const reducer = get_model_platforms.reducer;
 export const selectModelPlatforms = (state: any) => state?.get_model_platforms?.data[0]?.data
+export const selectModelPlatforms_status = (state: any) => state?.get_model_platforms?.status
 export default get_model_platforms;

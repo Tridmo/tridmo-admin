@@ -3,6 +3,8 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
 import { Box, Chip, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps, styled } from '@mui/material';
+import { MenuProps } from '../../styles/styles';
+import SimpleTypography from '../typography';
 
 const SimpleSelectControl = styled(FormControl)(
   // text-transform: capitalize;
@@ -110,16 +112,17 @@ interface SimpleSelectProps {
   clear?: boolean;
 }
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      // maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       // maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       boxShadow: '0px 0px 10px 0px #00000014',
+//       width: 250,
+//     },
+//   },
+// };
 
 export default function MultipleSelect(props: SimpleSelectProps) {
 
@@ -179,6 +182,7 @@ export default function MultipleSelect(props: SimpleSelectProps) {
 
       <Select
         sx={{ ...props?.sx }}
+        displayEmpty={true}
         autoComplete={props?.autoComplete}
         error={props?.error}
         onBlur={props?.onBlur}
@@ -194,15 +198,17 @@ export default function MultipleSelect(props: SimpleSelectProps) {
           return (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {
-                selected.map((value) => (
-                  <Chip
-                    sx={{
-                      height: '25px'
-                    }}
-                    key={value}
-                    label={value.split('/')[1]}
-                  />
-                ))
+                selected.length ?
+                  selected.map((value) => (
+                    <Chip
+                      sx={{
+                        height: '25px'
+                      }}
+                      key={value}
+                      label={value.split('/')[1]}
+                    />
+                  ))
+                  : <SimpleTypography text={props?.placeholderText || ''} sx={{ fontWeight: '200', fontSize: '14px', color: '#a2a2a2' }} />
               }
             </Box>)
         }}

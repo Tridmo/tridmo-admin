@@ -434,6 +434,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                           />
 
                           <SimpleSelect
+                            placeholderText="Выберите бренд"
                             disabled={Boolean(brand)}
                             className='input_width'
                             variant='outlined'
@@ -463,6 +464,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                         >
                           {/* <label data-shrink='true' style={labelStyle}> Категория </label> */}
                           <SimpleSelect
+                            placeholderText="Выберите основную категорию"
                             className='input_width'
                             variant='outlined'
                             paddingX={12}
@@ -489,6 +491,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                           </SimpleSelect>
 
                           <SimpleSelect
+                            placeholderText="Выберите категорию"
                             className='input_width'
                             variant='outlined'
                             paddingX={12}
@@ -517,6 +520,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                         >
                           {/* <label data-shrink='true' style={labelStyle}> Категория </label> */}
                           <SimpleSelect
+                            placeholderText="Выберите платформу"
                             className='input_width'
                             variant='outlined'
                             paddingX={12}
@@ -547,6 +551,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                           </SimpleSelect>
 
                           <SimpleSelect
+                            placeholderText="Выберите платформу"
                             className='input_width'
                             variant='outlined'
                             paddingX={12}
@@ -575,6 +580,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                         >
                           {/* <label data-shrink='true' style={labelStyle}> Категория </label> */}
                           <SimpleSelect
+                            placeholderText="Выберите стиль"
                             className='input_width'
                             variant='outlined'
                             paddingX={12}
@@ -598,6 +604,7 @@ export function AddModelForm({ editing = false, model, selectedBrand }: { editin
                           </SimpleSelect>
 
                           <MultipleSelect
+                            placeholderText="Выберите материалы"
                             clear={clearInputs}
                             className='input_width'
                             variant='outlined'

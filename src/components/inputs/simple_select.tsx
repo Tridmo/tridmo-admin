@@ -2,8 +2,10 @@ import * as React from 'react';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { ThemeProps } from '@/types/theme';
-import { FormLabel, InputAdornment, InputLabel, MenuItem, SxProps, styled } from '@mui/material';
+import { FormLabel, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, SxProps, styled } from '@mui/material';
 import { Label } from '@mui/icons-material';
+import { MenuProps } from '../../styles/styles';
+import SimpleTypography from '../typography';
 
 interface SimpleSelectProps {
   formControlSx?: SxProps;
@@ -14,7 +16,8 @@ interface SimpleSelectProps {
   error?: boolean;
   name?: string;
   onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>;
+  // onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>;
+  onChange: (event: SelectChangeEvent<string>, child: React.ReactNode) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
   value?: any;
   disabled?: boolean,
@@ -28,6 +31,8 @@ interface SimpleSelectProps {
   placeholderText?: string,
   children: React.ReactNode;
   labelFixed?: boolean;
+  displayEmpty?: boolean;
+  renderValue?: boolean;
   className?: string;
 }
 
@@ -125,8 +130,13 @@ export default function SimpleSelect(props: SimpleSelectProps) {
           : null
       }
 
-      <TextField
-        sx={{ ...props?.sx }}
+      <Select
+        sx={{
+          ...props?.sx,
+          '.MuiSelect-outlined': {
+            p: '2px'
+          }
+        }}
         id={props?.label}
         autoComplete={props?.autoComplete}
         error={props?.error}
@@ -138,7 +148,8 @@ export default function SimpleSelect(props: SimpleSelectProps) {
         disabled={props?.disabled}
         type={props?.type}
         variant={props?.variant || "standard"}
-        InputProps={{
+        MenuProps={MenuProps}
+        inputProps={{
           startAdornment: props?.startAdornment || (
             <InputAdornment position="start">
             </InputAdornment>
@@ -148,24 +159,10 @@ export default function SimpleSelect(props: SimpleSelectProps) {
             </InputAdornment>
           ),
         }}
-        select // This prop converts the TextField into a Select
+      // select
       >
-        {
-          props?.placeholderText ?
-            <MenuItem
-              key={-1}
-              content='option'
-              value={props?.placeholderText}
-              onClick={() => setCurrent(props?.placeholderText)}
-              disabled
-              selected={!!props?.placeholderText}
-            >{props.placeholderText}</MenuItem>
-
-            : null
-        }
-
         {props?.children}
-      </TextField>
+      </Select>
     </SimpleSelectControl>
   )
 }

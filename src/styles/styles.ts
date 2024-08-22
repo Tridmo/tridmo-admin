@@ -21,3 +21,12 @@ export const BgBlur = {
   background: "#fff",
   filter: "blur(10px)"
 }
+
+export const MenuProps = {
+  PaperProps: {
+    style: {
+      boxShadow: '0px 0px 20px 0px #00000014',
+      width: 250,
+    },
+  },
+};

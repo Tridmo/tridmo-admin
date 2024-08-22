@@ -115,7 +115,7 @@ const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      // maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
       width: 250,
     },
   },
@@ -207,31 +207,7 @@ export default function MultipleSelect(props: SimpleSelectProps) {
             </Box>)
         }}
         MenuProps={MenuProps}
-      // inputProps={{
-      //     startAdornment: props?.startAdornment || (
-      //         <InputAdornment position="start">
-      //         </InputAdornment>
-      //     ),
-      //     endAdornment: props?.endAdornment || (
-      //         <InputAdornment position="start">
-      //         </InputAdornment>
-      //     ),
-      // }}
       >
-        {/* {
-                    props?.placeholderText ?
-                        <MenuItem
-                            key={-1}
-                            content='option'
-                            value={props?.placeholderText}
-                            onClick={() => setCurrent(props?.placeholderText)}
-                            disabled
-                            selected
-                        >{props.placeholderText}</MenuItem>
-
-                        : null
-                } */}
-
         {props?.children}
       </Select>
     </SimpleSelectControl >

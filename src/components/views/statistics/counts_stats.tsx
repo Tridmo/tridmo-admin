@@ -57,7 +57,7 @@ export function CountsStats() {
             name: 'Модели',
             count: modelsStats?.count,
             link: '/models',
-            secondary_text: `Доступно: ${modelsStats?.available_count || ""} \nНе доступно: ${modelsStats?.unavailable_count || ""}`,
+            secondary_text: `Доступно: ${modelsStats?.available_count || ""} \nНе доступно: ${modelsStats?.unavailable_count || ""} \nПод заказ: ${modelsStats?.by_ordering_count || ""}`,
           },
           {
             name: 'Загрузки',

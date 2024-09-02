@@ -307,7 +307,7 @@ export default function UserDownloadsList() {
                                     opacity: '1'
                                   },
                                   '&::after': {
-                                    backgroundImage: `url(${IMAGES_BASE_URL}/${download?.model?.cover[0]?.image_src})`,
+                                    backgroundImage: `url(${IMAGES_BASE_URL}/${download?.model?.cover})`,
                                     transition: 'opacity 0.3s ease',
                                     zIndex: 3000,
                                     backgroundRepeat: 'no-repeat',
@@ -328,9 +328,7 @@ export default function UserDownloadsList() {
                               >
                                 <Image
                                   src={download?.model?.cover ? (
-                                    download?.model?.cover[0]?.image_src ? (
-                                      `${IMAGES_BASE_URL}/${download?.model?.cover[0]?.image_src}`
-                                    ) : ''
+                                    `${IMAGES_BASE_URL}/${download?.model?.cover}`
                                   ) : ''}
                                   alt='Landing image'
                                   width={36}

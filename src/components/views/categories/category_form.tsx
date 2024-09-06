@@ -113,7 +113,7 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
             Yup.object().shape({
               name: Yup.string().max(255).required('Название не указано'),
               type: Yup.string().oneOf(['model', 'interior']).required('Тип не указан'),
-              section: Yup.string().oneOf(['main', 'architecture']).required('Раздел не указан'),
+              section: Yup.string().oneOf(['main', 'others']).required('Раздел не указан'),
               parent_id: Yup.number().optional(),
             })
           }

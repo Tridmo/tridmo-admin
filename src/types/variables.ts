@@ -56,8 +56,8 @@ export const categorySections = {
       name: 'Главная'
     },
     {
-      value: 'architecture',
-      name: 'Архитектура'
+      value: 'others',
+      name: 'Другие'
     },
   ]
 } 

@@ -121,7 +121,7 @@ const SimpleSlider = ({ name }: any) => {
     opacity: sliderBtnHover
   }
 
-  if ("succeeded") {
+  if (simple_model_status == "succeeded") {
     return (
       <>
         <Grid

@@ -930,7 +930,7 @@ export default function InteriorsPage() {
               sx={{ padding: "0 !important", display: "flex", justifyContent: "center" }}
             >
               <Pagination
-                dataSource='models'
+                dataSource='interiors'
                 count={all__interiors?.data?.pagination?.pages}
                 page={parseInt(all__interiors?.data?.pagination?.current) + 1}
               />

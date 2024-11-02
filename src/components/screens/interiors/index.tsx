@@ -674,13 +674,15 @@ export default function InteriorsPage() {
                               }
                             }}
                           >
-                            <img
+                            <Image
                               src={interior?.cover ? (
                                 interior?.cover[0]?.image_src ? (
                                   `${IMAGES_BASE_URL}/${interior?.cover[0]?.image_src}`
                                 ) : ''
                               ) : ''}
                               alt=''
+                              width={36}
+                              height={36}
                               style={modelImageSx}
                             />
                           </Box>

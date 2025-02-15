@@ -27,6 +27,7 @@ import MultipleSelect from '../../inputs/multiple_select';
 import { setRouteCrumbs } from "../../../data/route_crumbs";
 import { categorySections, categoryTypes } from "../../../types/variables";
 import { setCategoryFormState, setOpenModal } from "../../../data/modal_checker";
+import { IMAGES_BASE_URL } from "../../../utils/env_vars";
 
 
 const formControlSx: SxProps = {
@@ -47,6 +48,14 @@ const labelStyle: CSSProperties = {
   letterSpacing: '0.02em',
   color: '#292929',
   margin: '0 0 6px 0',
+}
+
+const supportedImageTypes = 'image/png, image/jpg, image/jpeg, image/webp';
+const maxImagesFileSize = 10;
+
+const imageValidations: FileValidations = {
+  allowedTypes: supportedImageTypes.split(', '),
+  maxSize: maxImagesFileSize
 }
 
 export function CategoryForm({ editing = false, category }: { editing?: boolean, category?: any }) {
@@ -73,6 +82,7 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
     name: any,
     type: any,
     section: any,
+    image: any,
     parent_id: any,
     submit: any
   }
@@ -80,6 +90,7 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
     name: editing && category?.name ? category?.name : '',
     type: editing && category?.type ? category?.type : '',
     section: editing && category?.section ? category?.section : '',
+    image: editing && category?.image ? category?.image : '',
     parent_id: editing && category?.parent_id ? category?.parent_id : '',
     submit: null
   }
@@ -112,8 +123,9 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
           validationSchema={
             Yup.object().shape({
               name: Yup.string().max(255).required('Название не указано'),
-              type: Yup.string().oneOf(['model', 'interior']).required('Тип не указан'),
+              type: Yup.string().oneOf(['model', 'interior', 'product']).required('Тип не указан'),
               section: Yup.string().oneOf(['main', 'others']).required('Раздел не указан'),
+              image: Yup.mixed(),
               parent_id: Yup.number().optional(),
             })
           }
@@ -128,11 +140,13 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
                 if (_values.name && _values.name != category?.name) formData.append('name', _values.name)
                 if (_values.type && _values.type != category?.type) formData.append('type', _values.type)
                 if (_values.section && _values.section != category?.section) formData.append('section', _values.section)
+                if (_values.image) formData.append('image', _values.image)
                 if (_values.parent_id && _values.parent_id != category?.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
               } else {
                 formData.append('name', _values.name)
                 formData.append('type', _values.type)
                 formData.append('section', _values.section)
+                if (_values.image) formData.append('image', _values.image)
                 if (_values.parent_id && _values.type != 'interior') formData.append('parent_id', _values.parent_id)
               }
 
@@ -303,6 +317,27 @@ export function CategoryForm({ editing = false, category }: { editing?: boolean,
                           )
                         }
                       </SimpleSelect>
+                    </Box>
+                    <Box
+                      sx={{ ...formControlSx }}
+                    >
+                      <FileInput
+                        labelElement={<label data-shrink='true' style={labelStyle}> Файл </label>}
+                        error={Boolean(touched.image && errors.image)}
+                        helperText={touched.image && errors.image}
+                        name="image"
+                        limit={1}
+                        validations={imageValidations}
+                        onBlur={handleBlur}
+                        icon='/icons/upload-cloud.svg'
+                        iconBgColor='#F3E5FF'
+                        placeholderText="Перетащите или щелкните файл для загрузки"
+                        accept={supportedImageTypes}
+                        onChange={(files) => {
+                          setFieldValue('image', files[0])
+                        }}
+                        initialPreviews={editing && category?.image ? [`${IMAGES_BASE_URL}/${category?.image}`] : []}
+                      />
                     </Box>
                   </Grid>
 

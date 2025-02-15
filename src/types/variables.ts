@@ -41,10 +41,20 @@ export const categoryTypes = [
     value: 'interior',
     name: 'Для интерьеров'
   },
+  {
+    value: 'product',
+    name: 'Для продукт'
+  },
 ]
 
 export const categorySections = {
   model: [
+    {
+      value: 'main',
+      name: 'Главная'
+    }
+  ],
+  product: [
     {
       value: 'main',
       name: 'Главная'

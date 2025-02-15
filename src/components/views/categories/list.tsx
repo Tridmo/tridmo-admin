@@ -45,7 +45,7 @@ const liHeaderTextSx = {
   textTransform: 'uppercase'
 }
 
-const modelImageWrapperSx: SxProps = {
+const imageWrapperSx: SxProps = {
   backgroundColor: '#fff',
   // border: '1px solid #E0E0E0',
   // borderRadius: '8px',
@@ -57,7 +57,7 @@ const modelImageWrapperSx: SxProps = {
   position: 'relative',
 }
 
-const modelImageSx: CSSProperties = {
+const imageSx: CSSProperties = {
   width: '100% !important',
   height: '100% !important',
   // borderRadius: '8px',
@@ -97,32 +97,46 @@ const listSx: SxProps = {
 
 
 const widthControl = {
-
+  //img
   '&:nth-of-type(1)': {
-    minWidth: '517px',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
+  //name
   '&:nth-of-type(2)': {
-    minWidth: '100px',
-    maxWidth: '100px',
+    minWidth: '20%',
+    maxWidth: '20%',
   },
+  //type
   '&:nth-of-type(3)': {
-    minWidth: '100px',
-    maxWidth: '100px',
-    textAlign: 'center',
-    justifyContent: 'center',
+    minWidth: '10%',
+    maxWidth: '10%',
   },
+  //id
   '&:nth-of-type(4)': {
-    minWidth: '180px',
+    minWidth: '10%',
+    maxWidth: '10%',
     textAlign: 'center',
     justifyContent: 'center',
   },
+  //child count
   '&:nth-of-type(5)': {
-    minWidth: '170px',
+    minWidth: '20%',
+    maxWidth: '20%',
     textAlign: 'center',
     justifyContent: 'center',
   },
+  //model count
   '&:nth-of-type(6)': {
-    minWidth: '50px',
+    minWidth: '20%',
+    maxWidth: '20%',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  //dots
+  '&:nth-of-type(7)': {
+    minWidth: '10%',
+    maxWidth: '10%',
   }
 }
 
@@ -499,6 +513,10 @@ export default function CategoriesList() {
           sx={liHeaderSx}
         >
           <SimpleTypography
+            text='Изб.'
+            sx={{ ...liHeaderTextSx, ...widthControl }}
+          />
+          <SimpleTypography
             text='Название'
             sx={{ ...liHeaderTextSx, ...widthControl }}
           />
@@ -532,6 +550,57 @@ export default function CategoriesList() {
                   <ListItem key={index} alignItems="center"
                     sx={liSx}
                   >
+
+                    <ListItemText
+                      sx={{
+                        ...widthControl, ...itemAsLink,
+                      }}
+                    >
+
+                      <Box
+                        sx={{
+                          ...imageWrapperSx,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'flex-start',
+                          '&:hover:after': {
+                            opacity: '1'
+                          },
+                          '&::after': {
+                            backgroundImage: `url(${IMAGES_BASE_URL}/${category?.image})`,
+                            transition: 'opacity 0.3s ease',
+                            zIndex: 3000,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'cover',
+                            content: '""',
+                            display: 'flex',
+                            pointerEvents: 'none',
+                            opacity: '0',
+                            border: '1px solid #B8B8B8',
+                            borderRadius: '4px',
+                            width: '320px',
+                            height: '320px',
+                            position: 'absolute',
+                            top: '-160',
+                            left: '100%',
+                          }
+                        }}
+                      >
+                        <Image
+                          src={category?.image ? (
+                            category?.image ? (
+                              `${IMAGES_BASE_URL}/${category?.image}`
+                            ) : ''
+                          ) : ''}
+                          alt='Landing image'
+                          width={36}
+                          height={36}
+                          style={imageSx}
+                        />
+                      </Box>
+
+
+                    </ListItemText>
 
                     <ListItemText title='Нажмите, чтобы открыть'
                       onClick={() => handleSelectCategory(index)}
@@ -664,11 +733,11 @@ export default function CategoriesList() {
                   </ListItemText>
 
                   <ListItemAvatar
-                    sx={modelImageWrapperSx}
+                    sx={imageWrapperSx}
                   >
                     <Skeleton
                       variant="rectangular"
-                      sx={modelImageSx}
+                      sx={imageSx}
                     />
                   </ListItemAvatar>
 

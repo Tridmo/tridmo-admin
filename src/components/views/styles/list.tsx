@@ -1,20 +1,41 @@
 "use client"
 
-import React, { CSSProperties, Suspense, useEffect, useMemo, useState } from 'react'
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Skeleton,
+  styled,
+  SxProps,
+  useMediaQuery,
+} from "@mui/material";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { CSSProperties, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Box, useMediaQuery, SxProps, List, ListItem, ListItemText, ListItemAvatar, Divider, Skeleton, Input, TextField, FormControl, MenuItem, styled, Menu } from '@mui/material'
-import SimpleTypography from '../../typography'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Buttons from '../../buttons'
-import Image from 'next/image'
-import EmptyData from '../empty_data'
-import { ThemeProps } from '../../../types/theme'
-import instance from '../../../utils/axios'
-import { toast } from 'react-toastify'
-import { ConfirmContextProps, resetConfirmData, resetConfirmProps, setConfirmProps, setConfirmState, setOpenModal, setStyleFormState } from '../../../data/modal_checker'
-import { getAllMaterials, selectAllMaterials, selectAllMaterials_status } from '../../../data/get_all_materials'
-import { getAllStyles, selectAllStyles, selectAllStyles_status } from '../../../data/get_all_styles'
-import Link from 'next/link'
+import { toast } from "react-toastify";
+import {
+  getAllStyles,
+  selectAllStyles,
+  selectAllStyles_status,
+} from "../../../data/get_all_styles";
+import {
+  ConfirmContextProps,
+  resetConfirmData,
+  resetConfirmProps,
+  setConfirmProps,
+  setConfirmState,
+  setOpenModal,
+  setStyleFormState,
+} from "../../../data/modal_checker";
+import { ThemeProps } from "../../../types/theme";
+import instance from "../../../utils/axios";
+import Buttons from "../../buttons";
+import SimpleTypography from "../../typography";
+import EmptyData from "../empty_data";
 
 const fakeBrands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 

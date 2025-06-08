@@ -1,23 +1,27 @@
 "use client"
 
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'next/navigation';
-import ConnectionError from '@/components/site_info/connection_error';
-import { Box, Grid } from '@mui/material';
+import ConnectionError from "@/components/site_info/connection_error";
+import { Box } from "@mui/material";
+import { useParams } from "next/navigation";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import CircularProgress from '@mui/material/CircularProgress';
-import { getOneBrand, selectOneBrand } from '@/data/get_one_brand';
-import { getAllStyles } from '../../../../data/get_all_styles';
-import EditBrand from '@/components/screens/brands/edit';
-import { selectMyProfile } from '../../../../data/me';
+import EditBrand from "@/components/screens/brands/edit";
+import {
+  getAllCountries,
+  selectAllCountries_status,
+} from "@/data/get_all_countries";
+import { getAllStyles, selectAllStyles_status } from "@/data/get_all_styles";
+import { getOneBrand } from "@/data/get_one_brand";
+import { selectMyProfile } from "@/data/me";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const LoaderStyle = {
   // width: "100px !important",
   // height: "100px !important",
   zIndex: "10",
-  position: "relative"
-}
+  position: "relative",
+};
 const ContainerStyle = {
   display: "flex",
   justifyContent: "center",
@@ -25,7 +29,7 @@ const ContainerStyle = {
   height: "697px",
   margin: "0 auto",
   alignItems: "center",
-}
+};
 const BgBlur = {
   position: "absolute",
   left: "0",
@@ -33,27 +37,33 @@ const BgBlur = {
   width: "100%",
   height: "100%",
   background: "#fff",
-  filter: "blur(10px)"
-}
+  filter: "blur(10px)",
+};
 
-export default function UserProfile() {
-  const getBrandStatus = useSelector((state: any) => state?.get_one_brand?.status)
-  const stylesData__status = useSelector((state: any) => state?.get_all_styles.status);
-  const dispatch = useDispatch<any>()
-  const profile = useSelector(selectMyProfile)
+export default function EditBrandPage() {
+  const getBrandStatus = useSelector(
+    (state: any) => state?.get_one_brand?.status
+  );
+  const stylesData__status = useSelector(selectAllStyles_status);
+  const countriesData__status = useSelector(selectAllCountries_status);
+  const dispatch = useDispatch<any>();
+  const profile = useSelector(selectMyProfile);
 
-  const params = useParams<{ slug: string }>()
+  const params = useParams<{ slug: string }>();
 
   React.useMemo(() => {
-    if (profile) dispatch(getOneBrand(params?.slug))
-  }, [profile, params.slug])
+    if (profile) dispatch(getOneBrand(params?.slug));
+  }, [profile, params.slug]);
   React.useMemo(() => {
     if (profile) {
-      if (stylesData__status == 'idle') {
-        dispatch(getAllStyles())
+      if (stylesData__status == "idle") {
+        dispatch(getAllStyles());
+      }
+      if (countriesData__status == "idle") {
+        dispatch(getAllCountries());
       }
     }
-  }, [profile, stylesData__status])
+  }, [profile, stylesData__status]);
 
   if (getBrandStatus === "succeeded") {
     return (
@@ -62,7 +72,7 @@ export default function UserProfile() {
           <EditBrand />
         </Box>
       </>
-    )
+    );
   } else if (getBrandStatus === "failed") {
     return (
       <>
@@ -70,7 +80,7 @@ export default function UserProfile() {
           <ConnectionError />
         </Box>
       </>
-    )
+    );
   } else {
     return (
       <>
@@ -83,6 +93,6 @@ export default function UserProfile() {
           </Box>
         </Box>
       </>
-    )
+    );
   }
 }

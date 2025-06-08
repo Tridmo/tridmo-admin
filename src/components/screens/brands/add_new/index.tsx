@@ -1,11 +1,10 @@
 "use client"
 
-import React, { useState } from 'react'
 import { Box, Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { sampleUser } from '@/data/samples';
-import { AddBrandForm } from '../../../views/brand/add_brand_form';
-import { setRouteCrumbs } from '../../../../data/route_crumbs';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { setRouteCrumbs } from "../../../../data/route_crumbs";
+import { AddBrandForm } from "../../../views/brand/add_brand_form";
 
 
 export default function AddBrand() {

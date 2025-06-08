@@ -1,4 +1,3 @@
-import { SxProps } from '@mui/system';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Type for our state
 export interface ConfirmContextProps {
@@ -36,6 +35,7 @@ export interface ContextState {
   isCategoryForm: { open: boolean, editing?: boolean, category?: any };
   isMaterialForm: { open: boolean, editing?: boolean, material?: any };
   isColorForm: { open: boolean, editing?: boolean, color?: any };
+  isCountryForm: { open: boolean, editing?: boolean, country?: any };
   editingProfile: any;
   order_id: string | null,
   isOrderModal: boolean;
@@ -57,6 +57,7 @@ const initialState: ContextState = {
   isCategoryForm: { open: false, editing: false, category: null },
   isMaterialForm: { open: false, editing: false, material: null },
   isColorForm: { open: false, editing: false, color: null },
+  isCountryForm: { open: false, editing: false, country: null },
   editingProfile: null,
   isModalOpen: false,
   order_id: null,
@@ -130,6 +131,9 @@ const modalChecker = createSlice({
     setStyleFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; style?: any }>) {
       state.isStyleForm = action.payload;
     },
+    setCountryFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; country?: any }>) {
+      state.isCountryForm = action.payload;
+    },
     setCategoryFormState(state, action: PayloadAction<{ open: boolean; editing?: boolean; category?: any }>) {
       state.isCategoryForm = action.payload;
     },
@@ -172,6 +176,7 @@ const modalChecker = createSlice({
 
 export const {
   setStyleFormState,
+  setCountryFormState,
   setCategoryFormState,
   setMaterialFormState,
   setColorFormState,

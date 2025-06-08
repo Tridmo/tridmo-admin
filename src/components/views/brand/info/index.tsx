@@ -1,20 +1,18 @@
-import { Grid, Box } from '@mui/material';
-import SimpleTypography from '../../../typography';
-import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Grid } from "@mui/material";
+import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import SimpleTypography from "../../../typography";
 
-import Link from 'next/link';
-import Buttons from '../../../buttons';
-import { useRouter } from 'next/navigation';
-import { sampleBrand } from '@/data/samples';
-import { selectOneBrand } from '../../../../data/get_one_brand';
-import { IMAGES_BASE_URL } from '../../../../utils/image_src';
-import { Instagram } from '@mui/icons-material';
-
+import { Instagram, Public } from "@mui/icons-material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { selectOneBrand } from "../../../../data/get_one_brand";
+import { IMAGES_BASE_URL } from "../../../../utils/image_src";
+import Buttons from "../../../buttons";
 
 export default function BrandInfo() {
-  const router = useRouter()
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const router = useRouter();
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const brandBox = {
     padding: "20px",
     background: "#fff",
@@ -22,37 +20,35 @@ export default function BrandInfo() {
     border: "1px solid #B3B3B3",
     marginBottom: "28px",
     display: "flex",
-  }
+  };
 
   const dispatch = useDispatch<any>();
   const brand = useSelector(selectOneBrand);
 
-  function getSocialLink(urls: string[], target: string, connector: string = '/') {
-    const has = urls.find(url => target.startsWith(url))
-    return target ? (
-      !!has
+  function getSocialLink(
+    urls: string[],
+    target: string,
+    connector: string = "/"
+  ) {
+    const has = urls.find((url) => target.startsWith(url));
+    return target
+      ? !!has
         ? target
         : `${urls[0]}${connector}${target}`
-    ) : urls[0]
+      : urls[0];
   }
 
   function getSocialLinkUsername(urls: string[], target: string) {
-    const has = urls.find(url => target.startsWith(url))
-    return target ? (
-      !!has
-        ? target.split(has)[1]
-        : target
-    ) : ''
+    const has = urls.find((url) => target.startsWith(url));
+    return target ? (!!has ? target.split(has)[1] : target) : "";
   }
 
   function getUrlDomen(url: string) {
-    let domen = url.replace('http://', '').replace('https://', '')
+    let domen = url.replace("http://", "").replace("https://", "");
     return domen;
   }
 
   return (
-
-
     <Grid
       className="products__grid"
       container
@@ -76,18 +72,19 @@ export default function BrandInfo() {
       </Grid>
 
       <Grid
-        className='products__info' item
-        xs={12} md={8}
-        sx={{ marginTop: "20px", paddingLeft: '50px !important' }}
+        className="products__info"
+        item
+        xs={12}
+        md={8}
+        sx={{ marginTop: "20px", paddingLeft: "50px !important" }}
       >
-
         <Grid
           container
-          justifyContent={'space-between'}
-          sx={{ marginBottom: '40px' }}
+          justifyContent={"space-between"}
+          sx={{ marginBottom: "40px" }}
         >
           <Grid item>
-            <SimpleTypography className='brand__name' text="Название бренда" />
+            <SimpleTypography className="brand__name" text="Название бренда" />
             <SimpleTypography
               text={brand?.name}
               className="brand_page__info--title"
@@ -97,10 +94,10 @@ export default function BrandInfo() {
           <Grid item>
             <Link href={`/brands/edit/${brand?.slug}`}>
               <Buttons
-                name='Редактировать'
+                name="Редактировать"
                 className="login__btn"
                 childrenFirst={true}
-                sx={{ p: '10px 18px !important' }}
+                sx={{ p: "10px 18px !important" }}
               >
                 <Image
                   alt="icon"
@@ -113,26 +110,51 @@ export default function BrandInfo() {
           </Grid>
         </Grid>
 
-        <SimpleTypography className='brand__name' text="Описание" />
+        <SimpleTypography className="brand__name" text="Описание" />
         <SimpleTypography
           text={brand?.description}
           className="brand_page__info--desc"
-          sx={{ marginBottom: '40px' }}
+          sx={{ marginBottom: "40px" }}
         />
 
-        <Grid container spacing={1}
+        <Grid
+          container
+          spacing={1}
           sx={{
-            display: 'flex',
+            display: "flex",
           }}
         >
-
+          <Grid item>
+            <Link
+              target="_blank"
+              href={`http://maps.google.com/?q=${brand?.country}`}
+              rel="noopener noreferrer"
+            >
+              <Buttons className="brand__box" name="">
+                <Public
+                  sx={{
+                    width: "23px",
+                    height: "23px",
+                    color: "#424242",
+                  }}
+                />
+                <Box sx={{ marginLeft: "11px" }}>
+                  <SimpleTypography className="brand__name" text="Страна" />
+                  <SimpleTypography
+                    className="brand__box--text"
+                    text={brand?.country}
+                  />
+                </Box>
+              </Buttons>
+            </Link>
+          </Grid>
           <Grid item>
             <Link
               target="_blank"
               href={`http://maps.google.com/?q=${brand?.address}`}
               rel="noopener noreferrer"
             >
-              <Buttons className='brand__box' name="">
+              <Buttons className="brand__box" name="">
                 <Image
                   width={19}
                   height={23}
@@ -140,12 +162,9 @@ export default function BrandInfo() {
                   src={"/icons/location.svg"}
                 />
                 <Box sx={{ marginLeft: "11px" }}>
+                  <SimpleTypography className="brand__name" text="Локация" />
                   <SimpleTypography
-                    className='brand__name'
-                    text="Локация"
-                  />
-                  <SimpleTypography
-                    className='brand__box--text'
+                    className="brand__box--text"
                     text={brand?.address}
                   />
                 </Box>
@@ -154,7 +173,7 @@ export default function BrandInfo() {
           </Grid>
           <Grid item>
             <Link href={`tel:${brand?.phone}`}>
-              <Buttons className='brand__box' name="">
+              <Buttons className="brand__box" name="">
                 <Image
                   width={19}
                   height={23}
@@ -162,8 +181,14 @@ export default function BrandInfo() {
                   src={"/icons/phone.svg"}
                 />
                 <Box sx={{ marginLeft: "11px" }}>
-                  <SimpleTypography className='brand__name' text="Номер телефона" />
-                  <SimpleTypography className='brand__box--text' text={`${brand?.phone}`} />
+                  <SimpleTypography
+                    className="brand__name"
+                    text="Номер телефона"
+                  />
+                  <SimpleTypography
+                    className="brand__box--text"
+                    text={`${brand?.phone}`}
+                  />
                 </Box>
               </Buttons>
             </Link>
@@ -185,10 +210,8 @@ export default function BrandInfo() {
             </Link>
           </Grid> */}
           <Grid item>
-            <a target="_blank"
-              href={brand?.site_link}
-            >
-              <Buttons className='brand__box' name="">
+            <a target="_blank" href={brand?.site_link}>
+              <Buttons className="brand__box" name="">
                 <Image
                   width={19}
                   height={23}
@@ -196,64 +219,69 @@ export default function BrandInfo() {
                   src={"/icons/web.svg"}
                 />
                 <Box sx={{ marginLeft: "11px" }}>
-                  <SimpleTypography className='brand__name' text="Веб-сайт" />
+                  <SimpleTypography className="brand__name" text="Веб-сайт" />
                   <SimpleTypography
-                    className='brand__box--text'
-                    text={getUrlDomen(brand?.site_link || '')}
+                    className="brand__box--text"
+                    text={getUrlDomen(brand?.site_link || "")}
                   />
                 </Box>
               </Buttons>
             </a>
           </Grid>
           <Grid item>
-            <a target="_blank"
-              href={getSocialLink(['https://instagram.com/', 'https://www.instagram.com/'], brand?.instagram)}
+            <a
+              target="_blank"
+              href={getSocialLink(
+                ["https://instagram.com/", "https://www.instagram.com/"],
+                brand?.instagram
+              )}
             >
-              <Buttons className='brand__box' name="">
-                <Instagram sx={{
-                  width: '23px',
-                  height: '23px',
-                  color: '#424242'
-                }} />
+              <Buttons className="brand__box" name="">
+                <Instagram
+                  sx={{
+                    width: "23px",
+                    height: "23px",
+                    color: "#424242",
+                  }}
+                />
                 <Box sx={{ marginLeft: "11px" }}>
-                  <SimpleTypography className='brand__name' text="Инстаграм" />
+                  <SimpleTypography className="brand__name" text="Инстаграм" />
                   <SimpleTypography
-                    className='brand__box--text'
-                    text={getSocialLinkUsername(['https://instagram.com/', 'https://www.instagram.com/'], brand?.instagram)}
+                    className="brand__box--text"
+                    text={getSocialLinkUsername(
+                      ["https://instagram.com/", "https://www.instagram.com/"],
+                      brand?.instagram
+                    )}
                   />
                 </Box>
               </Buttons>
             </a>
           </Grid>
-          {
-            brand?.styles ? (
-              brand?.styles[0] ?
-                <Grid item>
-                  <Box>
-                    <Buttons className='brand__box' name="">
-                      <Image
-                        width={19}
-                        height={23}
-                        alt="web"
-                        src={"/icons/cube.svg"}
+          {brand?.styles ? (
+            brand?.styles[0] ? (
+              <Grid item>
+                <Box>
+                  <Buttons className="brand__box" name="">
+                    <Image
+                      width={19}
+                      height={23}
+                      alt="web"
+                      src={"/icons/cube.svg"}
+                    />
+                    <Box sx={{ marginLeft: "11px" }}>
+                      <SimpleTypography className="brand__name" text="Стиль" />
+                      <SimpleTypography
+                        className="brand__box--text"
+                        text={`${brand?.styles[0]?.name}`}
                       />
-                      <Box sx={{ marginLeft: "11px" }}>
-                        <SimpleTypography className='brand__name' text="Стиль" />
-                        <SimpleTypography className='brand__box--text' text={`${brand?.styles[0]?.name}`} />
-                      </Box>
-                    </Buttons>
-                  </Box>
-                </Grid>
-                : null
-            )
-              : null
-          }
+                    </Box>
+                  </Buttons>
+                </Box>
+              </Grid>
+            ) : null
+          ) : null}
         </Grid>
-
-
-      </Grid >
-
+      </Grid>
     </Grid>
-
-  )
+  );
 }
